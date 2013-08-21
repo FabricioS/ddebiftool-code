@@ -1,10 +1,10 @@
 --------------------------------------------------------------------------------
 
-                             DDE-BIFTOOL v. 2.02
+                             DDE-BIFTOOL v. 2.03
 
 --------------------------------------------------------------------------------
 
-K. Engelborghs, T. Luzyanina, G. Samaey
+K. Engelborghs, T. Luzyanina, G. Samaey. D. Roose, K. Verheyden
 K.U.Leuven
 Department of Computer Science
 Celestijnenlaan 200A
@@ -14,12 +14,15 @@ Belgium
 --------------------------------------------------------------------------------
 
 URL:     http://www.cs.kuleuven.ac.be/~twr/research/software/delay/ddebiftool.shtml
-Contact: Koen.Verheyden@cs.kuleuven.ac.be
+Contact: twrwww@cs.kuleuven.ac.be
 Manual:  K. Engelborghs, T. Luzyanina, G. Samaey. DDE-BIFTOOL v. 2.00: 
          a Matlab package for bifurcation analysis of delay differential
          equations. Technical Report TW-330, Department of Computer
          Science, K.U.Leuven, Leuven, Belgium, 2001.
-
+Note:    An addendum to this manual is available which describes briefly 
+         the new functionality (concerning the computation of the rightmost
+         roots of steady states) in DDE-BIFTOOL v. 2.03 compared to the 
+         previous version, DDE-BIFTOOL v. 2.02.
 --------------------------------------------------------------------------------
 
 To install:
