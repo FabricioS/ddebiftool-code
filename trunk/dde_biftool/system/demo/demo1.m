@@ -2,6 +2,12 @@
 %%% DDE-BIFTOOL demo 1 %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Add the path to the DDE-BIFTOOL directory, e.g.
+%  addpath ../../ddebiftool
+disp('Add the correct path ...');
+disp('e.g. addpath ../../ddebiftool');
+% Note: check whether the path is set in the sys_init() function.
+
 clear;
 
 % init system:
@@ -23,7 +29,15 @@ stst.x=[0 0]'
 
 % get default method parameters for stst calculations:
 
-method=df_mthod('stst')
+% we use the new steplength heuristic in the computation of the
+% stability of steady states
+flag_newhheur=1;
+
+% flag_newhheur=1 is the default choice if this argument is omitted
+% from the function df_mthod.
+method=df_mthod('stst',flag_newhheur)
+
+method.stability.minimal_real_part=-1;
 
 %% method = continuation: [1x1 struct]
 %%                 point: [1x1 struct]
@@ -168,7 +182,8 @@ hopf=p_tohopf(branch1.point(24));
 
 % get hopf calculation method parameters:
 
-method=df_mthod('hopf');
+method=df_mthod('hopf',flag_newhheur);
+method.stability.minimal_real_part=-1;
 
 % correct hopf:
 
