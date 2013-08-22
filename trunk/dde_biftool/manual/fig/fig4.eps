@@ -1,0 +1,1306 @@
+%!PS-Adobe-2.0 EPSF-1.2
+%%Creator: MATLAB, The Mathworks, Inc.
+%%Title: /home/koen/DELAY/matlab/models/neuron/fig/fig4.eps
+%%CreationDate: 04/01/ 0  11:25:28
+%%DocumentNeededFonts: Helvetica
+%%DocumentProcessColors: Cyan Magenta Yellow Black
+%%Pages: 1
+%%BoundingBox:    39   193   551   591
+%%EndComments
+
+%%BeginProlog
+
+% MathWorks dictionary
+/MathWorks 160 dict begin
+
+% definition operators
+/bdef {bind def} bind def
+/ldef {load def} bind def
+/xdef {exch def} bdef
+/xstore {exch store} bdef
+
+% operator abbreviations
+/c  /clip ldef
+/cc /concat ldef
+/cp /closepath ldef
+/gr /grestore ldef
+/gs /gsave ldef
+/mt /moveto ldef
+/np /newpath ldef
+/cm /currentmatrix ldef
+/sm /setmatrix ldef
+/rc {rectclip} bdef
+/rf {rectfill} bdef
+/rm /rmoveto ldef
+/rl /rlineto ldef
+/s /show ldef
+/sc {setcmykcolor} bdef
+/sr /setrgbcolor ldef
+/sg /setgray ldef
+/w /setlinewidth ldef
+/j /setlinejoin ldef
+/cap /setlinecap ldef
+
+% page state control
+/pgsv () def
+/bpage {/pgsv save def} bdef
+/epage {pgsv restore} bdef
+/bplot /gsave ldef
+/eplot {stroke grestore} bdef
+
+% orientation switch
+/portraitMode 	0 def
+/landscapeMode 	1 def
+
+% coordinate system mappings
+/dpi2point 0 def
+
+% font control
+/FontSize 0 def
+/FMS {
+	/FontSize xstore		%save size off stack
+	findfont
+	[FontSize 0 0 FontSize neg 0 0]
+	makefont
+	setfont
+	}bdef
+
+/reencode {
+exch dup where
+{pop load} {pop StandardEncoding} ifelse
+exch
+dup 3 1 roll
+findfont dup length dict begin
+  { 1 index /FID ne {def}{pop pop} ifelse } forall
+  /Encoding exch def
+  currentdict
+end
+definefont pop
+} bdef
+
+/isroman {
+findfont /CharStrings get
+/Agrave known
+} bdef
+
+/FMSR {
+3 1 roll 1 index
+dup isroman
+{reencode} {pop pop} ifelse
+exch FMS
+} bdef
+
+/csm {
+	1 dpi2point div -1 dpi2point div scale
+	neg translate
+	landscapeMode eq {90 rotate} if
+	} bdef
+
+% line types: solid, dotted, dashed, dotdash
+/SO { [] 0 setdash } bdef
+/DO { [.5 dpi2point mul 4 dpi2point mul] 0 setdash } bdef
+/DA { [6 dpi2point mul] 0 setdash } bdef
+/DD { [.5 dpi2point mul 4 dpi2point mul 6 dpi2point mul 4 dpi2point mul] 0 setdash } bdef
+
+% macros for lines and objects
+/L {
+	lineto
+	stroke
+	} bdef
+/MP {
+	3 1 roll moveto
+	1 sub {rlineto} repeat
+	} bdef
+/AP {
+	{rlineto} repeat
+	} bdef
+/PP {
+	closepath eofill
+	} bdef
+/DP {
+	closepath stroke
+	} bdef
+/MR {
+	4 -2 roll moveto
+	dup  0 exch rlineto
+	exch 0 rlineto
+	neg  0 exch rlineto
+	closepath
+	} bdef
+/FR {
+	MR stroke
+	} bdef
+/PR {
+	MR fill
+	} bdef
+/L1i {
+	{ currentfile picstr readhexstring pop } image
+	} bdef
+
+/tMatrix matrix def
+/MakeOval {
+	newpath
+	tMatrix currentmatrix pop
+	translate scale
+	0 0 1 0 360 arc
+	tMatrix setmatrix
+	} bdef
+/FO {
+	MakeOval
+	stroke
+	} bdef
+/PO {
+	MakeOval
+	fill
+	} bdef
+
+/PD {
+	currentlinecap 1 setlinecap 3 1 roll 2 copy moveto lineto stroke setlinecap
+	} bdef
+
+/FA {
+	newpath
+	tMatrix currentmatrix pop
+	translate scale
+	0 0 1 5 -2 roll arc
+	tMatrix setmatrix
+	stroke
+	} bdef
+/PA {
+	newpath
+	tMatrix currentmatrix pop
+	translate 0 0 moveto scale
+	0 0 1 5 -2 roll arc
+	closepath
+	tMatrix setmatrix
+	fill
+	} bdef
+
+/FAn {
+	newpath
+	tMatrix currentmatrix pop
+	translate scale
+	0 0 1 5 -2 roll arcn
+	tMatrix setmatrix
+	stroke
+	} bdef
+/PAn {
+	newpath
+	tMatrix currentmatrix pop
+	translate 0 0 moveto scale
+	0 0 1 5 -2 roll arcn
+	closepath
+	tMatrix setmatrix
+	fill
+	} bdef
+
+/vradius 0 def
+/hradius 0 def
+/lry 0 def
+/lrx 0 def
+/uly 0 def
+/ulx 0 def
+/rad 0 def
+
+/MRR {
+	/vradius xdef
+	/hradius xdef
+	/lry xdef
+	/lrx xdef
+	/uly xdef
+	/ulx xdef
+	newpath
+	tMatrix currentmatrix pop
+	ulx hradius add uly vradius add translate
+	hradius vradius scale
+	0 0 1 180 270 arc 
+	tMatrix setmatrix
+	lrx hradius sub uly vradius add translate
+	hradius vradius scale
+	0 0 1 270 360 arc
+	tMatrix setmatrix
+	lrx hradius sub lry vradius sub translate
+	hradius vradius scale
+	0 0 1 0 90 arc
+	tMatrix setmatrix
+	ulx hradius add lry vradius sub translate
+	hradius vradius scale
+	0 0 1 90 180 arc
+	tMatrix setmatrix
+	closepath
+	} bdef
+/FRR {
+	MRR stroke } bdef
+/PRR {
+	MRR fill } bdef
+
+/MlrRR {
+	/lry xdef
+	/lrx xdef
+	/uly xdef
+	/ulx xdef
+	/rad lry uly sub 2 div def
+	newpath
+	tMatrix currentmatrix pop
+	ulx rad add uly rad add translate
+	rad rad scale
+	0 0 1 90 270 arc
+	tMatrix setmatrix
+	lrx rad sub lry rad sub translate
+	rad rad scale
+	0 0 1 270 90 arc
+	tMatrix setmatrix
+	closepath
+	} bdef
+/FlrRR {
+	MlrRR stroke } bdef
+/PlrRR {
+	MlrRR fill } bdef
+
+/MtbRR {
+	/lry xdef
+	/lrx xdef
+	/uly xdef
+	/ulx xdef
+	/rad lrx ulx sub 2 div def
+	newpath
+	tMatrix currentmatrix pop
+	ulx rad add uly rad add translate
+	rad rad scale
+	0 0 1 180 360 arc
+	tMatrix setmatrix
+	lrx rad sub lry rad sub translate
+	rad rad scale
+	0 0 1 0 180 arc
+	tMatrix setmatrix
+	closepath
+	} bdef
+/FtbRR {
+	MtbRR stroke } bdef
+/PtbRR {
+	MtbRR fill } bdef
+
+currentdict end def
+%%EndProlog
+
+%%BeginSetup
+MathWorks begin
+
+0 cap
+
+end
+%%EndSetup
+
+%%Page: 1 1
+%%BeginPageSetup
+%%PageBoundingBox:    39   193   551   591
+MathWorks begin
+bpage
+%%EndPageSetup
+
+%%BeginObject: obj1
+bplot
+
+/dpi2point 12 def
+portraitMode 0216 7344 csm
+
+  255   246  6141  4776 MR c np
+91 dict begin %Colortable dictionary
+/c0 { 0 0 0 sr} bdef
+/c1 { 1 1 1 sr} bdef
+/c2 { 1 0 0 sr} bdef
+/c3 { 0 1 0 sr} bdef
+/c4 { 0 0 1 sr} bdef
+/c5 { 1 1 0 sr} bdef
+/c6 { 1 0 1 sr} bdef
+/c7 { 0 1 1 sr} bdef
+c0
+1 j
+1 sg
+   0    0 6913 5186 PR
+6 w
+0 4225 5355 0 0 -4225 899 4614 4 MP
+PP
+-5355 0 0 4225 5355 0 0 -4225 899 4614 5 MP stroke
+4 w
+DO
+SO
+6 w
+0 sg
+ 899 4614 mt 6254 4614 L
+ 899  389 mt 6254  389 L
+ 899 4614 mt  899  389 L
+6254 4614 mt 6254  389 L
+ 899 4614 mt 6254 4614 L
+ 899 4614 mt  899  389 L
+ 899 4614 mt  899 4560 L
+ 899  389 mt  899  443 L
+%%IncludeResource: font Helvetica
+/Helvetica /ISOLatin1Encoding 168 FMSR
+
+ 853 4805 mt 
+(0) s
+1792 4614 mt 1792 4560 L
+1792  389 mt 1792  443 L
+1746 4805 mt 
+(5) s
+2684 4614 mt 2684 4560 L
+2684  389 mt 2684  443 L
+2591 4805 mt 
+(10) s
+3577 4614 mt 3577 4560 L
+3577  389 mt 3577  443 L
+3484 4805 mt 
+(15) s
+4469 4614 mt 4469 4560 L
+4469  389 mt 4469  443 L
+4376 4805 mt 
+(20) s
+5362 4614 mt 5362 4560 L
+5362  389 mt 5362  443 L
+5269 4805 mt 
+(25) s
+6254 4614 mt 6254 4560 L
+6254  389 mt 6254  443 L
+6161 4805 mt 
+(30) s
+ 899 4614 mt  953 4614 L
+6254 4614 mt 6200 4614 L
+ 673 4676 mt 
+(-2) s
+ 899 4010 mt  953 4010 L
+6254 4010 mt 6200 4010 L
+ 533 4072 mt 
+(-1.5) s
+ 899 3407 mt  953 3407 L
+6254 3407 mt 6200 3407 L
+ 673 3469 mt 
+(-1) s
+ 899 2803 mt  953 2803 L
+6254 2803 mt 6200 2803 L
+ 533 2865 mt 
+(-0.5) s
+ 899 2200 mt  953 2200 L
+6254 2200 mt 6200 2200 L
+ 771 2262 mt 
+(0) s
+ 899 1596 mt  953 1596 L
+6254 1596 mt 6200 1596 L
+ 631 1658 mt 
+(0.5) s
+ 899  993 mt  953  993 L
+6254  993 mt 6200  993 L
+ 771 1055 mt 
+(1) s
+ 899  389 mt  953  389 L
+6254  389 mt 6200  389 L
+ 631  451 mt 
+(1.5) s
+ 899 4614 mt 6254 4614 L
+ 899  389 mt 6254  389 L
+ 899 4614 mt  899  389 L
+6254 4614 mt 6254  389 L
+gs 899 389 5356 4226 MR c np
+179 71 178 50 179 34 178 27 179 23 178 21 179 18 178 18 
+179 15 178 15 179 13 178 9 179 253 178 92 179 86 178 84 
+179 86 178 85 179 75 178 68 179 62 178 57 179 53 178 50 
+179 47 178 45 179 43 178 25 1078 869 29 MP stroke
+179 71 178 50 179 34 178 27 179 23 178 21 179 18 178 18 
+179 15 178 15 179 13 178 9 179 -237 178 -79 179 -71 178 -67 
+179 -66 178 -63 179 -53 178 -47 179 -42 178 -37 179 -24 178 -12 
+179 -11 178 -11 179 -11 178 -7 1078 2918 29 MP stroke
+179 -73 178 -52 179 -37 178 -30 179 -27 178 -23 179 -22 178 -20 
+179 -19 178 -17 179 -15 178 -12 179 -9 178 -8 179 -9 178 -10 
+179 -13 178 -13 179 -14 178 -13 179 -12 178 -13 179 -11 178 -12 
+179 -11 178 -11 179 -11 178 -7 1078 2918 29 MP stroke
+179 -73 178 -52 179 -37 178 -30 179 -27 178 -23 179 -22 178 -20 
+179 -19 178 -17 179 -15 178 -12 179 -9 178 -8 179 -9 178 -10 
+179 -13 178 -13 179 -14 178 -13 179 -12 178 -13 179 -22 178 -32 
+179 -29 178 -27 179 -26 178 -15 1078 3006 29 MP stroke
+179 53 178 39 179 27 178 22 179 19 178 17 179 16 178 14 
+179 14 178 13 179 10 178 8 179 7 178 6 179 6 178 8 
+179 8 178 10 179 9 178 9 179 9 178 9 179 8 178 8 
+179 8 178 7 179 8 178 4 1078 3149 29 MP stroke
+179 53 178 39 179 27 178 22 179 19 178 17 179 16 178 14 
+179 14 178 13 179 10 178 8 179 7 178 6 179 6 178 8 
+179 8 178 10 179 9 178 9 179 9 178 9 179 8 178 8 
+179 8 178 7 179 8 178 4 1078 3149 29 MP stroke
+179 -53 178 -37 179 -25 178 -20 179 -17 178 -16 179 -14 178 -12 
+179 -12 178 -11 179 -9 178 -7 179 -6 178 -5 179 -5 178 -7 
+179 -7 178 -5 179 7 178 7 179 7 178 7 179 7 178 7 
+179 6 178 6 179 7 178 3 1078 3729 29 MP stroke
+179 -53 178 -37 179 -25 178 -20 179 -17 178 -16 179 -14 178 -12 
+179 -12 178 -11 179 -9 178 -7 179 -6 178 -5 179 -5 178 -7 
+179 -7 178 -5 179 7 178 7 179 7 178 7 179 7 178 7 
+179 6 178 6 179 7 178 3 1078 3729 29 MP stroke
+179 36 178 26 179 18 178 16 179 13 178 12 179 11 178 11 
+179 9 178 10 179 8 178 6 179 5 178 4 179 5 178 6 
+179 6 178 5 179 -8 178 -8 179 -8 178 -7 179 -7 178 -6 
+179 -7 178 -6 179 -7 178 -3 1078 3863 29 MP stroke
+179 36 178 26 179 18 178 16 179 13 178 12 179 11 178 11 
+179 9 178 10 179 8 178 6 179 5 178 4 179 5 178 6 
+179 6 178 5 179 -8 178 -8 179 -8 178 -7 179 -7 178 -6 
+179 -7 178 -6 179 -7 178 -3 1078 3863 29 MP stroke
+179 -35 178 -24 179 -16 178 -13 179 -12 178 -10 179 -9 178 -8 
+179 -8 178 -7 179 -6 178 -5 179 -3 178 -4 179 -3 178 -4 
+179 -5 178 -6 179 -5 178 -5 179 -5 178 -5 179 -4 178 -5 
+179 -4 178 -4 179 -5 178 -2 1078 4225 29 MP stroke
+179 -35 178 -24 179 -16 178 -13 179 -12 178 -10 179 -9 178 -8 
+179 -8 178 -7 179 -6 178 -5 179 -3 178 -4 179 -3 178 -4 
+179 -5 178 -6 179 -5 178 -5 179 -5 178 -5 179 -4 178 -5 
+179 -4 178 -4 179 -5 178 -2 1078 4225 29 MP stroke
+179 10 178 7 179 5 178 4 179 3 178 2 179 3 178 2 
+179 2 178 2 179 1 178 2 179 1 178 0 179 1 178 1 
+179 2 178 1 179 1 178 1 179 2 178 1 179 1 178 1 
+179 0 178 1 179 1 178 0 1078 4241 29 MP stroke
+179 10 178 7 179 5 178 4 179 3 178 2 179 3 178 2 
+179 2 178 2 179 1 178 2 179 1 178 0 179 1 178 1 
+179 2 178 1 179 1 178 1 179 2 178 1 179 1 178 1 
+179 0 178 1 179 1 178 0 1078 4241 29 MP stroke
+179 -10 178 -8 179 -5 178 -5 179 -4 178 -3 179 -4 178 -3 
+179 -3 178 -2 179 -3 178 -1 179 -2 178 -1 179 -2 178 -1 
+179 -2 178 -2 179 -3 178 -2 179 -2 178 -2 179 -2 178 -2 
+179 -2 178 -2 179 -2 178 -1 1078 4380 29 MP stroke
+179 -10 178 -8 179 -5 178 -5 179 -4 178 -3 179 -4 178 -3 
+179 -3 178 -2 179 -3 178 -1 179 -2 178 -1 179 -2 178 -1 
+179 -2 178 -2 179 -3 178 -2 179 -2 178 -2 179 -2 178 -2 
+179 -2 178 -2 179 -2 178 -1 1078 4380 29 MP stroke
+179 9 178 7 179 4 178 3 179 3 178 3 179 3 178 2 
+179 2 178 2 179 1 178 1 179 1 178 1 179 1 178 1 
+179 1 178 2 179 1 178 1 179 2 178 1 179 1 178 1 
+179 0 178 0 179 0 178 1 1078 4456 29 MP stroke
+179 9 178 7 179 4 178 3 179 3 178 3 179 3 178 2 
+179 2 178 2 179 1 178 1 179 1 178 1 179 1 178 1 
+179 1 178 2 179 1 178 1 179 2 178 1 179 1 178 1 
+179 0 178 0 179 0 178 1 1078 4456 29 MP stroke
+179 -10 178 -7 179 -5 178 -4 179 -3 178 -3 179 -3 178 -3 
+179 -2 178 -3 179 -2 178 -2 179 -1 178 -1 179 -1 178 -2 
+179 -1 178 -2 179 -2 178 -2 179 3 178 3 179 3 178 2 
+179 0 178 2 179 1 178 2 1078 4554 29 MP stroke
+179 -10 178 -7 179 -5 178 -4 179 -3 178 -3 179 -3 178 -3 
+179 -2 178 -3 179 -2 178 -2 179 -1 178 -1 179 -1 178 -2 
+179 -1 178 -2 179 -2 178 -2 179 3 178 3 179 3 178 2 
+179 0 178 2 179 1 178 2 1078 4554 29 MP stroke
+178 5 179 5 178 4 179 3 178 3 179 2 178 2 179 2 
+178 3 179 3 178 3 179 4 178 3 179 -2 178 -1 179 -2 
+178 -2 179 -3 178 -2 179 -2 178 -1 1078 4585 22 MP stroke
+178 5 179 5 178 4 179 3 178 3 179 2 178 2 179 2 
+178 3 179 3 178 3 179 4 178 3 179 -2 178 -1 179 -2 
+178 -2 179 -3 178 -2 179 -2 178 -1 1078 4585 22 MP stroke
+gs 1005 796 5145 1672 MR c np
+24 w
+1078 869 PD
+1256 894 PD
+1435 937 PD
+1613 982 PD
+1792 1029 PD
+1970 1079 PD
+2149 1132 PD
+2327 1189 PD
+2506 1251 PD
+2684 1319 PD
+2863 1394 PD
+3041 1479 PD
+3220 1565 PD
+3398 1649 PD
+3577 1735 PD
+3755 1827 PD
+3934 2080 PD
+4112 2089 PD
+4291 2102 PD
+4469 2117 PD
+4648 2132 PD
+4826 2150 PD
+5005 2168 PD
+5183 2189 PD
+5362 2212 PD
+5540 2239 PD
+5719 2273 PD
+5897 2323 PD
+6076 2394 PD
+gr
+
+24 w
+6 w
+gs 1005 2007 5145 985 MR c np
+24 w
+1078 2918 PD
+1256 2911 PD
+1435 2900 PD
+1613 2889 PD
+1792 2878 PD
+1970 2866 PD
+2149 2842 PD
+2327 2805 PD
+2506 2763 PD
+2684 2716 PD
+2863 2663 PD
+3041 2600 PD
+3220 2534 PD
+3398 2467 PD
+3577 2396 PD
+3755 2317 PD
+3934 2080 PD
+4112 2089 PD
+4291 2102 PD
+4469 2117 PD
+4648 2132 PD
+4826 2150 PD
+5005 2168 PD
+5183 2189 PD
+5362 2212 PD
+5540 2239 PD
+5719 2273 PD
+5897 2323 PD
+6076 2394 PD
+gr
+
+24 w
+6 w
+gs 1005 2321 5145 671 MR c np
+24 w
+1078 2918 PD
+1256 2911 PD
+1435 2900 PD
+1613 2889 PD
+1792 2878 PD
+1970 2866 PD
+2149 2855 PD
+2327 2842 PD
+2506 2830 PD
+2684 2817 PD
+2863 2803 PD
+3041 2790 PD
+3220 2777 PD
+3398 2767 PD
+3577 2758 PD
+3755 2750 PD
+3934 2741 PD
+4112 2729 PD
+4291 2714 PD
+4469 2697 PD
+4648 2678 PD
+4826 2658 PD
+5005 2636 PD
+5183 2613 PD
+5362 2586 PD
+5540 2556 PD
+5719 2519 PD
+5897 2467 PD
+6076 2394 PD
+gr
+
+24 w
+6 w
+gs 1005 2321 5145 759 MR c np
+24 w
+1078 3006 PD
+1256 2991 PD
+1435 2965 PD
+1613 2938 PD
+1792 2909 PD
+1970 2877 PD
+2149 2855 PD
+2327 2842 PD
+2506 2830 PD
+2684 2817 PD
+2863 2803 PD
+3041 2790 PD
+3220 2777 PD
+3398 2767 PD
+3577 2758 PD
+3755 2750 PD
+3934 2741 PD
+4112 2729 PD
+4291 2714 PD
+4469 2697 PD
+4648 2678 PD
+4826 2658 PD
+5005 2636 PD
+5183 2613 PD
+5362 2586 PD
+5540 2556 PD
+5719 2519 PD
+5897 2467 PD
+6076 2394 PD
+gr
+
+24 w
+6 w
+gs 1005 3076 5145 523 MR c np
+24 w
+1078 3149 PD
+1256 3153 PD
+1435 3161 PD
+1613 3168 PD
+1792 3176 PD
+1970 3184 PD
+2149 3192 PD
+2327 3201 PD
+2506 3210 PD
+2684 3219 PD
+2863 3228 PD
+3041 3238 PD
+3220 3246 PD
+3398 3254 PD
+3577 3260 PD
+3755 3266 PD
+3934 3273 PD
+4112 3281 PD
+4291 3291 PD
+4469 3304 PD
+4648 3318 PD
+4826 3332 PD
+5005 3348 PD
+5183 3365 PD
+5362 3384 PD
+5540 3406 PD
+5719 3433 PD
+5897 3472 PD
+6076 3525 PD
+gr
+
+24 w
+6 w
+gs 1005 3076 5145 523 MR c np
+24 w
+1078 3149 PD
+1256 3153 PD
+1435 3161 PD
+1613 3168 PD
+1792 3176 PD
+1970 3184 PD
+2149 3192 PD
+2327 3201 PD
+2506 3210 PD
+2684 3219 PD
+2863 3228 PD
+3041 3238 PD
+3220 3246 PD
+3398 3254 PD
+3577 3260 PD
+3755 3266 PD
+3934 3273 PD
+4112 3281 PD
+4291 3291 PD
+4469 3304 PD
+4648 3318 PD
+4826 3332 PD
+5005 3348 PD
+5183 3365 PD
+5362 3384 PD
+5540 3406 PD
+5719 3433 PD
+5897 3472 PD
+6076 3525 PD
+gr
+
+24 w
+6 w
+gs 1005 3452 5145 415 MR c np
+24 w
+1078 3729 PD
+1256 3732 PD
+1435 3739 PD
+1613 3745 PD
+1792 3751 PD
+1970 3758 PD
+2149 3765 PD
+2327 3772 PD
+2506 3779 PD
+2684 3786 PD
+2863 3793 PD
+3041 3788 PD
+3220 3781 PD
+3398 3774 PD
+3577 3769 PD
+3755 3764 PD
+3934 3758 PD
+4112 3751 PD
+4291 3742 PD
+4469 3731 PD
+4648 3719 PD
+4826 3707 PD
+5005 3693 PD
+5183 3677 PD
+5362 3660 PD
+5540 3640 PD
+5719 3615 PD
+5897 3578 PD
+6076 3525 PD
+gr
+
+24 w
+6 w
+gs 1005 3452 5145 415 MR c np
+24 w
+1078 3729 PD
+1256 3732 PD
+1435 3739 PD
+1613 3745 PD
+1792 3751 PD
+1970 3758 PD
+2149 3765 PD
+2327 3772 PD
+2506 3779 PD
+2684 3786 PD
+2863 3793 PD
+3041 3788 PD
+3220 3781 PD
+3398 3774 PD
+3577 3769 PD
+3755 3764 PD
+3934 3758 PD
+4112 3751 PD
+4291 3742 PD
+4469 3731 PD
+4648 3719 PD
+4826 3707 PD
+5005 3693 PD
+5183 3677 PD
+5362 3660 PD
+5540 3640 PD
+5719 3615 PD
+5897 3578 PD
+6076 3525 PD
+gr
+
+24 w
+6 w
+gs 1005 3723 5145 354 MR c np
+24 w
+1078 3863 PD
+1256 3860 PD
+1435 3853 PD
+1613 3847 PD
+1792 3840 PD
+1970 3834 PD
+2149 3827 PD
+2327 3820 PD
+2506 3812 PD
+2684 3804 PD
+2863 3796 PD
+3041 3801 PD
+3220 3807 PD
+3398 3813 PD
+3577 3818 PD
+3755 3822 PD
+3934 3827 PD
+4112 3833 PD
+4291 3841 PD
+4469 3851 PD
+4648 3860 PD
+4826 3871 PD
+5005 3882 PD
+5183 3894 PD
+5362 3907 PD
+5540 3923 PD
+5719 3941 PD
+5897 3967 PD
+6076 4003 PD
+gr
+
+24 w
+6 w
+gs 1005 3723 5145 354 MR c np
+24 w
+1078 3863 PD
+1256 3860 PD
+1435 3853 PD
+1613 3847 PD
+1792 3840 PD
+1970 3834 PD
+2149 3827 PD
+2327 3820 PD
+2506 3812 PD
+2684 3804 PD
+2863 3796 PD
+3041 3801 PD
+3220 3807 PD
+3398 3813 PD
+3577 3818 PD
+3755 3822 PD
+3934 3827 PD
+4112 3833 PD
+4291 3841 PD
+4469 3851 PD
+4648 3860 PD
+4826 3871 PD
+5005 3882 PD
+5183 3894 PD
+5362 3907 PD
+5540 3923 PD
+5719 3941 PD
+5897 3967 PD
+6076 4003 PD
+gr
+
+24 w
+6 w
+gs 1005 3930 5145 369 MR c np
+24 w
+1078 4225 PD
+1256 4223 PD
+1435 4218 PD
+1613 4214 PD
+1792 4210 PD
+1970 4205 PD
+2149 4201 PD
+2327 4196 PD
+2506 4191 PD
+2684 4186 PD
+2863 4181 PD
+3041 4175 PD
+3220 4170 PD
+3398 4166 PD
+3577 4163 PD
+3755 4159 PD
+3934 4156 PD
+4112 4151 PD
+4291 4145 PD
+4469 4138 PD
+4648 4130 PD
+4826 4122 PD
+5005 4113 PD
+5183 4103 PD
+5362 4091 PD
+5540 4078 PD
+5719 4062 PD
+5897 4038 PD
+6076 4003 PD
+gr
+
+24 w
+6 w
+gs 1005 3930 5145 369 MR c np
+24 w
+1078 4225 PD
+1256 4223 PD
+1435 4218 PD
+1613 4214 PD
+1792 4210 PD
+1970 4205 PD
+2149 4201 PD
+2327 4196 PD
+2506 4191 PD
+2684 4186 PD
+2863 4181 PD
+3041 4175 PD
+3220 4170 PD
+3398 4166 PD
+3577 4163 PD
+3755 4159 PD
+3934 4156 PD
+4112 4151 PD
+4291 4145 PD
+4469 4138 PD
+4648 4130 PD
+4826 4122 PD
+5005 4113 PD
+5183 4103 PD
+5362 4091 PD
+5540 4078 PD
+5719 4062 PD
+5897 4038 PD
+6076 4003 PD
+gr
+
+24 w
+6 w
+gs 1005 4168 5145 205 MR c np
+24 w
+1078 4241 PD
+1256 4241 PD
+1435 4242 PD
+1613 4243 PD
+1792 4243 PD
+1970 4244 PD
+2149 4245 PD
+2327 4246 PD
+2506 4248 PD
+2684 4249 PD
+2863 4250 PD
+3041 4251 PD
+3220 4253 PD
+3398 4254 PD
+3577 4255 PD
+3755 4255 PD
+3934 4256 PD
+4112 4258 PD
+4291 4259 PD
+4469 4261 PD
+4648 4263 PD
+4826 4265 PD
+5005 4268 PD
+5183 4270 PD
+5362 4273 PD
+5540 4277 PD
+5719 4282 PD
+5897 4289 PD
+6076 4299 PD
+gr
+
+24 w
+6 w
+gs 1005 4168 5145 205 MR c np
+24 w
+1078 4241 PD
+1256 4241 PD
+1435 4242 PD
+1613 4243 PD
+1792 4243 PD
+1970 4244 PD
+2149 4245 PD
+2327 4246 PD
+2506 4248 PD
+2684 4249 PD
+2863 4250 PD
+3041 4251 PD
+3220 4253 PD
+3398 4254 PD
+3577 4255 PD
+3755 4255 PD
+3934 4256 PD
+4112 4258 PD
+4291 4259 PD
+4469 4261 PD
+4648 4263 PD
+4826 4265 PD
+5005 4268 PD
+5183 4270 PD
+5362 4273 PD
+5540 4277 PD
+5719 4282 PD
+5897 4289 PD
+6076 4299 PD
+gr
+
+24 w
+6 w
+gs 1005 4226 5145 228 MR c np
+24 w
+1078 4380 PD
+1256 4379 PD
+1435 4377 PD
+1613 4375 PD
+1792 4373 PD
+1970 4371 PD
+2149 4369 PD
+2327 4367 PD
+2506 4365 PD
+2684 4363 PD
+2863 4360 PD
+3041 4358 PD
+3220 4356 PD
+3398 4355 PD
+3577 4353 PD
+3755 4352 PD
+3934 4350 PD
+4112 4349 PD
+4291 4346 PD
+4469 4344 PD
+4648 4341 PD
+4826 4338 PD
+5005 4334 PD
+5183 4331 PD
+5362 4327 PD
+5540 4322 PD
+5719 4317 PD
+5897 4309 PD
+6076 4299 PD
+gr
+
+24 w
+6 w
+gs 1005 4226 5145 228 MR c np
+24 w
+1078 4380 PD
+1256 4379 PD
+1435 4377 PD
+1613 4375 PD
+1792 4373 PD
+1970 4371 PD
+2149 4369 PD
+2327 4367 PD
+2506 4365 PD
+2684 4363 PD
+2863 4360 PD
+3041 4358 PD
+3220 4356 PD
+3398 4355 PD
+3577 4353 PD
+3755 4352 PD
+3934 4350 PD
+4112 4349 PD
+4291 4346 PD
+4469 4344 PD
+4648 4341 PD
+4826 4338 PD
+5005 4334 PD
+5183 4331 PD
+5362 4327 PD
+5540 4322 PD
+5719 4317 PD
+5897 4309 PD
+6076 4299 PD
+gr
+
+24 w
+6 w
+gs 1005 4383 5145 202 MR c np
+24 w
+1078 4456 PD
+1256 4457 PD
+1435 4457 PD
+1613 4457 PD
+1792 4457 PD
+1970 4458 PD
+2149 4459 PD
+2327 4460 PD
+2506 4462 PD
+2684 4463 PD
+2863 4464 PD
+3041 4466 PD
+3220 4467 PD
+3398 4468 PD
+3577 4469 PD
+3755 4470 PD
+3934 4471 PD
+4112 4472 PD
+4291 4473 PD
+4469 4475 PD
+4648 4477 PD
+4826 4479 PD
+5005 4482 PD
+5183 4485 PD
+5362 4488 PD
+5540 4491 PD
+5719 4495 PD
+5897 4502 PD
+6076 4511 PD
+gr
+
+24 w
+6 w
+gs 1005 4383 5145 202 MR c np
+24 w
+1078 4456 PD
+1256 4457 PD
+1435 4457 PD
+1613 4457 PD
+1792 4457 PD
+1970 4458 PD
+2149 4459 PD
+2327 4460 PD
+2506 4462 PD
+2684 4463 PD
+2863 4464 PD
+3041 4466 PD
+3220 4467 PD
+3398 4468 PD
+3577 4469 PD
+3755 4470 PD
+3934 4471 PD
+4112 4472 PD
+4291 4473 PD
+4469 4475 PD
+4648 4477 PD
+4826 4479 PD
+5005 4482 PD
+5183 4485 PD
+5362 4488 PD
+5540 4491 PD
+5719 4495 PD
+5897 4502 PD
+6076 4511 PD
+gr
+
+24 w
+6 w
+gr
+
+gs 1005 4438 5145 206 MR c np
+24 w
+1078 4554 PD
+1256 4556 PD
+1435 4557 PD
+1613 4559 PD
+1792 4559 PD
+1970 4561 PD
+2149 4564 PD
+2327 4567 PD
+2506 4570 PD
+2684 4568 PD
+2863 4566 PD
+3041 4564 PD
+3220 4563 PD
+3398 4561 PD
+3577 4560 PD
+3755 4559 PD
+3934 4558 PD
+4112 4556 PD
+4291 4554 PD
+4469 4551 PD
+4648 4549 PD
+4826 4546 PD
+5005 4543 PD
+5183 4540 PD
+5362 4537 PD
+5540 4533 PD
+5719 4528 PD
+5897 4521 PD
+6076 4511 PD
+gr
+
+24 w
+gs 899 389 5356 4226 MR c np
+6 w
+gr
+
+6 w
+gs 1005 4438 5145 206 MR c np
+24 w
+1078 4554 PD
+1256 4556 PD
+1435 4557 PD
+1613 4559 PD
+1792 4559 PD
+1970 4561 PD
+2149 4564 PD
+2327 4567 PD
+2506 4570 PD
+2684 4568 PD
+2863 4566 PD
+3041 4564 PD
+3220 4563 PD
+3398 4561 PD
+3577 4560 PD
+3755 4559 PD
+3934 4558 PD
+4112 4556 PD
+4291 4554 PD
+4469 4551 PD
+4648 4549 PD
+4826 4546 PD
+5005 4543 PD
+5183 4540 PD
+5362 4537 PD
+5540 4533 PD
+5719 4528 PD
+5897 4521 PD
+6076 4511 PD
+gr
+
+24 w
+gs 899 389 5356 4226 MR c np
+6 w
+gr
+
+6 w
+gs 1005 4497 3895 189 MR c np
+24 w
+1078 4585 PD
+1256 4584 PD
+1435 4582 PD
+1613 4580 PD
+1792 4577 PD
+1970 4575 PD
+2149 4573 PD
+2327 4572 PD
+2506 4570 PD
+2684 4573 PD
+2863 4577 PD
+3041 4580 PD
+3220 4583 PD
+3398 4586 PD
+3577 4588 PD
+3755 4590 PD
+3934 4592 PD
+4112 4595 PD
+4291 4598 PD
+4469 4602 PD
+4648 4607 PD
+4826 4612 PD
+gr
+
+24 w
+gs 899 389 5356 4226 MR c np
+6 w
+gr
+
+6 w
+gs 1005 4497 3895 189 MR c np
+24 w
+1078 4585 PD
+1256 4584 PD
+1435 4582 PD
+1613 4580 PD
+1792 4577 PD
+1970 4575 PD
+2149 4573 PD
+2327 4572 PD
+2506 4570 PD
+2684 4573 PD
+2863 4577 PD
+3041 4580 PD
+3220 4583 PD
+3398 4586 PD
+3577 4588 PD
+3755 4590 PD
+3934 4592 PD
+4112 4595 PD
+4291 4598 PD
+4469 4602 PD
+4648 4607 PD
+4826 4612 PD
+gr
+
+24 w
+gs 899 389 5356 4226 MR c np
+DD
+6 w
+5355 0 899 2200 2 MP stroke
+gr
+
+6 w
+DD
+3089 4983 mt 
+(point number) s
+%%IncludeResource: font Symbol
+/Symbol /ISOLatin1Encoding 216 FMSR
+
+ 478 2719 mt  -90 rotate
+(\302) s
+90 rotate
+%%IncludeResource: font Helvetica
+/Helvetica /ISOLatin1Encoding 216 FMSR
+
+ 478 2548 mt  -90 rotate
+(\() s
+90 rotate
+%%IncludeResource: font Symbol
+/Symbol /ISOLatin1Encoding 216 FMSR
+
+ 478 2477 mt  -90 rotate
+(l) s
+90 rotate
+%%IncludeResource: font Helvetica
+/Helvetica /ISOLatin1Encoding 216 FMSR
+
+ 478 2359 mt  -90 rotate
+(\)) s
+90 rotate
+SO
+
+end
+
+eplot
+%%EndObject
+
+epage
+end
+
+showpage
+
+%%Trailer
+%%EOF
