@@ -1,7 +1,8 @@
-function S=root_int(x,alpha,beta,h,interp_order,par)
-
-% function S=root_int(x,alpha,beta,h,interp_order,par)
+function S=root_int(funcs,x,alpha,beta,h,interp_order,par)
+%% first n rows of integration operator S(h) in R^(n x L)
+% function S=root_int(funcs,x,alpha,beta,h,interp_order,par)
 % INPUT:
+%   funcs problem functions
 %	x steady state solution in R^n
 %	alpha alpha-LMS parameters in R^k
 %	beta beta-LMS parameters in R^k
@@ -13,21 +14,24 @@ function S=root_int(x,alpha,beta,h,interp_order,par)
 %	S first n rows of integration operator S(h) in R^(n x L)
 
 % (c) DDE-BIFTOOL v. 2.00, 23/11/2001
+%
+% $Id$
+%
+%%
+sys_tau=funcs.sys_tau;
+sys_ntau=funcs.sys_ntau;
+sys_deri=funcs.sys_deri;
 
-tp_del=nargin('sys_tau');
-if tp_del==0
-  tau=par(sys_tau);
+if funcs.tp_del==0
+  tau=par(sys_tau());
   m=length(tau);
-  xx=x;
-  for j=1:m
-    xx=[xx x];
-  end;
+  xx=x(:,ones(m+1,1));
 else
-  m=sys_ntau;
+  m=sys_ntau();
   xx=x;
+  tau=NaN(1,m);
   for j=1:m
     tau(j)=sys_tau(j,xx,par);
-    xx=[xx x];
   end;
 end;
 
@@ -43,7 +47,7 @@ if abs(beta(k))>0
 else
   fac=eye(n)/alpha(k);
 end;
-
+S=zeros(n,n*(k-1));
 for j=1:k-1
   S(1:n,(j-1)*n+(1:n))=fac*(-alpha(k-j)*eye(n)+h*beta(k-j)*A);
 end;

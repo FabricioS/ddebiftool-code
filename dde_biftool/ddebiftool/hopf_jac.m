@@ -1,7 +1,8 @@
-function [J,res]=hopf_jac(x,omega,v,par,free_par,c)
-
-% function [J,res]=hopf_jac(x,omega,v,par,free_par,c)
+function [J,res]=hopf_jac(funcs,x,omega,v,par,free_par,c)
+%% Jacobian for Hopf problem
+% function [J,res]=hopf_jac(funcs,x,omega,v,par,free_par,c)
 % INPUT:
+%   funcs problem function
 %	x current Hopf solution guess in R^n
 %	omega current Hopf frequency guess in R
 %	v current eigenvector guess in C^n
@@ -13,31 +14,36 @@ function [J,res]=hopf_jac(x,omega,v,par,free_par,c)
 %	res residual in R^(3n+2+s x 1)
 
 % (c) DDE-BIFTOOL v. 2.00, 30/11/2001
-
+%
+% $Id$
+%
+%%
 n=length(x);
+sys_tau=funcs.sys_tau;
+sys_rhs=funcs.sys_rhs;
+sys_ntau=funcs.sys_ntau;
+sys_deri=funcs.sys_deri;
+sys_dtau=funcs.sys_dtau;
 
-tp_del=nargin('sys_tau');
+tp_del=funcs.tp_del;
 if tp_del==0
-  n_tau=sys_tau;
+  n_tau=sys_tau();
   tau=[0 par(n_tau)];
   m=length(n_tau);
-  xx=x;
-  for j=1:m
-    xx=[xx x];
-  end;
+  xx=x(:,ones(m+1,1));
 else
-  m=sys_ntau;
-  xx=x;
+  m=sys_ntau();
+  xx=x(:,ones(m+1,1));
+  t_tau=NaN(1,m);
   for j=1:m
     t_tau(j)=sys_tau(j,xx,par);
-    xx=[xx x];
-  end;
+  end
   tau=[0 t_tau];
 end;
 
 n_fp=length(free_par);
 
-l=i*omega;
+l=1i*omega;
 
 dD=eye(n);
 D=l*dD;
@@ -54,7 +60,7 @@ dDdxv=zeros(n);
 for j=0:m
   for k=0:m
     dDdxv=dDdxv-sys_deri(xx,par,[k j],[],v)*exp(-l*tau(k+1));
-    if tp_del~=0 & k>0 
+    if tp_del~=0 && k>0 
       dDdxv=dDdxv+l*sys_deri(xx,par,k,[],[])*exp(-l*tau(k+1))* ...
             (v*sys_dtau(k,xx,par,j,[]));
     end;
@@ -67,12 +73,12 @@ for k=1:n_fp
   for j=0:m
     dDdp=sys_deri(xx,par,j,free_par(k),[]);
     dDdpv(:,k)=dDdpv(:,k)-dDdp*v*exp(-l*tau(j+1));
-    if tp_del==0 & j>0
+    if tp_del==0 && j>0
       if n_tau(j)==free_par(k)
         dDdpv(:,k)=dDdpv(:,k) + ...
 		l*sys_deri(xx,par,j,[],[])*v*exp(-l*tau(j+1));
       end;
-    elseif tp_del~=0 & j>0 
+    elseif tp_del~=0 && j>0 
       d=sys_dtau(j,xx,par,[],free_par(k)); % d=d(tau(j))/d(free_par(k))
           dDdpv(:,k)=dDdpv(:,k) + ...
                 l*sys_deri(xx,par,j,[],[])*v*exp(-l*tau(j+1))*d;
@@ -108,4 +114,4 @@ J(3*n+2,2*n+1:3*n)=real(c);
 J(n+1:2*n,3*n+1)=-real(dD)*imag(v)-imag(dD)*real(v);
 J(2*n+1:3*n,3*n+1)=real(dD)*real(v)-imag(dD)*imag(v);
 
-return;
+end

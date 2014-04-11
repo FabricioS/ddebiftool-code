@@ -1,7 +1,8 @@
-function mu=mult_app(period,profile,mesh,degree,rho,max_number,col,par,d_ac)
-
-% function mu=mult_app(period,profile,mesh,degree,rho,max_number,col,par,d_ac)
+function [mu,eigenfuncs]=mult_app(funcs,period,profile,mesh,degree,rho,max_number,col,par,d_ac)
+%% find Floquet multipliers & modes of periodic orbit
+% function [mu,eigenfuncs]=mult_app(period,profile,mesh,degree,rho,max_number,col,par,d_ac)
 % INPUT: 
+%   funcs problem functions
 %	period period of solution
 %	profile periodic solution profile
 %       mesh periodic solution mesh (if empty, mesh is assumed uniform)
@@ -13,100 +14,96 @@ function mu=mult_app(period,profile,mesh,degree,rho,max_number,col,par,d_ac)
 %       d_ac (only for state-dependent delays) tau<d_ac is treated as 
 %             tau<0 (stability is not computed)
 % OUTPUT:
-%       mu approximations of dominant multipliers
+%       mu approximations of requested multipliers
+%       eigenfuncs (if requested) corresponding modes
 
-% (c) DDE-BIFTOOL v. 2.00, 30/11/2001
-
-% if mesh is empty assume equidistant mesh:
+%  (c) DDE-BIFTOOL v. 2.00, 30/11/2001
+%
+% $Id$
+%
+%%
+if nargin<10
+    d_ac=1e-8;
+end
+%% if mesh is empty assume equidistant mesh:
 if isempty(mesh)
   mesh=0:1/(size(profile,2)-1):1;
 end;
-
+%% obtain Jacobian
+[J,resdum,tT,extmesh]=psol_jac(funcs,col,period,profile,mesh,degree,par,...
+    [],false,'wrapJ',false); %#ok<ASGLU>
 m=degree;
-
-tp_del=nargin('sys_tau');
-if tp_del==0
-  tau=par(sys_tau);
-  d=length(tau);
+n=size(profile,1);
+delays=tT(2:end,:);
+if nargout>1
+    geteigenfuncs=true;
 else
-  d=sys_ntau;
-  tot_tau=[];
-end;
-
-if d>0
-  if tp_del==0 
-    tT=max(tau)/period;
-  else
-    % compute max(tau)
-    for t_m=1:length(mesh)
-      x=profile(:,t_m);
-      xx=x;
-      for j=1:d
-        tau=sys_tau(j,xx,par);
-        tot_tau=[tot_tau tau];
-        tau=tau/period;
-        t_tau=mesh(t_m)-tau;
-        while t_tau<0,
-          t_tau=t_tau+1;
-        end;
-        index_b=length(mesh)-m;
-        while (t_tau<mesh(index_b))
-          index_b=index_b-m;
-        end;
-        hhh_tau=mesh(index_b+m)-mesh(index_b);
-        t_tau_trans=(t_tau-mesh(index_b))/hhh_tau;
-        Pb=poly_elg(m,t_tau_trans);
-        x_tau=profile(:,index_b:index_b+m)*Pb';
-        xx=[xx x_tau];
-      end;
+    geteigenfuncs=false;
+end    
+if numel(delays)>0 && min(delays(:))<d_ac
+    % solve full eigenvalue problem
+    solvefull=true;
+else
+    solvefull=false;
+end
+if ~solvefull
+    %% DDE or ODE compute monodromy matrix
+    % was: M=monodromy_matrix(J,n,m,extmesh);
+    [s1,s2]=size(J);
+    n_ext=s2-s1;
+    M0=-J(:,n_ext+1:end)\J(:,1:n_ext);
+    if n_ext<=s1
+        M=M0(end-n_ext+1:end,:);
+    else
+        M=[zeros(n_ext-s1,s1),eye(n_ext-s1);M0];
+    end
+    if isempty(M)
+        mu=[];
+        return;
     end;
-    tT=max(tot_tau)/period;
-  end;
-
-  k=floor(tT); 
-
-  for l=length(mesh):-m:1
-    if mesh(l)<k+1-tT
-      break;
-    end;
-  end;
-
-  ext_mesh=mesh(l:length(mesh))-k-1;
-
-  for l=k:-1:0
-    ll=length(ext_mesh);
-    ext_mesh(ll:ll-1+length(mesh))=mesh-l;
-  end;
-
+    if ~geteigenfuncs
+        s=eig(M);
+    else
+        [ef,s]=eig(M);
+        s=diag(s);
+    end
 else
+    %% negative delays present or eigenvectors required
+    ll=length(extmesh);
+    n_ext=sum(extmesh<=0|extmesh>1)*n;
+    B=zeros(ll*n);
+    B(end-n_ext+1:end,1:n_ext)=eye(n_ext);
+    J=[J;...
+        zeros(n_ext,ll*n-n_ext),eye(n_ext)];
+    if ~geteigenfuncs
+        s=eig(J,B);
+    else
+        [ef,s]=eig(J,B);
+        s=diag(s);
+    end
+    sel=~isinf(s) & ~isnan(s);
+    s=s(sel);
+    if geteigenfuncs
+        ef=ef(:,sel);
+    end
+end
+[dummy,I]=sort(abs(s)); %#ok<ASGLU>
 
-  ext_mesh=mesh;
-
-end;
-
-if tp_del==0
-  M=mult_int(period,profile,mesh,m,ext_mesh,col,par);
-else
-  M=mult_int(period,profile,mesh,m,ext_mesh,col,par,d_ac);
-end;
-
-if isempty(M)
-  mu=[];
-  return;
-end;
-
-s=eig(M);
-
-[dummy,I]=sort(abs(s));
-
-mu=s(I(length(I):-1:max(1,length(I)-max_number+1)));
-
-for i=length(mu):-1:1
-  if abs(mu(i))>=rho
-    break;
-  end;
-end;
-
-mu=mu(1:i);
-
-return;
+mu=s(I(end:-1:1));
+mu=mu(1:min(max_number,length(mu)));
+sel=abs(mu)>=rho;
+mu=mu(sel);
+if geteigenfuncs
+    ef=ef(:,I(end:-1:1));
+    ef=ef(:,1:min(max_number,length(mu)));
+    ef=ef(:,sel);
+    if ~solvefull
+        n_ext=size(J,2)-size(J,1);
+        dim=size(profile,1);
+        ef1=-J(:,n_ext+1:end)\J(:,1:n_ext)*ef;
+        eigenfuncs=[ef(end-dim+1:end,:);ef1];
+    else
+        eigenfuncs=ef;
+    end
+end
+end

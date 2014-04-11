@@ -1,5 +1,5 @@
-function [t_new]=psol_msh(t,m,profile,l_t_new,m_new);
-
+function t_new=psol_msh(t,m,profile,l_t_new,m_new)
+%% create new mesh equidistributing the error
 % function [t_new]=psol_msh(t,m,profile,l_t_new,m_new);
 % INPUT:
 %	t representation points
@@ -11,24 +11,21 @@ function [t_new]=psol_msh(t,m,profile,l_t_new,m_new);
 %	t_new new, adapted mesh
 
 % (c) DDE-BIFTOOL v. 1.00, 11/03/2000
-
-n=size(profile,1);
+%
+% $Id$
+%
+%% check consistency of mesh t with degree m
 l=(length(t)-1)/m;
-
 if l~=floor(l),
-  err=[length(t) m]
-  error('PSOL_MSH: t does not contain l intervals of m points!');
-end;
-
-ti=t(1:m:length(t));
-dti=ti(2:length(ti))-ti(1:length(ti)-1);
-
-[ti_new]=auto_msh(n,profile,l,m,ti,dti,l_t_new);
-
-for i=1:l_t_new,
-  t_new(m_new*(i-1)+1:m_new*i)=ti_new(i)+(ti_new(i+1)-ti_new(i))*(0:m_new-1)/m_new;
-end;
-
-t_new(length(t_new)+1)=1;
-
-return;
+    error('PSOL_MSH: t does not contain l=%d intervals of m=%d points!',length(t),m);
+end
+%% re-distribute coarse mesh
+ti=t(1:m:end);
+ti_new=auto_msh(profile,ti,l_t_new);
+%% insert internal storage points of collocation polynomial
+t_new=NaN(1,m_new*l_t_new+1);
+for i=1:l_t_new
+    t_new(m_new*(i-1)+1:m_new*i)=ti_new(i)+(ti_new(i+1)-ti_new(i))*(0:m_new-1)/m_new;
+end
+t_new(end)=1;
+end

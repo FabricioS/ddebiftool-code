@@ -1,13 +1,9 @@
-function [TMNEW]=auto_msh(NDIM,UPS,NOLD,NCOLD,TMOLD,DTMOLD,NNEW)
-
-% function [tmnew]=auto_msh(ndim,ups,nold,ncold,tmold,dtmold,nnew)
+function tmnew=auto_msh(ups,tmold,nnew)
+%% create new mesh on [0,1] equidistributing the error
+% function tmnew=auto_msh(ups,tmold,dtmold,nnew)
 % INPUT:
-%	ndim system dimension
 %	ups solution profile
-%	nold old number of intervals
-%	ncold number of collocation parameters
 %	tmold old mesh
-%	dtmold delta's of old mesh
 %	nnew new number of mesh points
 % OUTPUT:
 %	tmnew new mesh
@@ -17,30 +13,49 @@ function [TMNEW]=auto_msh(NDIM,UPS,NOLD,NCOLD,TMOLD,DTMOLD,NNEW)
 %	boundary conditions
 
 % (c) DDE-BIFTOOL v. 1.00, 15/03/2000
+%
+% $Id$
+%
+%% put the values of the monotonely increasing error in eqf:
+dtmold=tmold(2:end)-tmold(1:end-1);
+eqf=auto_eqd(dtmold,ups);
 
-% put the values of the monotonely increasing function EQDF in EQF:
+%% uniformly divide the range of eqf:
+nnewp1=nnew+1;
+uneq=linspace(0,eqf(end),nnew+1);
+%% find how indices have to be shifted
+ial=order_indices(eqf,uneq);
 
-[EQF]=auto_eqd(NOLD,NDIM,NCOLD,DTMOLD,UPS);
-
-% uniformly divide the range of EQDF:
-
-NOLDP1=NOLD+1;
-NNEWP1=NNEW+1;
-DAL=EQF(NOLDP1)/NNEW;
-for J=1:NNEWP1,
-  UNEQ(J)=(J-1)*DAL;
-end;
-
-[IAL]=auto_ord(NOLDP1,EQF,NNEWP1,UNEQ);
-
-% generate the new mesh in TMNEW:
-
-for J1=1:NNEWP1,
-  J=IAL(J1);
-  X=(UNEQ(J1)-EQF(J))/(EQF(J+1)-EQF(J));
-  TMNEW(J1)=(1.d0-X)*TMOLD(J)+X*TMOLD(J+1);
-end;
-
-TMNEW(NNEWP1)=1;
-
-return;
+%% generate the new mesh in tmnew
+x=(uneq-eqf(ial))./(eqf(ial+1)-eqf(ial));
+tmnew=(1-x).*tmold(ial)+x.*tmold(ial+1);
+tmnew(nnewp1)=1;
+end
+%% find interval indices in mesh tm for points in tm1
+function itm1=order_indices(tm,tm1)
+% function itm1=order_indices(tm,tm1)
+% INPUT:
+%	tm ascending array 
+%	tm1 ascending array
+% OUTPUT:
+%	itm1 itm1(k) gives index of tm1(k) in tm-interval
+%
+%%
+n=length(tm);
+n1=length(tm1);
+itm1=NaN(1,n1);
+[tdum,itx]=sort([tm,tm1]); %#ok<ASGLU>
+jt=0;
+jx=1;
+for i=1:length(itx)
+    if itx(i)<=n
+        jt=jt+1;
+    else
+        itm1(jx)=jt;
+        jx=jx+1;
+    end
+end
+if tm(end)==tm1(end)
+    itm1(end)=itm1(end)-1;
+end
+end

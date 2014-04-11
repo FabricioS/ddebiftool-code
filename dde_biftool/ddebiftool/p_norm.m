@@ -1,5 +1,5 @@
 function n=p_norm(point)
-
+%% norm of point for distance measuring
 % function n=p_norm(point)
 % INPUT:
 %	point 
@@ -7,7 +7,10 @@ function n=p_norm(point)
 %	n norm of point
 
 % (c) DDE-BIFTOOL v. 2.00, 23/11/2001
-
+%
+% $Id$
+% 
+%%
 switch point.kind,
   case 'stst',
     n=sqrt(norm(point.parameter)^2+norm(point.x)^2);
@@ -27,9 +30,8 @@ switch point.kind,
       norm(point.lambda_v)^2+norm(point.lambda_w)^2+...
       norm(point.v)^2/size(point.v,2)+norm(point.alpha)^2);
   otherwise,
-    err=point.kind,
-    error('P_NORM: point is not recognized.');
+    err=point.kind;
+    error('P_NORM: point %s is not recognized.',err);
 end;
 
-return;
-
+end

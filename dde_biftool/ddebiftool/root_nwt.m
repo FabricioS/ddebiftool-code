@@ -1,7 +1,8 @@
-function [l1,n1]=root_nwt(x,l0,max_n,epsi,par)
-
-% function [l1,n]=root_nwt(x,l0,max_n,epsi,par)
+function [l1,n1]=root_nwt(funcs,x,l0,max_n,epsi,par)
+%% correct eigenvalues for equilibrium using Newton iteration
+% function [l1,n]=root_nwt(funcs,x,l0,max_n,epsi,par)
 % INPUT:
+%   funcs user-provided functions defining problem
 %	x steady state in RR^n
 %	l0 number of root guesses in C^L
 %	max_n maximum number of corrections
@@ -12,40 +13,39 @@ function [l1,n1]=root_nwt(x,l0,max_n,epsi,par)
 %	n1 number of corrections done (-1 if no convergence)
 
 % (c) DDE-BIFTOOL v. 2.00, 23/11/2001
+%
+% $Id$
+%
+%%
+sys_tau=funcs.sys_tau;
+sys_ntau=funcs.sys_ntau;
+sys_deri=funcs.sys_deri;
 
 n=length(x);
 
-tp_del=nargin('sys_tau');
-if tp_del==0
-  tau=[0 par(sys_tau)];
+if funcs.tp_del==0
+  tau=[0 par(sys_tau())];
   m=length(tau)-1;
-  xx=x;
-  for j=1:m,
-    xx=[xx x];  
-  end;
+  xx=x(:,ones(m+1,1));
 else
-  m=sys_ntau;
-  xx=x;
+  m=sys_ntau();
+  xx=x(:,ones(m+1,1));
+  t_tau=NaN(1,m);
   for j=1:m,
     t_tau(j)=sys_tau(j,xx,par);
-    xx=[xx x];
-  end;
+  end
   tau=[0 t_tau];
-end;
+end
 
-
+A=zeros(n,n,m+1);
 for j=0:m
   A(:,:,j+1)=sys_deri(xx,par,j,[],[]);
 end;
-
 n1=zeros(size(l0));
-
+l1=l0;
 for j=1:length(l0)
-
   corr=1+epsi;
-
   l=l0(j);
-
   D=l*eye(n);
   dD=eye(n);
 
@@ -57,7 +57,7 @@ for j=1:length(l0)
 
   [E1,E2]=eig(D);
 
-  [dummy,k]=min(abs(diag(E2)));
+  [dummy,k]=min(abs(diag(E2))); %#ok<ASGLU>
 
    v=E1(:,k);
 
@@ -107,7 +107,6 @@ for j=1:length(l0)
 
   l1(j)=l;
 
-end;
+end
 
-return;
-
+end

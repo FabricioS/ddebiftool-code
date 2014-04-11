@@ -1,324 +1,282 @@
-function [J,res]=psol_jac(c,T,psol_prof,t,m,par,free_par,ph)
-
-% function [J,res]=psol_jac(c,T,profile,t,deg,par,free_par,phase)
+function [J,res,tT,extmesh]=psol_jac(funcs,c,T,psol_prof,t,deg,par,free_par,ph,varargin)
+%% residual & Jacobian of collocation problem for periodic orbits
+% function [J,res,tT,extmesh]=psol_jac(c,T,profile,t,deg,par,free_par,phase,varargin)
 % INPUT:
-%	c collocation parameters in [0,1]^deg
-%	T period 
+%   funcs problem functions
+%	c collocation parameters in [0,1]^m
+%	T period
 %	profile profile in R^(n x deg*l+1)
 %	t representation points in [0,1]^(deg*l+1)
 %	deg degree piecewise polynomial
 %	par current parameter values in R^p
-%	free_par free parameters numbers in N^d 
+%	free_par free parameters numbers in N^np
 %	phase use phase condition or not (s = 1 or 0)
-% OUTPUT: 
-%	J jacobian in R^(n*deg*l+n+s x n*deg*l+1+n+d)
+%   wrapJ (optional key-value pair, default true) 
+%        wrap time points periodically into [0,1]
+% OUTPUT:
+%	J jacobian in R^(n*deg*l+n+s x n*deg*l+1+n+np)
 %	res residual in R^(n*deg*l+n+s)
+%   tT delays, scaled by period
+%   extmesh mesh of time points, extended back to -max(tT(:))
+%
+% modified to permit arbitrary nesting of state-dependent delays,
+% vectorisation and optional re-use for computation of Floquet multipliers
+% and extra conditions for state-dependent delay (p_tau, etc)
+%
+% Optional inputs:
+%
+% If 'wrapJ' (default true) the returned jacobian is augmented with
+% derivative wrt period and free_par and wrapped around periodically inside
+% [0,1] if ~wrapJ the returned jacobian puts its entries into the interval
+%  [-min(delay,0),max(1-[0,delays])], no augmentation is done. This
+%  Jacobian can be used for computation of Floquet multipliers and modes
+%
+% If 'c_is_tvals' (default false) then the values in c (must be not empty) are
+% taken as those values of time in [0,1] of the entire period, where
+% residual and Jacobian are calculated.
+%
+% The argument 'Dtmat' (default=Id) is multiplied with the time
+% derivative. Dtmat==zeros() permits algebraic equations.
+%
+% The argument 'bc' (default true) controls whether boundary conditions
+% should be attached.
 
 % (c) DDE-BIFTOOL v. 2.00, 30/11/2001
+%
+% $Id$
+%
+%% optional
+default={'wrapJ',true,'c_is_tvals',false,'bc',true,'Dtmat',eye(size(psol_prof,1))};
+options=dde_set_options(default,varargin,'pass_on');
+%% use functions from funcs
+sys_tau=funcs.sys_tau;
+sys_ntau=funcs.sys_ntau;
 
-n=size(psol_prof,1); % system dimension
+%% define problem & problem dimensions
+n=size(psol_prof,1);      % dimension of x
+nf=size(options.Dtmat,1); % dimension of f
+np=length(free_par);      % number of free parameters
+tp_del=funcs.tp_del;
+if tp_del==0         % constant delay
+    n_tau=sys_tau(); % delay numbers
+    tau=par(n_tau);  % delay values
+    tau=[0;tau(:)];  % incl tau=0
+    d=length(n_tau)+1; % number of delays
+    tau_dep=[];
+else                 % state dependent delay
+    if isfield(funcs,'ntau_is_matrix')
+        %% check if dependencies of tau(xx(:,k) are explicitly provided
+        tau_dep=sys_ntau();
+        d=size(tau_dep,1)+1;
+        tau_dep=[zeros(1,size(tau_dep,2));tau_dep];
+    else
+        %% assume tau(i) depends on xx(:,1:i)
+        d=sys_ntau()+1; % number of delays
+        tau_dep=false(d);
+        for i=1:d-1
+            tau_dep(i+1,1:i)=true;
+        end
+    end
+end
 
-tp_del=nargin('sys_tau');
-if tp_del==0
-  n_tau=sys_tau; % delay numbers
-  tau=par(n_tau); % delay values
-  tT=tau/T;
-  d=length(n_tau); % number of delays
+nint=(length(t)-1)/deg; % number of collocation intervals
+if ~options.c_is_tvals
+    neqs=deg*nint;          % number of equations from collocation points
 else
-  d=sys_ntau; % number of delays
-end;
-
-l=(length(t)-1)/m; % number of intervals
-
-% check:
-
-if l~=floor(l)
-  err=[length(t) m]
-  error('PSOL_JAC: t does not contain l intervals of m points!');
-end;
-
-if length(c)~=m & ~isempty(c)
-  err=[length(c) m]
-  error('PSOL_JAC: wrong number of collocation parameters!');
-end;
-
-% init J, res:
-
-mn=m*n;
-nml=mn*l;
-nml_n_1=nml+n+1;
-
-J=zeros(nml+ph+n,nml_n_1+length(free_par));
-res=zeros(nml+ph+n,1);
-
-if isempty(c)
-  c=poly_gau(m);
-  gauss_c=c;
-  non_gauss=0;
+    neqs=length(c); % only evaluate res,Jac at times c
+    ph=false;
+    options.bc=false;
+end
+%% check array sizes:
+if nint~=floor(nint)
+    error('PSOL_JAC: t (length%d) does not contain %d intervals of %d points!',...
+        length(t),nint,deg);
+end
+if ~options.c_is_tvals && length(c)~=deg && ~isempty(c)
+    error('PSOL_JAC: wrong number of collocation parameters length(c)=%d, m=%d!',...
+        length(c),deg);
+end
+tcoarse=t(1:deg:end); % boundaries of collocation intervals
+h_int=diff(tcoarse); % lengths of collocation intervals
+%% obtain collocation parameters and times
+if ~options.c_is_tvals
+    if isempty(c)
+        c=poly_gau(deg);
+        c=c(:)';
+    else
+        c=c(:)';
+    end
+    t_c=tcoarse(ones(length(c),1),1:end-1)+...
+        c(ones(length(h_int),1),:)'.*h_int(ones(length(c),1),:);
 else
-  gauss_c=poly_gau(m);
-  non_gauss=1;
-end;
-
-% phase condition initialisation:
-
-if ph
-  
-  gauss_abs=ones(1,m);
-  g=poly_gau(m-1);
-  for k=1:m
-    for j=1:m-1
-      gauss_abs(k)=gauss_abs(k)/(gauss_c(k)-g(j));
-    end;
-    for j=1:m
-      if j~=k
-        gauss_abs(k)=gauss_abs(k)/(gauss_c(k)-gauss_c(j));
-      end;
-    end;
-  end;
-  gauss_abs=gauss_abs/sum(gauss_abs);
-end;
-
-% more initialisation:
-
-for m_i=1:m
-  all_dPa(m_i,:)=poly_dla((0:m)/m,c(m_i));
-  all_Pa(m_i,:)=poly_lgr((0:m)/m,c(m_i));
-end;
-
-% for all collocation points, make equation:
-
-Pb=[];
-x_tau=[];
-
-for l_i=1:l
-
-  % determine index for a in profile:
-
-  index_a=(l_i-1)*m+1;
-
-  i_index_a=(index_a-1)*n;
-
-  t_start=t(index_a);
- 
-  hhh=t(index_a+m)-t_start;
-
-  for m_i=1:m
-
-    i=index_a+m_i-1;
-
-    i_range=(i-1)*n+1:i*n;
-
-    % determine c  
-
-    col=t_start+c(m_i)*hhh;
-
-    % determine dPa for a:
-
-    dPa=all_dPa(m_i,:)/hhh;
-
-    % add dPa for da in J:
-    
-    for k=0:m,
-      kk=i_index_a+k*n;
-      J(i_range,kk+1:kk+n)=J(i_range,kk+1:kk+n)+eye(n)*dPa(k+1);
-    end;
-
-    % add sum a*dPa to res:
-
-    u_prime=psol_prof(:,index_a:index_a+m)*dPa';
-
-    res(i_range,1)=u_prime; 
-
-    %  determine Pa for a:
-
-    Pa=all_Pa(m_i,:); 
-
-    % phase_condition:
-    
-    if ph & ~non_gauss
-      fup=gauss_abs(m_i)*hhh*u_prime';
-      i_l_i=(l_i-1)*mn;
-      for q=0:m
-        qq=i_l_i+q*n;
-        J(nml_n_1,qq+1:qq+n)=J(nml_n_1,qq+1:qq+n)+Pa(q+1)*fup;
-      end;
-    end;
-
-    % compute x:
-
-    x=psol_prof(:,index_a:index_a+m)*Pa';
-
-    % compute tau, c_tau, x_tau, dx_tau
-    xx=x;
-
-    for tau_i=1:d
-
-      if tp_del~=0
-        tT(tau_i)=sys_tau(tau_i,xx,par)/T;
-      end;
-
-      c_tau_i=col-tT(tau_i);
-      while c_tau_i<0, 
-        c_tau_i=c_tau_i+1; 
-      end; 
- 
-      c_tau(tau_i)=c_tau_i;      
-
-      % determine index for b in profile:
-
-      index_b_i=length(t)-m;
-      while (c_tau_i<t(index_b_i)) 
-        index_b_i=index_b_i-m; 
-      end;
-   
-      index_b(tau_i)=index_b_i;
-
-      % c transformed to [0,1] and hhh_tau
-     
-      hhh_tau(tau_i)=t(index_b_i+m)-t(index_b_i);
-      c_tau_trans(tau_i)=(c_tau_i-t(index_b_i))/hhh_tau(tau_i);
-
-      % determine Pb for b:
-
-      Pb(tau_i,:)=poly_elg(m,c_tau_trans(tau_i));
-
-      % compute x_tau:
-  
-      x_tau(:,tau_i)=psol_prof(:,index_b_i:index_b_i+m)*Pb(tau_i,:)';
-
-      dPb(tau_i,:)=poly_del(m,c_tau_trans(tau_i))/hhh_tau(tau_i);
-      dx_tau(:,tau_i)=psol_prof(:,index_b_i:index_b_i+m)*dPb(tau_i,:)';
-      xx=[x x_tau];
-
-    end;
-
-    % determine A0:
-  
-    T_A0=T*sys_deri(xx,par,0,[],[]);
-
-    % add -T*A0*Pa for da in J:
-
-    for k=0:m
-      kk=i_index_a+k*n; 
-      J(i_range,kk+1:kk+n)=J(i_range,kk+1:kk+n)-T_A0*Pa(k+1);  
-    end;
-
-    % determine parameter derivatives:
-
-    for p_i=1:length(free_par)
-      df=sys_deri(xx,par,[],free_par(p_i),[]);
-      J(i_range,nml_n_1+p_i)=-T*df; 
-    end;  
-
-    % compute f(x,x_tau):
-
-    f=sys_rhs(xx,par);
-
-    % add -f for dT in J:
-
-    J(i_range,nml_n_1)=J(i_range,nml_n_1)-f;
-
-    % add Tf in res:
-
-    res(i_range,1)=res(i_range,1)-T*f;
-
-    TPb=T*Pb;
-
+    t_c=c;
+end
+t_c=t_c(:)'; % evaluation points for DE residuals
+%% pre-allocate needed temporary arrays
+Pb=zeros(d,deg+1,neqs);  % Lagrange stamp, mapping delayed values onto profile
+dPb=zeros(d,deg+1,neqs); % Lagrange stamp, mapping delayed derivatives onto profile
+xx=zeros(n,d,neqs);  % array [x(t),x(t-tau1),...]
+dtx=zeros(n,d,neqs);  % array [x'(t),x'(t-tau1),...]
+c_tau=zeros(d,neqs); % time points t-tau(i-1) for current colloc point t
+c_tau_mod=zeros(d,neqs); % time points t-tau(i-1) for current colloc point t (mod[0,1])
+index_b=zeros(d,neqs); % starting indices of collocation intervals for t-tau(i-1)
+index_b_mod=zeros(d,neqs); % starting indices of collocation intervals for t-tau(i-1) (mod[0,1])
+hhh=zeros(d,neqs); % length of collocation interval in which t-tau(i-1) lies
+c_tau_trans=zeros(d,neqs); % position of t-tau(i) in colloc interval, rescaled to [0,1]
+if tp_del~=0
+    tT=NaN(d,neqs);
+    tT(1,:)=0;
+else
+    tT=tau(:)/T;
+    tT=repmat(tT,1,neqs);
+end
+%% for all collocation points find delays, delayed profiles and derivatives
+% (vectorization in l_i & m_i possible)
+for t_i=1:d
+    c_tau(t_i,:)=t_c-tT(t_i,:);
+    c_tau_mod(t_i,:)=mod(c_tau(t_i,:),1);
+    [xdum,ibase,c_tau_trans(t_i,:)]=psol_eva(t,t,c_tau_mod(t_i,:),deg); %#ok<ASGLU>
+    index_b_mod(t_i,:)=(ibase-1)*deg+1;
+    index_b(t_i,:)=index_b_mod(t_i,:)+round(c_tau(t_i,:)-c_tau_mod(t_i,:))*nint*deg;
+    hhh(t_i,:)=h_int(ibase);
+    Pb(t_i,:,:)=poly_elg(deg,c_tau_trans(t_i,:));
+    dPb(t_i,:,:)=reshape(poly_del(deg,c_tau_trans(t_i,:)),[deg+1,neqs])./...
+        hhh(t_i*ones(deg+1,1),:);
+    for k=1:neqs
+        xx(:,t_i,k)=psol_prof(:,index_b_mod(t_i,k)+(0:deg))*Pb(t_i,:,k)';
+        dtx(:,t_i,k)=psol_prof(:,index_b_mod(t_i,k)+(0:deg))*dPb(t_i,:,k)';
+        if tp_del~=0 && t_i<d
+            tT(t_i+1,k)=sys_tau(t_i,xx(:,1:t_i,k),par)/T;
+        end
+    end
+end
+%% determine index ranges for wrapped or unwrapped Jacobian
+if ~options.wrapJ % compute Jde_dx only for Floquet multipliers
+    indmin=min(index_b(:));
+    indshift=1-indmin;
+    indmax=max(index_b(:))+deg;
+    doJcomb=false;
+    % set up extended mesh
+    indrg=indmin:indmax;
+    t_ind=mod(indrg-1,nint*deg)+1;
+    t_shift=floor((indrg-1)/(nint*deg));
+    extmesh=t(t_ind)+t_shift;
+    index_b=index_b+indshift;
+else % compute augmented jacobian
+    indshift=0;
+    indmax=deg*nint+1;
+    index_b=index_b_mod;
+    doJcomb=true;
+    extmesh=t;
+end
+%% init J, res:
+resde=zeros(nf,neqs);
+Jde_dx=zeros(nf,neqs,n,indshift+indmax);
+if doJcomb
+    Jde_dT=zeros(nf,neqs);
+    Jde_dp=zeros(nf,neqs,np);
+    if options.bc
+        Jbc_dx=zeros(n,n,neqs+1);
+        Jbc_dp=zeros(n,np);
+        Jbc_dT=zeros(n,1);
+    end
+end
+%% obtain all values of sys_rhs, sys_deriv and sys_dxtau
+vals=psol_sysvals(funcs,xx,par,free_par,tp_del,tau_dep,'fdim',nf);
+%%
+for i=1:neqs
+    %% precompute all Jacobians for delayed values after delayed values are known
+    if tp_del~=0
+        dxxdx=zeros([n,n,d,d]); %% dxx(:,k)/dx (sdddes)
+        dxxdp=zeros([n,np,d]); %% dxx(:,k)/dp (sdddes)
+        dxxdT=zeros([n,d]); %% dxx(:,k)/dT (sdddes)
+        dxxdx(:,:,1,1)=eye(n);
+        for t_i=2:d
+            sel=find(tau_dep(t_i,:));
+            dxxdx(:,:,t_i,t_i)=eye(n);
+            prefac=dtx(:,t_i,i)/T;
+            dxxdp(:,:,t_i)=-prefac*vals.dtau_dp(t_i,:,i);
+            dxxdT(:,t_i)=prefac*tT(t_i,i);
+            for t_k=sel
+                fac=prefac*vals.dtau_dx(:,t_k,t_i,i)';
+                dxxdxk=reshape(fac*reshape(dxxdx(:,:,:,t_k),[n,n*d]),[n,n,d]);
+                dxxdx(:,:,:,t_i)=dxxdx(:,:,:,t_i)-dxxdxk;
+                dxxdp(:,:,t_i)=dxxdp(:,:,t_i)-fac*dxxdp(:,:,t_k);
+                dxxdT(:,t_i)=dxxdT(:,t_i)-fac*dxxdT(:,t_k);
+            end
+        end
+    end
+    %% insert all derivatives into large Jacobians
+    %% add dtx for x' in Jx and res:
+    resde(:,i)=options.Dtmat*dtx(:,1,i);
+    Jde_dx(:,i,:,index_b(1,i)+(0:deg))=Jde_dx(:,i,:,index_b(1,i)+(0:deg))...
+        +reshape(kron(dPb(1,:,i),options.Dtmat),[nf,1,n,deg+1]);
+    if doJcomb
+        %% add parameter in Jde_dp:
+        for p_i=1:np
+            Jde_dp(:,i,p_i)=Jde_dp(:,i,p_i)-T*vals.dfdp(:,p_i,i);
+        end
+        %% add -f for dT in J:
+        Jde_dT(:,i)=Jde_dT(:,i)-vals.f(:,i);
+    end
+    %% add Tf in res:
+    resde(:,i)=resde(:,i)-T*vals.f(:,i);
+    %% delayed values (incl tau=0): insert Jacobians into J
     for t_i=1:d
-
-      % determine A1:
-
-      A1=sys_deri(xx,par,t_i,[],[]);
-
-      % add -T*A1*Pb for db and A1*dx_tau*dtau*Pa for da in J:
-
-      i_index_b=(index_b(t_i)-1)*n;
-      for k=0:m
-        kk=i_index_b+n*k;
-        J(i_range,kk+1:kk+n)=J(i_range,kk+1:kk+n)-A1*TPb(t_i,k+1);  
-      end;
-
-      % add -T*A1*sum b*dP*dc_tau for dT in J:
-
-      J(i_range,nml_n_1)=J(i_range,nml_n_1)-A1*dx_tau(:,t_i)*tT(t_i);
-
-      if tp_del~=0
-        dtau=sys_dtau(t_i,xx,par,0,[]);
-        % add A1*dx_tau*dtau*Pa for da in J 
-        for k=0:m
-          kk=i_index_a+k*n;
-          J(i_range,kk+1:kk+n)=J(i_range,kk+1:kk+n) ...
-                               +A1*(dx_tau(:,t_i)*dtau)*Pa(k+1);
-        end;
-
-        % delay function depends on delayed terms
-        % (e.g. tau_2(...)=g(x(t),x(t-tau_1)), tau_1 - constant )
-
-        for t_ii=1:t_i-1
-          dtau=sys_dtau(t_i,xx,par,t_ii,[]);
-          A1_dx_dtau=A1*(dx_tau(:,t_i)*dtau);
-          i_index_b=(index_b(t_ii)-1)*n;
-        % add A1*dx_tau*dtau*Pb for db in J
-          for k=0:m
-            kk=i_index_b+n*k;
-            J(i_range,kk+1:kk+n)=J(i_range,kk+1:kk+n)+A1_dx_dtau*Pb(t_ii,k+1);
-          end;
-        % for dT in J
-            J(i_range,nml_n_1)=J(i_range,nml_n_1) ...
-                              +A1_dx_dtau*dx_tau(:,t_ii)*tT(t_ii)/T;
-        % tau_1 - continuation parameter
-           if norm(dtau)~=0 
-             for p_i=1:length(free_par)
-               dtau_fp=sys_dtau(t_ii,xx,par,[],free_par(p_i));
-               if dtau_fp~=0 
-                 J(i_range,nml_n_1+p_i)=J(i_range,nml_n_1+p_i) ...
-                                -A1_dx_dtau*(dx_tau(:,t_ii))/T; 
-               end;
-             end;
-           end;
-        end;
-      end;
-
-      for p_i=1:length(free_par)
-        if tp_del==0 & free_par(p_i)==n_tau(t_i)  
-          J(i_range,nml_n_1+p_i)=J(i_range,nml_n_1+p_i)+A1*dx_tau(:,t_i);
-        elseif tp_del~=0
-          dtau=sys_dtau(t_i,xx,par,[],free_par(p_i));
-          J(i_range,nml_n_1+p_i)=J(i_range,nml_n_1+p_i) ...
-              +A1*(dx_tau(:,t_i)*dtau);
-        end;
-      end;
-    end;
-  end;
-end;
-
-% periodicity condition:
-
-J(nml+1:nml+n,1:n)=eye(n);
-J(nml+1:nml+n,nml+1:nml+n)=-eye(n);
-res(nml+1:nml+n,1)=psol_prof(:,1)-psol_prof(:,size(psol_prof,2));
-
-% phase condition:
-
-if ph & non_gauss,
-  for l_i=1:l
-    index_a=(l_i-1)*m+1;
-    for k=1:m
-      fac=gauss_abs(k)*(t((l_i-1)*m+1)-t(l_i*m+1));
-      dPa=poly_dla(t(index_a:index_a+m),gauss_c(k));
-      Pa=poly_lgr(t(index_a:index_a+m),gauss_c(k));
-      u_prime=psol_prof(:,index_a:index_a+m)*dPa';
-      for q=1:m+1
-        J(nml_n_1,(l_i-1)*mn+1+(q-1)*n:(l_i-1)*mn+q*n)= ...
-	  J(nml_n_1,(l_i-1)*mn+1+(q-1)*n:(l_i-1)*mn+q*n) + fac*Pa(q)*u_prime';
-      end;
-    end;
-  end;
-end;
-
-if ph
-  res(nml_n_1,1)=0;
-end;
-
-return;
+        if tp_del==0
+            %% add -T*Pb*dfdx(:,t_i)
+            Jde_dx(:,i,:,index_b(t_i,i)+(0:deg))=...
+                Jde_dx(:,i,:,index_b(t_i,i)+(0:deg))-...
+                reshape(kron(Pb(t_i,:,i),T*vals.dfdx(:,:,t_i,i)),[nf,1,n,deg+1]);
+            if doJcomb
+                %% add -T*A1*sum b*dP*dc_tau for dT in J:
+                Jde_dT(:,i)=Jde_dT(:,i)-vals.dfdx(:,:,t_i,i)*dtx(:,t_i,i)*tT(t_i,i);
+            end
+        else
+            for t_k=1:t_i
+                dfdxxik=T*vals.dfdx(:,:,t_i,i)*dxxdx(:,:,t_k,t_i);
+                Jde_dx(:,i,:,index_b(t_k,i)+(0:deg))=...
+                    Jde_dx(:,i,:,index_b(t_k,i)+(0:deg))-...
+                    reshape(kron(Pb(t_k,:,i),dfdxxik),[nf,1,n,deg+1]);
+            end
+            if doJcomb
+                Jde_dp(:,i,:)=Jde_dp(:,i,:)-reshape(T*vals.dfdx(:,:,t_i,i)*dxxdp(:,:,t_i),[nf,1,np]);
+                Jde_dT(:,i)=Jde_dT(:,i)-T*vals.dfdx(:,:,t_i,i)*dxxdT(:,t_i);
+            end
+        end
+        %% parameter derivative if delay is free par and ~sd-dde
+        if tp_del==0 && doJcomb && t_i>1
+            p_i=find(free_par==n_tau(t_i-1),1,'first');
+            if ~isempty(p_i)
+                Jde_dp(:,i,p_i)=Jde_dp(:,i,p_i)+vals.dfdx(:,:,t_i,i)*dtx(:,t_i,i);
+            end
+        end
+    end
+end
+%% assemble overall residual & Jacobian
+Jde_dx=reshape(Jde_dx,[nf*neqs,n*(indshift+indmax)]);
+res=resde(:);
+J=Jde_dx;
+if ~doJcomb
+    return
+end
+J=[J,Jde_dT(:),reshape(Jde_dp,[nf*neqs,np])];
+%% periodicity condition:
+if options.bc
+    Jbc_dx(:,:,1)=eye(n);
+    Jbc_dx(:,:,end)=-eye(n);
+    resbc=psol_prof(:,1)-psol_prof(:,size(psol_prof,2));
+    res=[res;resbc(:)];
+    J=[J;reshape(Jbc_dx,[n,n*(neqs+1)]),Jbc_dT,Jbc_dp];
+end
+%% phase condition:
+if ph 
+    point=struct('kind','psol','parameter',par,'mesh',t,'degree',deg,...
+        'profile',psol_prof,'period',T);
+    p0=p_axpy(0,point,[]);
+    [resph,p_Jph_dx]=p_dot(p0,point,'derivatives',[0,1]);
+    Jph_dx=p_Jph_dx.profile(:)';
+    res=[res;resph];
+    J=[J; Jph_dx(:)',0,zeros(1,np)];
+end
+end

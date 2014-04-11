@@ -1,7 +1,8 @@
-function [psol,stpcond]=p_topsol(point,ampl,col_degree,nr_int)
-
-% function [psol_point,stpcond]=p_topsol(point,ampl,col_degree,nr_int)
+function [psol,stpcond]=p_topsol(funcs,point,ampl,col_degree,nr_int)
+%% create starting guess for periodic solution derived from point
+% function [psol_point,stpcond]=p_topsol(funcs,point,ampl,col_degree,nr_int)
 % INPUT:
+%   funcs problem functions
 %	point (with stability information if not hcli)
 %	ampl amplitude of periodic solution guess
 %       % from Hopf:
@@ -16,7 +17,9 @@ function [psol,stpcond]=p_topsol(point,ampl,col_degree,nr_int)
 %	stpcond steplength condition for use in correction of guess
 
 % (c) DDE-BIFTOOL v. 2.02, 30/06/2002
-
+%
+% $Id$
+%
 psol.kind='psol';
 psol.parameter=point.parameter;
 stpcond.kind='psol';
@@ -43,34 +46,30 @@ switch point.kind,
     stpcond.period=0;
   case 'psol',
     % remove trivial multiplier
-    [i1,i2]=min(abs(point.stability.mu-1));
+    [i1,i2]=min(abs(point.stability.mu-1)); %#ok<ASGLU>
     point.stability.mu(i2) = 0;
     % find near-bifurcation multiplier
-    [i1,i2]=min(abs(abs(point.stability.mu)-1));
-    if real(point.stability.mu(i2))<0 & abs(point.stability.mu(i2)+1)<0.3
-      [eig_mesh,eig_v]=mult_dbl(point.period,point.profile, ...
-          point.mesh,point.degree,col_degree,point.parameter);
-      psol.mesh=eig_mesh;
-      psol.degree=point.degree;
-      psol.profile=point.profile;
-      ll=size(psol.profile,2);
-      psol.profile(:,ll+1:2*ll-1)=point.profile(:,2:ll);
-      psol.profile=psol.profile+ampl*eig_v;
-      psol.period=2*point.period;
-    elseif real(point.stability.mu(i2))>0 & abs(point.stability.mu(i2)-1)<0.3
-      [eig_mesh,eig_v]=mult_one(point.period,point.profile, ...
-          point.mesh,point.degree,col_degree,point.parameter);
-      psol.mesh=eig_mesh;
-      psol.degree=point.degree;
-      psol.profile=point.profile+ampl*eig_v;
-      psol.period=point.period;
+    [i1,i2]=min(abs(abs(point.stability.mu)-1)); %#ok<ASGLU>
+    stab_mth=getfield(df_mthod(funcs,'psol'),'stability'); %#ok<GFLD>
+    stab_mth.collocation_parameters=col_degree;
+    psol=point;
+    nremove=1;
+    if real(point.stability.mu(i2))<0 && abs(point.stability.mu(i2)+1)<0.3
+      [eig_val,eig_vec]=mult_crit(funcs,point,stab_mth,nremove,-1); %#ok<ASGLU>
+      eig_vec=[eig_vec,-eig_vec(:,2:end)];
+      psol.mesh=[psol.mesh/2,psol.mesh(2:end)/2+0.5];
+      psol.profile=[psol.profile,psol.profile(:,2:end)];
+      psol.profile=psol.profile+ampl*eig_vec;
+      psol.period=2*psol.period;
+    elseif real(point.stability.mu(i2))>0 && abs(point.stability.mu(i2)-1)<0.3
+      [eig_val,eig_vec]=mult_crit(funcs,point,stab_mth,nremove,+1); %#ok<ASGLU>
+      psol.profile=point.profile+ampl*eig_vec;
     else
       error('P_TOPSOL: periodic solution is not close enough to bifurcation.');
-      return;
     end;
-    stpcond.mesh=eig_mesh;
+    stpcond.mesh=psol.mesh;
     stpcond.degree=point.degree;
-    stpcond.profile=eig_v;
+    stpcond.profile=eig_vec;
     stpcond.period=0;
   case 'hcli',
     psol.mesh=point.mesh;
@@ -86,8 +85,8 @@ switch point.kind,
   case 'fold',
     error('P_TOPSOL: fold to psol not supported, convert to hopf first.');
   otherwise,
-    err=point.kind
-    error('P_TOPSOL: point kind not recognized.');
+    err=point.kind;
+    error('P_TOPSOL:kind','point kind %s not recognized.',err);
 end;
 
 return;

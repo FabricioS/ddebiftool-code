@@ -1,5 +1,5 @@
 function secant=p_secant(secant,norm_point)
-
+%% compute normalized secant
 % function n_secant=p_secant(secant,norm_point)
 % INPUT: 
 %	secant unnormalized secant
@@ -8,10 +8,13 @@ function secant=p_secant(secant,norm_point)
 %	n_secant normalized secant
 
 % (c) DDE-BIFTOOL v. 2.00, 21/10/2001 
-
+%
+% $Id$
+%
+%%
 secant=p_axpy(norm_point/p_norm(secant),secant,[]);
 
-if secant.kind=='psol' | secant.kind=='hcli'
+if strcmp(secant.kind,'psol') || strcmp(secant.kind,'hcli')
   m=secant.degree;
   ll=(size(secant.profile,2)-1)/m;
   if isempty(secant.mesh)

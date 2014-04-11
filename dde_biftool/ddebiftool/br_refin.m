@@ -1,7 +1,8 @@
-function branch=br_refin(branch,x_m,y_m,axs)
-
-% function refined_branch=br_refin(branch,x_measure,y_measure,axs)
+function branch=br_refin(funcs,branch,x_m,y_m,axs)
+%% add points to branch by clicking left mouse button,quit with middle or right mouse button
+% function refined_branch=br_refin(funcs,branch,x_measure,y_measure,axs)
 % INPUT:
+%   funcs problem functions
 %	branch branch of points
 %	x_measure scalar measure for x-coordinate
 %	y_measure scalar measure for y-coordinate
@@ -13,14 +14,17 @@ function branch=br_refin(branch,x_m,y_m,axs)
 %       quit with middle or right mouse button
 
 % (c) DDE-BIFTOOL v. 1.02, 21/09/2001
-
+%
+% $Id$
+%
+%%
 free_par=branch.parameter.free;
 
 ll=length(branch.point);
 
 if ll<=1
-  err=ll
-  error('BR_REFIN: branch is incomplete.');
+  err=ll;
+  error('BR_REFIN: branch is incomplete, has only %d points.',err);
 end;
 
 stability=0;
@@ -29,7 +33,7 @@ replot=0;
 if ~isempty(x_m)
   [ffx,llx]=br_measr(branch,x_m);
   if length(x_m.field)==9
-    if x_m.field=='stability'
+    if strcmp(x_m.field,'stability')
       stability=1;
     end;
   end;
@@ -41,7 +45,7 @@ end;
 if ~isempty(y_m)
   [ffy,lly]=br_measr(branch,y_m);
   if length(y_m.field)==9 
-    if y_m.field=='stability'
+    if strcmp(y_m.field,'stability')
       stability=1;
     end;
   end;
@@ -56,17 +60,17 @@ subplot(2,1,1);
 br_plot(branch,x_m,y_m,'b');
 hold on;
 for i=1:ll
-  if llx(i) & lly(i)
+  if llx(i) && lly(i)
     plot(ffx(i,1:llx(i)),ffy(i,1:lly(i)),'b.');
   end;
 end;
-if exist('axs')
+if exist('axs','var')
   axis(axs);
 end;
 ax1=axis;
 subplot(2,1,2);
 br_plot(branch,x_m,y_m,'b');
-if exist('axs')
+if exist('axs','var')
   axis(axs);
 end;
 ax2=axis;
@@ -75,14 +79,14 @@ ax2=axis;
 
 found=0;
 
-while (button~=3 & button~=2)
+while (button~=3 && button~=2)
   if button==1
     i=1;
     while i<ll
       if size(ffx,2)==1
-        if (x<=ffx(i) & x>=ffx(i+1)) | (x<=ffx(i+1) & x>=ffx(i))
+        if (x<=ffx(i) && x>=ffx(i+1)) || (x<=ffx(i+1) && x>=ffx(i))
           if size(ffy,2)==1
-            if (y<=ffy(i) & y>=ffy(i+1)) | (y<=ffy(i+1) & y>=ffy(i))
+            if (y<=ffy(i) && y>=ffy(i+1)) || (y<=ffy(i+1) && y>=ffy(i))
               found=1;
             end;
           else
@@ -90,7 +94,7 @@ while (button~=3 & button~=2)
           end;
         end;
       elseif size(ffy,2)==1
-        if (y<=ffy(i) & y>=ffy(i+1)) | (y<=ffy(i+1) & y>=ffy(i))
+        if (y<=ffy(i) && y>=ffy(i+1)) || (y<=ffy(i+1) && y>=ffy(i))
           found=1;
         end;
       end;
@@ -98,24 +102,24 @@ while (button~=3 & button~=2)
         new_success=0;
         if stability 
           if isempty(branch.point(i).stability)
-            branch.point(i).stability=p_stabil(branch.point(i),branch.method.stability);
+            branch.point(i).stability=p_stabil(funcs,branch.point(i),branch.method.stability);
             new_point=branch.point(i);
-            new_success=1
+            new_success=1;
           elseif isempty(branch.point(i+1).stability)
-            branch.point(i+1).stability=p_stabil(branch.point(i+1),branch.method.stability);
+            branch.point(i+1).stability=p_stabil(funcs,branch.point(i+1),branch.method.stability);
             new_point=branch.point(i+1); 
             new_success=1;
-	  end;
+          end;
         end;
         if ~new_success
           new_point=p_axpy(1.0,branch.point(i),branch.point(i+1));
           new_point=p_axpy(0.5,new_point,[]);
           step_cnd=p_axpy(-1,branch.point(i),branch.point(i+1));
-          [new_point,new_success]=p_correc(new_point,free_par, ...
+          [new_point,new_success]=p_correc(funcs,new_point,free_par, ...
 						step_cnd,branch.method.point,i+1);
           if new_success
             if stability
-              new_point.stability=p_stabil(new_point,branch.method.stability);
+              new_point.stability=p_stabil(funcs,new_point,branch.method.stability);
             else
               if isfield(branch.point(i+1),'stability');
                 new_point.stability=[];
@@ -157,7 +161,7 @@ while (button~=3 & button~=2)
             br_plot(branch,x_m,y_m,'b');
             br_plot(branch,x_m,y_m,'b.');
           else
-            if lx>1 & ly>1
+            if lx>1 && ly>1
               lx=min(lx,ly);
               ly=min(lx,ly);
             end; 
@@ -195,7 +199,7 @@ while (button~=3 & button~=2)
 %    end;
   end;
   [x,y,button]=ginput(1);
-  if (button==3 | button==2)
+  if (button==3 || button==2)
     subplot(2,1,1);
     ax=axis;
     if sum(ax~=ax1) 
