@@ -83,10 +83,21 @@
 @MANUAL { Doed99,
 	AUTHOR = "E. J. Doedel and A. R. Champneys and T. F. Fairgrieve and
 	          Y. A. Kuznetsov and B. Sandstede and X. Wang",
-	NOTE = "{AUTO97}: Continuation and bifurcation software for ordinary
+	TITLE = "{AUTO97}: Continuation and bifurcation software for ordinary
 	        differential equations; available by {FTP} from {ftp.cs.concordia.ca}
 	        in directory {pub/doedel/auto}."
 	}
+@INCOLLECTION{Doed07,
+  author = {Doedel, E J},
+  title = {{Lecture notes on numerical analysis of nonlinear equations}},
+  booktitle = {Numerical Continuation Methods for Dynamical Systems: Path following
+	and boundary value problems},
+  publisher = {Springer-{V}erlag},
+  year = {2007},
+  editor = {Krauskopf, B and Osinga, H M and Gal\'{a}n-Vioque, J},
+  pages = {1--49},
+  address = {Dordrecht}
+}
 
 @BOOK { Driv77,
 	AUTHOR = "R. D. Driver",
@@ -235,16 +246,18 @@
 	VOLUME = 463
 	}
 
-@BOOK { Kuzn95,
-	AUTHOR = "Yu. A. Kuznetsov",
-	TITLE = "Elements of Applied Bifurcation Theory",
-	PUBLISHER = "Springer-Verlag",
-	YEAR = 1995,
-	SERIES = "Applied Mathematical Sciences",
-	VOLUME = 112,
-	LOCATION = "TCPW 51/W7-195"
-	}
-
+@BOOK{Kuzn04,
+  title = {{Elements of Applied Bifurcation Theory}},
+  publisher = {Springer-Verlag},
+  year = {2004},
+  author = {Kuznetsov, Y. A},
+  volume = {112},
+  pages = {xxii+631},
+  series = {Applied Mathematical Sciences},
+  address = {New York},
+  edition = {Third},
+  isbn = {0-387-21906-4}
+}
 @MANUAL { Kuzn97,
 	AUTHOR = "Yu. A. Kuznetsov and V. V. Levitin",
 	TITLE = "{CONTENT}: A multiplatform environment for analyzing dynamical
@@ -265,8 +278,8 @@
 
 @UNPUBLISHED { Mat00,
 	AUTHOR = "The MathWorks Inc.",
-	TITLE = "{MATLAB} 6.0",
-	YEAR = 2001
+	TITLE = "{MATLAB}",
+        NOTE=" Natick, Massachusetts, United States"
 	}
 
 @TECHREPORT { Paul95,
@@ -374,4 +387,118 @@ NOTE = "Accepted.",
   NUMBER = {305},
   INSTITUTION = {Department of Computer Science, K.U.Leuven},
   ADDRESS = {Leuven, Belgium},
+}
+@Article{VLR08,
+  author = 	 {K. Verheyden and T. Luzyanina and D. Roose},
+  title = 	 {Efficient computation of characteristic roots of delay differential equations using LMS methods,
+},
+  journal = 	 {Journal of Computational and Applied Mathematics},
+  year = 	 2008,
+  volume = 	 214,
+  pages = 	 {209-226}}
+@TECHREPORT{ELS01,
+  author = {Engelborghs, K and Luzyanina, T and Samaey, G},
+  title = {{{DDE-BIFTOOL} v.2.00{\rm:} a {Matlab} package for bifurcation analysis
+	of delay differential equations}},
+  institution = {Katholieke Universiteit Leuven},
+  year = {2001},
+  type = {Report TW},
+  number = {330}
+}
+
+@ARTICLE{DGK03,
+  author = {Dhooge, A and Govaerts, W and Kuznetsov, Y A},
+  title = {{{MatCont}{\rm:} A {Matlab} package for numerical bifurcation analysis
+	of {ODEs}}},
+  journal = {ACM Transactions on Mathematical Software},
+  year = {2003},
+  volume = {29},
+  pages = {141--164},
+  number = {2}
+}
+
+@book{G00,
+  title={Numerical Methods for Bifurcations of Dynamical Equilibria},
+  author={Govaerts, W.J.F.},
+  series={Miscellaneous Titles in Applied Mathematics Series},
+  year={2000},
+  publisher={SIAM}
+}
+@Book{DS13,
+  author = 	 {H. Dankowicz and F. Schilder},
+  title = 	 {Recipes for Continuation},
+  publisher = 	 {SIAM},
+  year = 	 2013,
+  series = 	 {Computer Science and Engineering}}
+
+@ARTICLE{Gugl07,
+AUTHOR = {Guglielmi, N.  and Hairer, E.},
+TITLE   = {Stiff delay equations},
+YEAR	= 2007,
+JOURNAL	= {Scholarpedia},
+VOLUME  = 2,
+NUMBER  = 11,
+PAGES   = 2850
+}
+@INCOLLECTION{HKWW06,
+  author = {F. Hartung and T. Krisztin and H.-O. Walther and J. Wu},
+  title = {Functional differential equations with state-dependent delays{\rm:}
+	Theory and applications},
+  booktitle = { Handbook of Differential Equations{\rm:} Ordinary Differential Equations},
+  publisher = {North-Holland},
+  year = {2006},
+  editor = {P.~Dr{\'a}bek and A.~Ca{\~n}ada and A.~Fonda},
+  volume = {3},
+  chapter = {5},
+  pages = {435-545}
+}
+@article{MN11,
+title = "Stability of periodic solutions of state-dependent delay-differential equations ",
+journal = "Journal of Differential Equations ",
+volume = "250",
+number = "11",
+pages = "4085 - 4103",
+year = "2011",
+author = "J. Mallet-Paret and R. D. Nussbaum"}
+
+@Article{S12,
+  author = 	 {J. Sieber},
+  title = 	 {Finding periodic orbits in state-dependent delay differential equations as roots of algebraic equations},
+  journal = 	 {Discrete and Continuous Dynamical Systems A},
+  year = 	 2012,
+  volume = 	 32,
+  number =       8,
+  pages = 	 {2607-2651}}
+
+@ARTICLE{Barton06,
+  author = {D.A.W. Barton and B. Krauskopf and R.E. Wilson},
+  title = {{Collocation schemes for periodic solutions of neutral delay differential
+	equations}},
+  journal = {Journal of Difference Equations and Applications},
+  year = {2006},
+  volume = {12},
+  pages = {1087--1101},
+  number = {11}
+}
+@INCOLLECTION{RS07,
+  author = {D. Roose and R. Szalai},
+  title = {{Continuation and bifurcation analysis of delay differential equations}},
+  booktitle = {Numerical Continuation Methods for Dynamical Systems{\rm:} Path following
+	and boundary value problems},
+  publisher = {Springer-{V}erlag},
+  year = {2007},
+  editor = {Krauskopf, B and Osinga, H M and Gal\'{a}n-Vioque, J},
+  pages = {51--75},
+  address = {Dordrecht}
+}
+
+@ARTICLE{SSH06,
+  author = {Szalai, R. and St\'{e}p\'{a}n, G. and Hogan, S.J.},
+  title = {{Continuation of bifurcations in periodic delay differential equations
+	using characteristic matrices}},
+  journal = {SIAM Journal on Scientific Computing},
+  year = {2006},
+  volume = {28},
+  pages = {1301--1317},
+  number = {4}
 }
