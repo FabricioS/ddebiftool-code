@@ -1,7 +1,8 @@
-function [branch,succ,fail]=br_recmp(branch,point_numbers)
-
-% function [recmp_branch,succ,fail]=br_recmp(branch,point_numbers)
+function [branch,succ,fail]=br_recmp(funcs,branch,point_numbers)
+%% recompute branch partially at selected points
+% function [recmp_branch,succ,fail]=br_recmp(funcs,branch,point_numbers)
 % INPUT:
+%   funcs problem functions
 %	branch 
 %	point_numbers numbers of points to recompute or [] for all
 % OUTPUT:
@@ -10,17 +11,19 @@ function [branch,succ,fail]=br_recmp(branch,point_numbers)
 %	fail number of failed corrections
 
 % (c) DDE-BIFTOOL v. 2.00, 23/12/2000
-
+%
+% $Id$
+%
+%%
 free_par=branch.parameter.free;
 
 ll=length(branch.point);
 
 if ll<1 
-    err=ll
-    error('BR_RECMP: branch is empty!');
+    error('BR_RECMP: branch is empty: ll=%d points!',ll);
 end;
 
-if ~exist('point_numbers')
+if ~exist('point_numbers','var')
     point_numbers=[];
 end;
 
@@ -44,33 +47,32 @@ for i=1:length(point_numbers)
     end;
     secant=p_axpy(-1,right,left);  
 
-    if secant.kind=='psol' | secant.kind=='hcli',
-        if length(secant.mesh)==length(branch.point(j).mesh) & secant.degree==branch.point(j).degree,
+    if strcmp(secant.kind,'psol') || strcmp(secant.kind,'hcli')
+        if length(secant.mesh)==length(branch.point(j).mesh) && secant.degree==branch.point(j).degree,
             secant=p_secant(secant,p_norm(branch.point(j)));
-            [p,success]=p_correc(branch.point(j),free_par,secant,branch.method.point,j+1);
+            [p,success]=p_correc(funcs,branch.point(j),free_par,secant,branch.method.point,j+1);
         else
-         if length(branch.point(j).mesh)==0
+         if isempty(branch.point(j).mesh)
             msh=0:1/(size(branch.point(j).profile,2)-1):1;
          else
             msh=branch.point(j).mesh;
          end;
-         secant=p_remesh(point,branch.point(j).degree,msh)
-         if length(branch.point(j).mesh)==0
+         secant=p_remesh(secant,branch.point(j).degree,msh);
+         if isempty(branch.point(j).mesh)
              secant.mesh=[];
          end;
          secant=p_secant(secant,p_norm(branch.point(j)));
-         [p,success]=p_correc(branch.point(j),free_par,secant,branch.method.point,j+1);    
+         [p,success]=p_correc(funcs,branch.point(j),free_par,secant,branch.method.point,j+1);    
         end;
     else
-        [p,success]=p_correc(branch.point(j),free_par,secant,branch.method.point,j+1); 
+        [p,success]=p_correc(funcs,branch.point(j),free_par,secant,branch.method.point,j+1); 
     end;
 
     if success  
         succ=succ+1;
         branch.point(j)=p;    
     else      
-        s=strcat('BR_RECMP warning: failure during recomputation of point_',num2str(j),'.');
-        s(54)=' ';
+        s=sprintf('BR_RECMP warning: failure during recomputation of point %d.',j);
         disp(s);
     end;
 end;

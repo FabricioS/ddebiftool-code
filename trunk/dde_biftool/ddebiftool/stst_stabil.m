@@ -1,7 +1,8 @@
-function stability=stst_stabil(stst,method) 
-  
+function stability=stst_stabil(funcs,stst,method) 
+%% compute spectrum of linearized r.h.s. in equilibrium
 % function stability=stst_stabil(stst,method)
 % INPUT:
+%   funcs problem functions
 %	stst steady state point
 %	method method parameters 
 % OUTPUT:
@@ -9,9 +10,16 @@ function stability=stst_stabil(stst,method)
 % COMMENT:
 %       Assumes (imag(method.lms_parameter_rho)~=0)
 %       This condition is tested in the code.
-  
+%
 % (c) DDE-BIFTOOL v. 2.03, 05/03/2007
 % Added on 05/03/2007 
+%
+% $Id$
+%
+%%
+sys_tau=funcs.sys_tau;
+sys_ntau=funcs.sys_ntau;
+sys_deri=funcs.sys_deri;
 
 if imag(method.lms_parameter_rho)==0,
   error(['STST_STABIL: imag(method.lms_parameter_rho)==0 :' ...
@@ -20,16 +28,13 @@ if imag(method.lms_parameter_rho)==0,
 	 ' method.stability), to obtain an appropriate method.stability' ...
 	 ' structure for this function.']);
 end;
-
-nb_nu = 20;
-delta_real_min = 0.1;
-
-if nargin('sys_tau')==0
-  tau=stst.parameter(sys_tau);
+%%
+if ~funcs.tp_del
+  tau=stst.parameter(sys_tau());
   m=length(tau);
 else
   d_ac=method.delay_accuracy;
-  m=sys_ntau;
+  m=sys_ntau();
   tau=zeros(1,m);
   xx=repmat(stst.x,[1,m]);
   for j=1:m
@@ -53,20 +58,34 @@ AA=cell(1,m+1);
 for j=0:m
   AA{j+1}=sys_deri(xx,stst.parameter,j,[],[]);
 end
-
 n=size(AA{1},2);
-
+%%
 alpha=method.lms_parameter_alpha;
 beta=method.lms_parameter_beta;
 k_lms = length(alpha) - 1;
 
 interp_order=method.interpolation_order;
-order_method=interp_order;
 s_min = floor((interp_order-1)/2);
 s_plus = (interp_order-1) - s_min;
 real_min=method.minimal_real_part;
-if isempty(real_min) | (real_min==-Inf) 
-  if taumax>0 & taumin>0.1
+%% modification by JS to cope with special case of zero delay
+if taumax==0 || norm(cat(2,AA{2:end}),'inf')==0
+    A=sum(cat(3,AA{:}),3);
+    l0=eig(A).';
+    if ~isempty(real_min)
+        l0=l0(real(l0)>real_min);
+    end
+    if length(l0)>method.max_number_of_eigenvalues
+        l0=l0(1:method.max_number_of_eigenvalues);
+    end
+    l1=l0.';
+    stability=struct('h',NaN,'l0',l0,'l1',l1,'n1',[]);
+    return
+end
+% end of modification (JS)
+%%
+if isempty(real_min) || (real_min==-Inf) 
+  if taumax>0 && taumin>0.1
     real_min=-1/taumin;
   else
     real_min=-1;
@@ -75,14 +94,53 @@ end
 
 a_ellipse=real(method.lms_parameter_rho);
 b_ellipse=imag(method.lms_parameter_rho);
-  
-% 
-eigA0 = eig(AA{1}).';
-pts=get_pts_h_new(AA,tau,real_min,delta_real_min,nb_nu,eigA0);
-hh=0.9/sqrt(max((real(pts)/a_ellipse).^2+(imag(pts)/b_ellipse).^2));
-
-hh=min([hh,min(tau(tau>=hh*interp_order*1e-2))/s_plus,taumax*method.maximal_time_step]);
-hh=max([hh,taumax*method.minimal_time_step]);
+%% change by JS: adapt nb_nu to keep effort for heuristics constant
+% effort ~ nb_nu^ntau/2 * (1+n^3/100) assuming that eig is 100x faster than
+% matlab
+% approx number of points to create for new heuristics
+if isfield(method,'newheuristics_tests')
+    npts_n3=method.newheuristics_tests;
+else
+    npts_n3=2000;
+end
+nb_nu = floor((npts_n3/(1+n^3/100))^(1/length(tau))); % number of points on unit circle tested
+if nb_nu<4 % too few points to approximate circle
+    use_newheuristics=false;
+else
+    use_newheuristics=true;
+end
+delta_real_min = 0.1; % desired estimated accuracy for roots
+%% change by js to avoid error message when heuristics gives no restriction
+% (~use_newheuristics | isempty(pts))
+h_upperbound=taumax*method.maximal_time_step;
+h_lowerbound=taumax*method.minimal_time_step;
+if use_newheuristics
+    %% point cloud estimating possible spectrum, 
+    % original code by K Verheyden, generalized to arbitrary number of
+    % delays by JS
+    eigA0 = eig(AA{1}).';
+    pts=get_pts_h_new(AA,tau,real_min,delta_real_min,nb_nu,eigA0);
+else
+    pts=[];
+end
+%% case distinction by JS
+if ~isempty(pts)
+    %% heuristics gives restriction
+    hh=0.9/sqrt(max((real(pts)/a_ellipse).^2+(imag(pts)/b_ellipse).^2));
+else
+    %% pts can be empty: use old heuristics, according to Verheyden etal
+    % J. Comp. Appl. Math. 214 (2007)
+    radLMS=min(a_ellipse,b_ellipse); %??
+    denominator=abs(real_min)+norm(AA{1},'inf');
+    for j=2:m+1
+        denominator=denominator+...
+            norm(AA{j},'inf')*exp(-abs(real_min)*tau(j-1));
+    end
+    hh=0.9*radLMS/denominator;
+end
+%%
+hh=min([hh,min(tau(tau>=hh*interp_order*1e-2))/s_plus,h_upperbound]);
+hh=max([hh,h_lowerbound]);
 nn=n*(k_lms + ceil(taumax/hh) + s_min);
 
 [mu,nL]=help_stst_stabil(AA,tau,hh,alpha,beta,interp_order);   
@@ -105,7 +163,7 @@ lambda=mu_to_lambda(mu,hh);
 % by (0.9/h)*[ellipse(a_ellipse,b_ellipse)] ...:
 lambda=lambda((real(lambda)/a_ellipse).^2+(imag(lambda)/b_ellipse).^2<=(0.9/hh)^2);
 
-[dummy,idx]=sort(real(lambda));
+[dummy,idx]=sort(real(lambda)); %#ok<ASGLU>
 lambda=lambda(idx(end:-1:1));
 
 if length(lambda)>method.max_number_of_eigenvalues

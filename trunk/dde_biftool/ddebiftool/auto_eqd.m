@@ -1,12 +1,9 @@
-function [EQF]=auto_eqd(NTST,NDIM,NCOL,DTM,UPS)
-
-% function [eqf]=auto_eqd(ntst,ndim,ncol,dtm,ups)
+function eqf=auto_eqd(dtm,ups)
+%% find cumulative discretization error on given mesh
+% function [eqf]=auto_eqd(ncol,dtm,ups)
 % INPUT:
-%	ntst number of intervals
-%       ndim system dimension
-%	ncol number of collocation points (per interval)
-%       dtm delta's of mesh
-%       ups solution profile
+%   dtm interval lengths of mesh
+%   ups solution profile
 % OUTPUT:
 %       eqf values of monotonically increasing function eqdf
 % COMMENT: 
@@ -17,71 +14,70 @@ function [EQF]=auto_eqd(NTST,NDIM,NCOL,DTM,UPS)
 %	- the integral is approximated using the trapezium rule
 
 % (c) DDE-BIFTOOL v. 1.00, 15/03/2000
+%
+% $Id$
+%
+%% find out dimensions of solution array
+%	ntst number of intervals
+%   ndim system dimension
+%	ncol number of collocation points (per interval)
+hmach=1.0d-7;
+[ndim,npoints]=size(ups);
+ntst=numel(dtm);
+ncol=(npoints-1)/ntst;
+%% calculate highest derivative of collocation polynomials
+% wh: ncol+1 coefficients of central difference formula for ncol derivative
+% on unit interval
+wh=auto_cnt(ncol);
+wh=repmat(wh,ndim,1);
 
-HMACH=1.0d-7;
-
-[WH]=auto_cnt(NCOL);
-
-SMALL=1;
-for J=1:NTST,
-  JP1=J*NCOL+1;
-  SC=1/(DTM(J)^NCOL);
-  for I=1:NDIM,
-    HD(J,I)=WH(NCOL+1)*UPS(I,JP1);
-    for K=1:NCOL,
-      K1=K+(J-1)*NCOL;
-      HD(J,I)=HD(J,I)+WH(K)*UPS(I,K1);
-    end;
-    HD(J,I)=SC*HD(J,I);
-    if (abs(HD(J,I))>HMACH), SMALL=0; end;
-  end;
-end;
-
-% Take care of "small derivative" case.
-
-if (SMALL),
-  for I=1:NTST+1,
-    EQF(I)=I-1;
-  end;
-  return;
-end;
-
-for I=1:NDIM,
-  HD(NTST+1,I)=HD(1,I);
+%% hd: highest derivative of collocation polynomials on each subinterval
+hd=NaN(ndim,ntst+1); 
+for j=1:ntst
+    sc=1/(dtm(j)^ncol);
+    ibase=(j-1)*ncol;
+    hd(:,j)=sum(wh.*ups(:,ibase+(1:ncol+1))*sc,2);
 end
-DTM(NTST+1)=DTM(1);
+%% Take care of "small derivative" case:
+if max(abs(hd(:)))<hmach
+    eqf=0:ntst;
+    return
+end
+%% extrapolate to get one more interval (exploit periodicity)
+hd(:,ntst+1)=hd(:,1);
+dtm(ntst+1)=dtm(1);
+%% compute approximation to (ncol+1)-st derivative, by taking divided
+% differences of neighboring hd values
+scav=2./(dtm(1:end-1)+dtm(2:end));
+scav=repmat(scav,ndim,1);
+hdp1=(hd(:,2:end)-hd(:,1:end-1)).*scav;
 
-% Compute approximation to (NCOL+1)-st derivative :
-
-for J=1:NTST,
-  JP1=J+1;
-  DTAV=0.5*(DTM(J)+DTM(J+1));  
-  SC=1/DTAV;
-  for I=1:NDIM,
-    HD(J,I)=SC*( HD(JP1,I)-HD(J,I) );
-  end;
-end;
-
-% Define the equidistribution function :
-
-PWR=1/(NCOL+1);
-EQF(1)=0;
-for J=1:NTST,
-  EP=0;
-  if J==1
-    for I=1:NDIM,
-      EP=EP+abs( HD(NTST,I) )^PWR;
-    end;
-  else
-    for I=1:NDIM,
-      EP=EP+abs( HD(J-1,I) )^PWR;
-    end;
-  end;
-  E=0;
-  for I=1:NDIM,
-    E=E+abs( HD(J,I) )^PWR;
-  end;
-  EQF(J+1)=EQF(J)+DTM(J)*0.5*(E+EP);
-end;
-
-return;
+%% define the cumulative error err_dt, to be equidistributed
+err=sum(abs(hdp1).^(1/(ncol+1)),1);
+err_dt=0.5*(err+err([end,1:end-1])).*dtm(1:end-1);
+% avoiding zero error
+err_dt=max(err_dt,eps);
+eqf=[0,cumsum(err_dt)];
+end
+%% central difference approximation of nth derivative
+function d=auto_cnt(n)
+% function [d]=auto_cnt(n)
+% INPUT:
+%	n n-th derivative
+% OUTPUT:
+%	d coefficients of central difference formula
+% COMMENT: 
+%       this function is a matlab translation of the AUTO
+%       fortran function CNTDIF
+%%
+d=ones(1,n+1);       
+if n==0
+    return
+end
+for i=1:n,
+    d(i+1)=nchoosek(n,i);
+end
+d(end-1:-2:1)=-d(end-1:-2:1);
+% Scale to [0,1]  :
+d=d*n^n;
+end

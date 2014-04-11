@@ -1,9 +1,10 @@
-function [J,res]=hcli_jac(c,T,profile,t,deg,par,free_par,ph,lambda_v,...
+function [J,res]=hcli_jac(funcs,c,T,profile,t,deg,par,free_par,ph,lambda_v,...
                                lambda_w,v,w,alpha,epsilon,x1,x2,previous)
 
 % function [J,res]=hcli_jac(c,T,profile,t,deg,par,free_par,ph,lambda_v,...
 %                               lambda_w,v,w,alpha,epsilon,x1,x2,previous)
 % INPUT:
+%   funcs problem functions
 %	c collocation parameters in [0,1]^m
 %	T period 
 %	profile profile in R^(n x m*l+1)
@@ -29,6 +30,12 @@ function [J,res]=hcli_jac(c,T,profile,t,deg,par,free_par,ph,lambda_v,...
 % (c) DDE-BIFTOOL v. 2.02, 16/6/2002 
 
 % initializiation of dimensions etc.
+
+sys_tau=funcs.sys_tau;
+sys_rhs=funcs.sys_rhs;
+sys_ntau=funcs.sys_ntau;
+sys_deri=funcs.sys_deri;
+sys_dtau=funcs.sys_dtau;
 
 if ~exist('previous') | isempty(previous) 
   previous.kind='hcli';
@@ -58,9 +65,9 @@ end;
 m=deg;
 n=size(profile,1); % system dimension
 
-tp_del=nargin('sys_tau');
+tp_del=funcs.tp_del;
 if tp_del==0,
-  n_tau=sys_tau; % delay numbers
+  n_tau=sys_tau(); % delay numbers
   tau=par(n_tau); % delay values
   nb_tau=length(n_tau); % number of delays
 else

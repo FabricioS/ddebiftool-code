@@ -1,7 +1,8 @@
-function [stst,stpcnd]=p_tostst(point,pert)
-
-% function [stst_point,stpcnd]=p_tostst(point,pert)
+function [stst,stpcnd]=p_tostst(funcs,point,pert)
+%% convert point to stst (from fold, hopf, hcli or near branching)
+% function [stst_point,stpcnd]=p_tostst(funcs,point,pert)
 % INPUT:
+%   funcs problem functions
 %	point 
 %       % for branch switching from stst
 %       pert size of the perturbation onto the emanating branch
@@ -20,6 +21,13 @@ function [stst,stpcnd]=p_tostst(point,pert)
 %         given connecting orbit, no stpcnd is returned
 
 % (c) DDE-BIFTOOL v. 2.03, 01/08/2002
+%
+% $Id$
+%
+%%
+sys_tau=funcs.sys_tau;
+sys_rhs=funcs.sys_rhs;
+sys_deri=funcs.sys_deri;
 
 stst.kind='stst';
 stst.parameter=point.parameter;
@@ -27,11 +35,8 @@ stst.parameter=point.parameter;
 switch point.kind,
   case 'stst',
     n=length(point.x); % system dimension
-    m=length(sys_tau); % number of delays
-    xx=point.x;
-    for i=1:m
-      xx=[xx point.x];
-    end;
+    m=length(sys_tau()); % number of delays
+    xx=point.x(:,ones(m+1,1));
     res=sys_rhs(xx,point.parameter);
     J=zeros(n,n);
     for i=0:m
@@ -39,7 +44,7 @@ switch point.kind,
     end;
     [e1,e2]=eig(J);
     e=diag(e2);
-    [i1,i2]=min(abs(e));
+    [dum,i2]=min(abs(e)); %#ok<ASGLU>
     if abs(imag(e(i2)))>0,
       disp('P_TOSTST: Warning: smallest eigenvalue is complex, taking real part!');
     end;
@@ -56,9 +61,7 @@ switch point.kind,
   case 'psol',
     error('P_TOSTST: conversion psol to stst not supported.');
   otherwise,
-    err=point.kind,
-    error('P_TOSTST: point kind not recognized.');
-end;
-
-return;
-
+    err=point.kind;
+    error('P_TOSTST: point kind %s not recognized.',err);
+end
+end

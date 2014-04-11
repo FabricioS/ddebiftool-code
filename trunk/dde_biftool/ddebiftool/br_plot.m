@@ -1,5 +1,5 @@
 function br_plot(branch,x_m,y_m,line_type)
-
+%% plot branch
 % function br_plot(branch,x_measure,y_measure,line_type)
 % INPUT:
 %	branch branch of points
@@ -8,8 +8,10 @@ function br_plot(branch,x_m,y_m,line_type)
 %	line_type line type to plot with
 
 % (c) DDE-BIFTOOL v. 2.00, 22/12/2000
-
-if ~exist('line_type')
+%
+% $Id$
+%
+if ~exist('line_type','var')
   line_type='';
 end;
 if isempty(line_type)
@@ -19,8 +21,7 @@ end;
 ll=length(branch.point);
 
 if ll<=1
-  err=ll
-  error('BR_PLOT: branch contains too few points.');
+  error('BR_PLOT: ll=%d, branch contains too few points.',ll);
 end;
 
 if ~isempty(x_m)

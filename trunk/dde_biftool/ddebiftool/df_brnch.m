@@ -1,7 +1,8 @@
-function branch=df_brnch(free_par,kind,flag_newhheur)
-
-% function branch=df_brnch(free_par,kind,flag_newhheur)
+function branch=df_brnch(funcs,free_par,kind,flag_newhheur)
+%% set up empty branch with default values
+% function branch=df_brnch(funcs,free_par,kind,flag_newhheur)
 % INPUT:
+%       funcs problem functions
 %       free_par free parameter list
 %       kind type of solution point
 %       flag_newhheur (optional, default: 1) boolean: use new steplength heuristic
@@ -11,21 +12,27 @@ function branch=df_brnch(free_par,kind,flag_newhheur)
 
 % (c) DDE-BIFTOOL v. 2.00, 30/11/2001
 % Update on 05/03/2007 ("flag_newhheur" <=> (imag(method.stability.lms_parameter_rho)~=0) )
+%
+% $Id$
+%
+%%
+sys_tau=funcs.sys_tau;
+
 
 if ~exist('flag_newhheur','var'),
   flag_newhheur=1;
 end;  
 
-branch.method=df_mthod(kind,flag_newhheur);
+branch.method=df_mthod(funcs,kind,flag_newhheur);
 
 branch.parameter.free=free_par;
 branch.parameter.min_bound=[];
 branch.parameter.max_bound=[];
 branch.parameter.max_step=[];
 
-tp_del=nargin('sys_tau');
+tp_del=funcs.tp_del;
 if tp_del==0
-  tau=sys_tau;
+  tau=sys_tau();
   for j=1:length(tau)
     branch.parameter.min_bound(j,:)=[tau(j) 0];
   end;

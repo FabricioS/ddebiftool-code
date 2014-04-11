@@ -1,5 +1,5 @@
 function s=time_saf(alpha,beta,epsi,safe)
-
+%% compute safety factor for given distance to imaginary axis 
 % function s=time_saf(alpha,beta,epsi,safe)
 % INPUT: 
 %	alpha alpha-LMS parameters
@@ -10,14 +10,17 @@ function s=time_saf(alpha,beta,epsi,safe)
 %	s safety factor for given distance to imaginary axis 
 
 % (c) DDE-BIFTOOL v. 1.00, 08/04/2000
-
+%
+% $Id$
+%
+%%
 xi=0:epsi:2*pi;
 
 s1=0;
 s2=0;
 for j=1:length(alpha)
-  s1=s1+alpha(j)*exp(i*j*xi);
-  s2=s2+beta(j)*exp(i*j*xi);
+  s1=s1+alpha(j)*exp(1i*j*xi);
+  s2=s2+beta(j)*exp(1i*j*xi);
 end;
 
 rho=s1./s2;

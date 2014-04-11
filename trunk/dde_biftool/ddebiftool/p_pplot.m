@@ -7,20 +7,21 @@ function p_pplot(point,component,line_type)
 %	colour optional colour to plot with
 
 % (c) DDE-BIFTOOL v. 1.02, 14/11/2000
-
-if point.kind~='psol' & point.kind~='hcli'
-  err=point.kind
-  error('P_PPLOT: point does not contain a profile.');
+%
+% $Id$
+%
+if ~strcmp(point.kind,'psol') && ~strcmp(point.kind,'hcli')
+  error('P_PPLOT: point type %s does not contain a profile.',point.kind);
 end;
 
 d=point.degree;
 L=length(point.mesh);
 
-if ~exist('line_type')
+if ~exist('line_type','var')
   line_type=' ';
 end;
 
-if ~exist('component');
+if ~exist('component','var');
   component=[];
 end;
 

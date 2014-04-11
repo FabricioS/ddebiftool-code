@@ -1,8 +1,9 @@
-function h=time_h(x,alpha,beta,real_part,h_min,h_max,par,rho_safety)
-
-% function h=time_h(x,alpha,beta,real_part,h_min,h_max,par,rho_safety)
+function h=time_h(funcs,x,alpha,beta,real_part,h_min,h_max,par,rho_safety)
+%% recommend steplength for stability calculation (relative to max(tau))
+% function h=time_h(funcs,x,alpha,beta,real_part,h_min,h_max,par,rho_safety)
 % INPUT:
-%       x steady state solution in R^n 
+%   funcs problem functions
+%   x steady state solution in R^n 
 %	alpha alpha-LMS parameters in R^k
 %	beta beta-LMS parameters in R^k
 %	real_part to compute roots with real part >= real_part  
@@ -14,23 +15,27 @@ function h=time_h(x,alpha,beta,real_part,h_min,h_max,par,rho_safety)
 %       h recommended steplength (relative to max(tau))
 
 % (c) DDE-BIFTOOL v. 2.00, 23/11/2001
+%
+% $Id$
+%
+%%
+sys_tau=funcs.sys_tau;
+sys_ntau=funcs.sys_ntau;
+sys_deri=funcs.sys_deri;
 
-tp_del=nargin('sys_tau');
+tp_del=funcs.tp_del;
 if tp_del==0 % DDE case:
-  tau=par(sys_tau);
+  tau=par(sys_tau());
   m=length(tau);
-  xx=x;
-  for i=1:m;
-    xx=[xx x];
-  end;
+  xx=x(:,ones(m+1,1));
 else % sd-DDE case:
-  m=sys_ntau;
-  xx=x;
+  m=sys_ntau();
+  xx=x(:,ones(m+1,1));
+  tau=NaN(1,m);
   for j=1:m;
     tau(j)=sys_tau(j,xx,par);
-    xx=[xx x];
-  end;
-end;
+  end
+end
 
 taumax=max(tau);
 k=length(alpha);
@@ -81,10 +86,8 @@ elseif h<h_min
   if h_max>h_min
     disp('TIME_H warning: h_min is reached.');
   elseif h_max<h_min
-    err=[h_min h_max]
-    error('TIME_H: h_min>h_max not allowed.'); 
+    error('TIME_H: h_min>h_max not allowed (h_min=%g, h_max=%g).',h_min,h_max); 
   end;
 end;
 
-return;
-
+end

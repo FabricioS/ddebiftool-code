@@ -1,5 +1,5 @@
 function [xm,ym]=df_measr(stability,par_or_branch,kind)
-
+%% define solution measure for plotting
 % function [xm,ym]=df_measr(stability,par_or_branch,kind)
 % INPUT:
 %	stability nonzero for plotting stability information
@@ -10,7 +10,10 @@ function [xm,ym]=df_measr(stability,par_or_branch,kind)
 %	ym default measure for y-axis
 
 % (c) DDE-BIFTOOL v. 2.00, 23/12/2000
-
+%
+% $Id$
+%
+%%
 if isfield(par_or_branch,'parameter')
   free_par=par_or_branch.parameter.free;
   kind=par_or_branch.point(1).kind;
@@ -18,11 +21,11 @@ else
   free_par=par_or_branch;
 end;
 
-if kind=='hcli' & stability
+if strcmp(kind,'hcli') && stability
   error('DF_MEASR: heteroclinic solutions have no stability.');
 end;
 
-if length(free_par)==0
+if isempty(free_par)
   if stability
     xm.field='stability';
     xm.row='all';
@@ -30,7 +33,7 @@ if length(free_par)==0
     ym.field='stability';
     ym.row='all';
     ym.col=1;
-    if kind=='psol'
+    if strcmp(kind,'psol')
       xm.subfield='mu';
       xm.func='real';
       ym.subfield='mu';
@@ -41,7 +44,7 @@ if length(free_par)==0
       ym.subfield='l1';
       ym.func='imag';
     end;
-  elseif kind=='psol'
+  elseif strcmp(kind,'psol')
     xm.field='profile';
     xm.subfield='';
     xm.row=1;
@@ -52,7 +55,7 @@ if length(free_par)==0
     ym.row=1;
     ym.col='all';
     ym.func='';    
-  elseif kind=='hcli'
+  elseif strcmp(kind,'hcli')
     xm.field='profile';
     xm.subfield='';
     xm.row=1;
@@ -82,7 +85,7 @@ else
   xm.col=free_par(1);
   xm.func='';
   if stability
-    if kind=='psol'
+    if strcmp(kind,'psol')
       ym.field='stability';
       ym.subfield='mu';
       ym.row='all';
@@ -101,13 +104,13 @@ else
     ym.row=1;
     ym.col=free_par(2);
     ym.func='';
-  elseif kind=='psol'
+  elseif strcmp(kind,'psol')
     ym.field='profile';
     ym.subfield='';
     ym.row=1;
     ym.col='ampl';
     ym.func='';
-  elseif kind=='hcli'
+  elseif strcmp(kind,'hcli')
     ym.field='profile';
     ym.subfield='';
     ym.row=1;
