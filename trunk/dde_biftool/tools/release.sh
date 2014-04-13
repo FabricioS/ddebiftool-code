@@ -47,6 +47,5 @@ rm -rf  tools manual FilesChangedAndAdded_V203 system
 cd $base/tags
 rm -rf $zip
 zip -r $zip $name
-# copy zip file to Dropbox
-#cp -p $zip $HOME/Dropbox/Public/ddebiftool_ext.zip
+
 
