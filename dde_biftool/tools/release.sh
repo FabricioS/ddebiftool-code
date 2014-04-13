@@ -9,8 +9,7 @@ destdir="tags/$name"
 zip=$name".zip"
 files="*/*.*"
 rm -rf $destdir
-cp -urp ~/tmp/leuven-export/dde_biftool $destdir
-#svn export ^/trunk  $destdir --native-eol CRLF
+svn export ^/trunk/dde_biftool  $destdir --native-eol CRLF
 base=`pwd`
 destdir=$base/$destdir
 #
@@ -24,7 +23,7 @@ for x in $tex; do
 done
 pdftk A=TWcover.pdf B=manual.pdf cat A B output all.pdf
 mv all.pdf $destdir/manual.pdf
-mv ExtensionChanges-v3.pdf $destdir
+mv ExtensionChanges-v3.pdf Addendum_Manual_DDE-BIFTOOL_2_03.pdf $destdir
 # clean up manual creation
 cd $destdir
 #
@@ -32,7 +31,7 @@ cd $destdir
 python $destdir/tools/c_insert.py $destdir $version
 
 # remove folders not intended for distibution
-rm -rf  tools manual
+rm -rf  tools manual FilesChangedAndAdded_V203 system
 
 #correct author name
 #find . -type f -print0 | xargs -0 sed -i '/$Id/s/jansie/Jan Sieber/g'
@@ -42,7 +41,7 @@ rm -rf  tools manual
 #find . -type f -print0 | xargs -0 sed -i '/$Id/s/$Id/$Id('"$version"')/g'
 
 # zip
-cd ..
+cd $base/tags
 rm -rf $zip
 zip -r $zip $name
 # copy zip file to Dropbox
