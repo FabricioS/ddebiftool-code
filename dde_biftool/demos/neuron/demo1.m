@@ -21,7 +21,7 @@
 % * continuation of homoclinic connections in two parameters
 %    <demo1_hcli.html>
 % * continuation of folds of periodic orbits in two parameters
-%   <demo1_pofold.html>
+%   <demo1_POfold.html>
 %
 
 %% Differential equations
