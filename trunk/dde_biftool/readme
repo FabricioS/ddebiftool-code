@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 
-                             DDE-BIFTOOL v. 2.03
+                             DDE-BIFTOOL v. |version|
 
 --------------------------------------------------------------------------------
 
@@ -13,30 +13,41 @@ Belgium
 
 --------------------------------------------------------------------------------
 
-URL:     http://www.cs.kuleuven.ac.be/~twr/research/software/delay/ddebiftool.shtml
-Contact: twrwww@cs.kuleuven.ac.be
-Manual:  K. Engelborghs, T. Luzyanina, G. Samaey. DDE-BIFTOOL v. 2.00: 
+URL:     http://twr.cs.kuleuven.be//research/software/delay/ddebiftool.shtml
+Contact: ddebiftool@cs.kuleuven.be
+Manual:  K. Engelborghs, T. Luzyanina, G. Samaey. DDE-BIFTOOL v. |version|: 
          a Matlab package for bifurcation analysis of delay differential
-         equations. Technical Report TW-330, Department of Computer
-         Science, K.U.Leuven, Leuven, Belgium, 2001.
-Note:    An addendum to this manual is available which describes briefly 
-         the new functionality (concerning the computation of the rightmost
-         roots of steady states) in DDE-BIFTOOL v. 2.03 compared to the 
-         previous version, DDE-BIFTOOL v. 2.02.
+         equations. Technical Report TW-330
+
+Note:    Two addenda to this manual are available which describe briefly 
+         new functionality  in DDE-BIFTOOL v. 2.03 and |version|.
 --------------------------------------------------------------------------------
 
 To install:
 
-* unzipping ddebif.zip creates a "ddebiftool" directory (named "ddebiftool") 
-  containing all DDE-BIFTOOL files (Matlab format). 
-* unzipping system.zip creates a "system" directory
-  should create three subdirectories named demo, sd_demo, hom_demo
-* replace the path within each routine sys_init.m (part of each demo)
-  by the path of the "ddebiftool" directory
-* run Matlab (version 5.3 or higher) in the "system/demo" directory
-* call demo1 from within Matlab
-* if the output does not match the one described in the manual, 
-  mail the contact person
+* unzipping ddebiftool.zip creates a "dde_biftool" directory (named
+  "dde_biftool") containing files: 
+
+  manual.pdf (manual by Engelborghs et al)
+  Addendum_Manual_DDE-BIFTOOL_2_03.pdf, ExtensionChanges-v3.pdf
+  (addenda, explaining additional functionality)
+  
+  subfolders:
+ 
+  ddebiftool (basic DDE-BIFTOOL routines),
+  demos (example scripts illustrating the use of DDE-BIFTOOL),
+  ddebiftool_extra_psol (extension for local bifurcations of periodic orbits),
+  ddebiftool_utilities (optional auxiliary functions)
+  ddebiftool_extra_psol (extension for systems with rotational symmetry).
+ 
+* Testing the tutorial demo neuron:
+
+  run Matlab (version 7.0 or higher) or octave (version 3.2.2 or higher) 
+  change working directory inside matlab or octave to demos/neuron
+  execute script "rundemo"
+
+* Documentation of demos in html format is accessible from the node
+  demos/index.html
 
 Please feel free to mail any feedback concerning the code
 (such as the type of application; the problems you encountered; 
