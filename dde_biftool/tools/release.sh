@@ -4,7 +4,7 @@
 #
 set -e 
 version=$1
-name="ddebiftool_v"$version
+name="dde_biftool_v"$version
 destdir="tags/$name"
 zip=$name".zip"
 files="*/*.*"
@@ -27,9 +27,12 @@ mv ExtensionChanges-v3.pdf Addendum_Manual_DDE-BIFTOOL_2_03.pdf $destdir
 # clean up manual creation
 cd $destdir
 #
-#
+# set (c) line in all m and html files that have (c) or Id
 python $destdir/tools/c_insert.py $destdir $version
-
+#
+# set version readme
+sed -- "s/|version|/$version/g" readme
+#
 # remove folders not intended for distibution
 rm -rf  tools manual FilesChangedAndAdded_V203 system
 

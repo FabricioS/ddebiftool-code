@@ -42,7 +42,7 @@ To install:
  
 * Testing the tutorial demo neuron:
 
-  run Matlab (version 7.0 or higher) or octave (version 3.2.2 or higher) 
+  run Matlab (version 7.0 or higher) or octave (version 3.2.3 or higher) 
   change working directory inside matlab or octave to demos/neuron
   execute script "rundemo"
 
