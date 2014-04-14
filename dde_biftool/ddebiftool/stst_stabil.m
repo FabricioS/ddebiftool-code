@@ -141,9 +141,9 @@ end
 %%
 hh=min([hh,min(tau(tau>=hh*interp_order*1e-2))/s_plus,h_upperbound]);
 hh=max([hh,h_lowerbound]);
-nn=n*(k_lms + ceil(taumax/hh) + s_min);
+% nn=n*(k_lms + ceil(taumax/hh) + s_min);
 
-[mu,nL]=help_stst_stabil(AA,tau,hh,alpha,beta,interp_order);   
+[mu,nL]=help_stst_stabil(AA,tau,hh,alpha,beta,interp_order);    %#ok<NASGU>
 
 % Note: nn==nL,
 % except if some interpolation can be avoided ...
