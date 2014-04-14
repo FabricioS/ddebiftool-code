@@ -4,6 +4,12 @@
 #
 set -e 
 version=$1
+if [[ $# -lt 2 ]]; then
+    dotest=0
+else
+    dotest=1
+    cmd=$2
+fi
 name="dde_biftool_v"$version
 destdir="tags/$name"
 zip=$name".zip"
@@ -21,7 +27,15 @@ for x in $tex; do
     pdflatex $x && pdflatex $x && pdflatex $x && \
     bibtex $x && pdflatex $x && pdflatex $x
 done
-pdftk A=TWcover.pdf B=manual.pdf cat A B output all.pdf
+#
+# join cover and manual body
+pdfjoin=`which pdftk`
+if [[ -x $pdfjoin ]]; then
+    $pdfjoin A=TWcover.pdf B=manual.pdf cat A B output all.pdf
+else
+    gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER \
+    -sOutputFile=all.pdf TWcover.pdf manual.pdf
+fi
 mv all.pdf $destdir/manual.pdf
 mv ExtensionChanges-v3.pdf Addendum_Manual_DDE-BIFTOOL_2_03.pdf $destdir
 # clean up manual creation
@@ -33,8 +47,13 @@ python $destdir/tools/c_insert.py $destdir $version
 # set version readme
 sed -- "s/|version|/$version/g" readme
 #
+# if testing required perform tests of demos
+if [[ $dotest -eq 1]]; then
+    python $destdir/tools/test_demos.py $destdir $cmd
+fi
+#
 # remove folders not intended for distibution
-rm -rf  tools manual FilesChangedAndAdded_V203 system
+rm -rf  tools manual FilesChangedAndAdded_V203 system test
 
 #correct author name
 #find . -type f -print0 | xargs -0 sed -i '/$Id/s/jansie/Jan Sieber/g'

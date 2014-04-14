@@ -32,7 +32,6 @@ end;
 %% obtain Jacobian
 [J,resdum,tT,extmesh]=psol_jac(funcs,col,period,profile,mesh,degree,par,...
     [],false,'wrapJ',false); %#ok<ASGLU>
-m=degree;
 n=size(profile,1);
 delays=tT(2:end,:);
 if nargout>1

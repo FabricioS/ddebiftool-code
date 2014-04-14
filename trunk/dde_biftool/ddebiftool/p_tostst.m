@@ -26,7 +26,6 @@ function [stst,stpcnd]=p_tostst(funcs,point,pert)
 %
 %%
 sys_tau=funcs.sys_tau;
-sys_rhs=funcs.sys_rhs;
 sys_deri=funcs.sys_deri;
 
 stst.kind='stst';
@@ -37,7 +36,6 @@ switch point.kind,
     n=length(point.x); % system dimension
     m=length(sys_tau()); % number of delays
     xx=point.x(:,ones(m+1,1));
-    res=sys_rhs(xx,point.parameter);
     J=zeros(n,n);
     for i=0:m
       J(1:n,1:n)=J(1:n,1:n)+sys_deri(xx,point.parameter,i,[],[]);

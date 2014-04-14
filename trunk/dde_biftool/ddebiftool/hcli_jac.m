@@ -1,7 +1,7 @@
 function [J,res]=hcli_jac(funcs,c,T,profile,t,deg,par,free_par,ph,lambda_v,...
                                lambda_w,v,w,alpha,epsilon,x1,x2,previous)
-
-% function [J,res]=hcli_jac(c,T,profile,t,deg,par,free_par,ph,lambda_v,...
+%% Jacobian and residual for connecting orbits
+% function [J,res]=hcli_jac(funcs,c,T,profile,t,deg,par,free_par,ph,lambda_v,...
 %                               lambda_w,v,w,alpha,epsilon,x1,x2,previous)
 % INPUT:
 %   funcs problem functions
@@ -28,16 +28,16 @@ function [J,res]=hcli_jac(funcs,c,T,profile,t,deg,par,free_par,ph,lambda_v,...
 %	res residual in R^(n*m*l+3*n+(s1+s2)*n+s1+2*s2+1)
 
 % (c) DDE-BIFTOOL v. 2.02, 16/6/2002 
-
-% initializiation of dimensions etc.
+%
+% $Id$
+%
+%% initializiation of dimensions etc.
 
 sys_tau=funcs.sys_tau;
 sys_rhs=funcs.sys_rhs;
-sys_ntau=funcs.sys_ntau;
 sys_deri=funcs.sys_deri;
-sys_dtau=funcs.sys_dtau;
 
-if ~exist('previous') | isempty(previous) 
+if ~exist('previous','var') || isempty(previous) 
   previous.kind='hcli';
   previous.parameter=par;
   previous.mesh=t;
@@ -59,7 +59,8 @@ if ((length(previous.profile)-1)/deg==floor((length(previous.profile)-1)/deg))
   previous.mesh=t;
 else 
   err=([previous.degree deg]);
-  error('HCLI_JAC: previous and current solution are not of same degree');
+  error('HCLI_JAC: previous and current solution are not of same degree (%d vs %d)',...
+      err(1),err(2));
 end;
 
 m=deg;
@@ -82,23 +83,25 @@ nb_par=length(free_par); % number of free parameters
 % check:
 
 if l~=floor(l)
-  err=[length(t) m],
-  error('HCLI_JAC: t does not contain l intervals of m points!');
+  err=[length(t) m];
+  error('HCLI_JAC: t (length=%d) does not contain l intervals of m=%d points!',...
+      err(1),err(2));
 end;
 
-if length(c)~=m & ~isempty(c)
-  err=[length(c) m]
-  error('HCLI_JAC: wrong number of collocation parameters!');
+if length(c)~=m && ~isempty(c)
+  err=[length(c) m];
+  error('HCLI_JAC: wrong number (=%d) of collocation parameters (degree=%d)!',...
+      err(1),err(2));
 end;
 
 if T<0,
-  err=[T],
-  error('HCLI_JAC: period became smaller than zero!');
+  err=T;
+  error('HCLI_JAC: period T=%g, became smaller than zero!',err);
 end;
 
 if max(tau)>T,
-  err=[max(tau) T]
-  error('HCLI_JAC: period became smaller than maximal delay!');
+  err=[max(tau) T];
+  error('HCLI_JAC: period %g became smaller than maximal delay %g!',err(2),err(1));
 end;
 
 % init J, res:
@@ -139,10 +142,9 @@ gauss_abs=gauss_abs/sum(gauss_abs);
 
 % more initialisation:
 
-for m_i=1:m
-  all_dPa(m_i,:)=poly_dla((0:m)/m,c(m_i));
-  all_Pa(m_i,:)=poly_lgr((0:m)/m,c(m_i));
-end;
+all_dPa=poly_dla((0:m)/m,c(1:m));
+all_Pa=poly_lgr((0:m)/m,c(1:m));
+
 
 % for all collocation points, make equation:
 
@@ -187,7 +189,7 @@ for l_i=1:l
 
     % phase_condition:
     
-    if ph & ~non_gauss
+    if ph && ~non_gauss
       fup=gauss_abs(m_i)*hhh*u_prime_previous';
       i_l_i=(l_i-1)*m*n;
       for q=0:m
@@ -207,9 +209,9 @@ for l_i=1:l
       c_tau_i=col-tau(tau_i)/T;
       c_tau(tau_i)=c_tau_i;  
       if c_tau_i<0 
-      initial_function_segment(tau_i)=1;
+          initial_function_segment(tau_i)=1;
       else 
-      initial_function_segment(tau_i)=0;
+          initial_function_segment(tau_i)=0;
       end;
  
       if (~initial_function_segment(tau_i))
@@ -369,10 +371,7 @@ end;  % for l_i
 
 % steady state point condition x1
 
-xx1=x1;
-for i=1:nb_tau
-  xx1=[xx1 x1];
-end;
+xx1=x1(:,ones(nb_tau,1));
 
 res(nml+1:nml+n,1)=sys_rhs(xx1,par);
 
@@ -396,10 +395,7 @@ end;
 
 % derivatives to x(t-tau(i))
 
-xx2=x2;
-for i=1:nb_tau
-  xx2=[xx2 x2];
-end;
+xx2=x2(:,ones(nb_tau,1));
 
 res(nml_n_1:nml+2*n)=sys_rhs(xx2,par);
 
@@ -777,7 +773,7 @@ J(nml+2*n+s1*(n+1)+s2*(n+2)+(1:n),1:n)=eye(n);
 
 % phase condition:
 
-if ph & non_gauss,
+if ph && non_gauss,
   for l_i=1:l
     index_a=(l_i-1)*m+1;
     for k=1:m
@@ -808,8 +804,3 @@ J(nml+2*n+s1*n+s1+s2*n+s2+s2+n+2,...
     nml_n_1+nb_par+2*n+s1*(n+1)+s2*(n+1)+s1)=2*alpha';
 
 return;
-
-
-
-
-
