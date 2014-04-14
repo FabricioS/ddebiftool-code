@@ -48,7 +48,8 @@ python $destdir/tools/c_insert.py $destdir $version
 sed -- "s/|version|/$version/g" readme
 #
 # if testing required perform tests of demos
-if [[ $dotest -eq 1]]; then
+if [[ $dotest -eq 1 ]]; then
+    mkdir $destdir/test
     python $destdir/tools/test_demos.py $destdir $cmd
 fi
 #

@@ -142,8 +142,8 @@ gauss_abs=gauss_abs/sum(gauss_abs);
 
 % more initialisation:
 
-all_dPa=poly_dla((0:m)/m,c(1:m));
-all_Pa=poly_lgr((0:m)/m,c(1:m));
+all_dPa=poly_dla((0:m)/m,c(:)')';
+all_Pa=poly_lgr((0:m)/m,c(:)')';
 
 
 % for all collocation points, make equation:
@@ -371,7 +371,7 @@ end;  % for l_i
 
 % steady state point condition x1
 
-xx1=x1(:,ones(nb_tau,1));
+xx1=x1(:,ones(nb_tau+1,1));
 
 res(nml+1:nml+n,1)=sys_rhs(xx1,par);
 
@@ -395,7 +395,7 @@ end;
 
 % derivatives to x(t-tau(i))
 
-xx2=x2(:,ones(nb_tau,1));
+xx2=x2(:,ones(nb_tau+1,1));
 
 res(nml_n_1:nml+2*n)=sys_rhs(xx2,par);
 
