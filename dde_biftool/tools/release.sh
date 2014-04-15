@@ -3,7 +3,7 @@
 # $Id: release.sh 39 2013-06-13 12:31:32Z jansie $
 #
 set -e 
-base=$1 
+base=`cd $1;pwd`
 version=$2
 if [[ $# -lt 3 ]]; then
     dotest=0
