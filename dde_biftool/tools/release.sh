@@ -3,12 +3,13 @@
 # $Id: release.sh 39 2013-06-13 12:31:32Z jansie $
 #
 set -e 
-version=$1
-if [[ $# -lt 2 ]]; then
+base=$1 
+version=$2
+if [[ $# -lt 3 ]]; then
     dotest=0
 else
     dotest=1
-    cmd=$2
+    cmd=$3
 fi
 name="dde_biftool_v"$version
 destdir="$name"
@@ -16,7 +17,6 @@ zip=$name".zip"
 files="*/*.*"
 rm -rf $destdir
 svn export ^/trunk/dde_biftool  $destdir --native-eol CRLF
-base=`pwd`
 destdir=$base/$destdir
 #
 # compile manual
