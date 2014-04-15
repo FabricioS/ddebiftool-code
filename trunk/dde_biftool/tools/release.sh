@@ -3,6 +3,23 @@
 # $Id: release.sh 39 2013-06-13 12:31:32Z jansie $
 #
 set -e 
+if [[ $# -lt 1 ]]; then
+    echo "Usage: $0 basefolder version [testprog]"
+    echo " * calls svn export putting export into maindir=basefolder/dde_biftool_v{version}"
+    echo " * compiles manual, cover and other docs and copies them into maindir"
+    echo " * glues cover and manual together using pdftk or gs"
+    echo " * replaces Id lines and updates (c) lines with {version}(commit)"
+    echo " * insert {version} into Readme.html and creates Readme.txt from Readme.html"
+    echo " * if testprog is given applies testprog to all demos (in temporary folder test)"
+    echo "    possible choices for testprog: matlab octave"
+    echo " * removes folders not intended for distribution"
+    echo " * zips maindir into dde_biftool_v{version}.zip"
+    echo " "
+    echo " used programs:"
+    echo " bash, svn, pdflatex, bibtex, {pdftk, gs}, python (tested with 2.6)"
+    echo " for testing {matlab, octave}"
+    exit
+fi
 base=`cd $1;pwd`
 version=$2
 if [[ $# -lt 3 ]]; then
