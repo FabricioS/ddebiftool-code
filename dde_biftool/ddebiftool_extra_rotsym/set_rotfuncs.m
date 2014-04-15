@@ -1,13 +1,21 @@
+%% set_rotfuncs - Fill in funcs structure for use with DDE-Biftool, rotational symmetric case
+%%
 function funcs=set_rotfuncs(varargin)
-%% fill in funcs structure for use with DDE-Biftool, rotational symmetric case
+%% Named arguments
 %
-% $Id$
-%
-% possible named arguments: 'sys_rhs' (mandatory), 'rotation' (mandatory),
-% 'exp_rotation' (mandatory), 'sys_ntau', 'sys_cond', 'sys_deri', 'sys_dtau'
+% * |'sys_rhs'| (mandatory), 
+% * |'rotation'| (mandatory),
+% * |'exp_rotation'| (mandatory),
+% * |'sys_ntau'|, 
+% * |'sys_cond'|,
+% * |'sys_deri'| (unused),
+% * |'sys_dtau'| (unused).
 %
 % See rotsym_demo for example usage
 % uses defaults df_deriv for partial derivatives
+%
+% $Id$
+%
 
 %% Process options
 defaults={'rotation',[],'exp_rotation',[],'rot_tol',1e-8,'hjac',1e-6};

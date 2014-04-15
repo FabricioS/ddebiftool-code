@@ -38,7 +38,7 @@ To install:
   demos (example scripts illustrating the use of DDE-BIFTOOL),
   ddebiftool_extra_psol (extension for local bifurcations of periodic orbits),
   ddebiftool_utilities (optional auxiliary functions)
-  ddebiftool_extra_psol (extension for systems with rotational symmetry).
+  ddebiftool_extra_rotsym (extension for systems with rotational symmetry).
  
 * Testing the tutorial demo neuron:
 

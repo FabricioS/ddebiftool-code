@@ -1,28 +1,31 @@
+%% SetupMWFold - Initialize continuation of folds of modulated waves
+%%
 function [pfuncs,pbranch,suc]=SetupMWFold(funcs,branch,ind,varargin)
-%% initialize continuation of folds of modulated waves
+%% Inputs
+% 
+% * |funcs|: functions used for rotationally symmetric DDE
+% * |branch|: branch of psols along which fold was discovered
+% * |ind| number of point close to fold
 %
-% inputs
-% funcs: functions used for rotationally symmetric DDE
-% branch: branch of psols along which fold was discovered
-% ind number of point close to fold
+%% Outputs
 %
-% outputs
-% pfuncs: functions used for extended DDE
-% pbranch: fold branch with first point (or two points)
-% suc: flag whether corection was successful
+% * |pfuncs|: functions used for extended DDE
+% * |pbranch|: fold branch with first point (or two points)
+% * |suc|: flag whether corection was successful
 %
-% optional inputs
-% contpar (integer default []): index of additional continuation parameter 
-%   (in add. to free parameters in argument branch)
-% hbif (default 1e-3): used for finite differencing when approximating
-%   linearized system, replace by funcs.sys_deri if funcs.sys_deri is
+%% Optional inputs
+% 
+% * |contpar| (integers default |[]|): index of continuation parameters 
+%   (replacing free parameters in argument branch)
+% * |hbif| (default |1e-3|): used for finite differencing when approximating
+%   linearized system, replace by |funcs.sys_deri| if |funcs.sys_deri| is
 %   analytical
-% correc (logical, default true): apply p_correc to first points on fold
+% * |correc| (logical, default |true|): apply |p_correc| to first points on fold
 %   branch
-% dir (integer, default []): which parameter to vary initially along fold
-%   branch (pbranch has only single point if dir is empty)
-% step (real, default 1e-3): size of initial step if dir is non-empty
-% hjac (default 1e-6) deviation for numerical derivatives if needed
+% * |dir| (integer, default |[]|): which parameter to vary initially along fold
+%   branch (|pbranch| has only single point if |dir| is empty)
+% * |step| (real, default |1e-3|): size of initial step if dir is non-empty
+% * |hjac| (default |1e-6|) deviation for numerical derivatives if needed
 %
 % all other named arguments are passed on to pbranch.method.continuation,
 % pbranch.method.point and pbranch.parameter
