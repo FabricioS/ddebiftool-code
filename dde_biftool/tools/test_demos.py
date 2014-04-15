@@ -28,13 +28,13 @@ demos=[['neuron', 'rundemo'],
        ['rotsym_demo', 'rotsym_demo'], 
        ['humphriesetal', 'humphriesetal_demo']]
 sep='\n=====================\n'
-frame=['try', 'exit(0);', 'catch', 'exit(-1);', 'end']
+frame=lambda x: 'try;{0:s};exit(0);catch;exit(-1);end'.format(x)
 commands={'octave':['octave', '--eval'],
     'matlab': ['matlab', '-nodesktop','-nosplash', '-r']}
 # main function performing all steps
 def main():
     nargs=len(sys.argv)
-    if nargs<1:
+    if nargs<3:
         print usage.format(sys.argv[0])
         print 'nargs:', nargs
         print 'argv:', sys.argv
@@ -63,7 +63,7 @@ def main():
             print tdir+p[0]+' not found'
             continue
         print sep+'testing '+p[0]
-        prog=';'.join([frame[0], p[1]]+frame[1:])
+        prog=frame(p[1])
         call=list(cmd)
         call.append(prog)
         retval[p[0]]=subprocess.call(call)
