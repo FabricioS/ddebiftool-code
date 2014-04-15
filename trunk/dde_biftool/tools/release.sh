@@ -11,7 +11,7 @@ else
     cmd=$2
 fi
 name="dde_biftool_v"$version
-destdir="tags/$name"
+destdir="$name"
 zip=$name".zip"
 files="*/*.*"
 rm -rf $destdir
@@ -45,7 +45,8 @@ cd $destdir
 python $destdir/tools/c_insert.py $destdir $version
 #
 # set version readme
-sed -- "s/|version|/$version/g" readme
+sed -i -- "s/|version|/$version/g" Readme.html
+html2text Readme.html >Readme.txt
 #
 # if testing required perform tests of demos
 if [[ $dotest -eq 1 ]]; then
@@ -56,15 +57,9 @@ fi
 # remove folders not intended for distibution
 rm -rf  tools manual FilesChangedAndAdded_V203 system test
 
-#correct author name
-#find . -type f -print0 | xargs -0 sed -i '/$Id/s/jansie/Jan Sieber/g'
-#find . -type f -print0 | xargs -0 sed -i '/$Id/s/js543/Jan Sieber/g'
-
-#insert release number
-#find . -type f -print0 | xargs -0 sed -i '/$Id/s/$Id/$Id('"$version"')/g'
 
 # zip
-cd $base/tags
+cd $base
 rm -rf $zip
 zip -r $zip $name
 

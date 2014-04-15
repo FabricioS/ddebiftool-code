@@ -1,30 +1,30 @@
+%% SetupRWFold - Initialize continuation of folds of relative equilibria
+%%
 function [pfuncs,pbranch,suc]=SetupRWFold(funcs,branch,ind,varargin)
-%% initialize continuation of folds of periodic orbits
+%% Inputs
 %
-% inputs
-% funcs: functions used for DDE
-% branch: branch of psols along which fold was discovered
-% ind number of point close to fold
+% * |funcs|: functions used for DDE
+% * |branch|: branch of psols along which fold was discovered
+% * |ind|: number of point close to fold
 %
-% outputs
-% pfuncs: functions used for extended DDE
-% pbranch: fold branch with first point (or two points)
-% suc: flag whether corection was successful
+%% Outputs
 %
-% optional inputs
-% contpar (integer default []): set of continuation parameters  
+% * |pfuncs|: functions used for extended DDE
+% * |pbranch|: fold branch with first point (or two points)
+% * |suc|: flag whether corection was successful
+%
+%% Optional inputs
+%
+% * |contpar| (integer default |[]|): set of continuation parameters  
 %   (if empty free parameters in argument branch are used)
-% hbif (default 1e-3): used for finite differencing when approximating
-%   linearized system, replace by funcs.sys_deri if funcs.sys_deri is
-%   analytical
-% correc (logical, default true): apply p_correc to first points on fold
+% * |hbif| (default |1e-3|): used for finite differencing when approximating
+%   linearized system,
+% * |correc| (logical, default |true|): apply |p_correc| to first points on fold
 %   branch
-% dir (integer, default []): which parameter to vary initially along fold
-%   branch (pbranch has only single point if dir is empty)
-% step (real, default 1e-3): size of initial step if dir is non-empty
-% pitchfork (logical, default false) if true then initialization assumes
-%   that detected "fold" is pitchfork bifurcation (not safe)
-% hjac (default 1e-6) deviation for numerical derivatives if needed
+% * |dir| (integer, default |[]|): which parameter to vary initially along fold
+%   branch (|pbranch| has only single point if dir is empty)
+% * |step| (real, default |1e-3|): size of initial step if dir is non-empty
+% * |hjac| (default |1e-6|) deviation for numerical derivatives if needed
 %
 % all other named arguments are passed on to pbranch.method.continuation,
 % pbranch.method.point and pbranch.parameter
