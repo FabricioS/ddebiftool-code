@@ -13,11 +13,11 @@ else
 fi
 name="dde_biftool_v"$version
 destdir="$name"
+destdir=$base/$destdir
 zip=$name".zip"
 files="*/*.*"
 rm -rf $destdir
 svn export ^/trunk/dde_biftool  $destdir --native-eol CRLF
-destdir=$base/$destdir
 #
 # compile manual
 cd $destdir/manual
