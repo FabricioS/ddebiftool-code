@@ -16,7 +16,7 @@ if [[ $# -lt 1 ]]; then
     echo " * zips maindir into dde_biftool_v{version}.zip"
     echo " "
     echo " used programs:"
-    echo " bash, svn, pdflatex, bibtex, {pdftk, gs}, python (tested with 2.6)"
+    echo " bash, svn, pdflatex, bibtex, {pdftk, gs}, python (tested with 2.6), unix2dos, html2text"
     echo " for testing {matlab, octave}"
     exit
 fi
@@ -64,6 +64,7 @@ python $destdir/tools/c_insert.py $destdir $version
 # set version readme
 sed -i -- "s/|version|/$version/g" Readme.html
 html2text Readme.html >Readme.txt
+unix2dos Readme.txt
 #
 # if testing required perform tests of demos
 if [[ $dotest -eq 1 ]]; then
