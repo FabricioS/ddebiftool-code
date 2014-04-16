@@ -2,6 +2,7 @@
 %
 % $Id$
 %
+\usepackage{CWTWcover}
 \usepackage[labelfont={small},textfont={small}]{caption}
 \usepackage{subcaption}
 \usepackage{tocloft}
@@ -34,6 +35,20 @@
   citecolor=darkblue, filecolor=darkblue,
   menucolor=darkblue,pagecolor=darkblue,urlcolor=darkblue,linkcolor=darkblue}
 
+\title{{\DDEBIFCODE\ v. \version{}}:\\
+  a Matlab package  for bifurcation analysis
+          of delay differential equations} 
+
+% vertical listing of the authors     
+\author{K. Engelborghs, T. Luzyanina, G. Samaey}   
+
+% give the date
+\date{December 2001, \\[2ex]
+revised for v.~\version{} by\\ Jan Sieber,  April 2014}
+
+% give the number of the report (either CW or TW, but not both)
+%\CW{NNN}
+\TW{330}
 % commands, abbreviations (converted from gdef to newcommand)
 \newcommand{\DDEBIFCODE}{\textsc{DDE-BIFTOOL}}
 \newcommand{\ddebifweb}{\url{http://twr.cs.kuleuven.be/research/software/delay/ddebiftool.shtml}}
@@ -63,11 +78,6 @@
 \setcounter{totalnumber}{20}
 \setcounter{dbltopnumber}{9}
 
-% \textwidth       160mm
-% \textheight      220mm
-% \topmargin         1mm
-% \evensidemargin    8mm
-% \oddsidemargin     8mm
 
 \newsavebox{\savepar}
 \newenvironment{boxit}[1]{\begin{center}\begin{lrbox}{\savepar}
@@ -99,6 +109,22 @@
 % set typearea here
 \typearea{11}
 \begin{document}
+\begin{coverpage}
+
+\begin{abstract}
+\begin{quotation}             
+\input{abstract.tex}
+\end{quotation}
+\end{abstract}
+
+% optionally give keywords and CR (CW) or AMS (TW) classifications
+\keywords delay equations, periodic solutions, collocation methods.   
+% Keywords : keyword1, kw2, kw3.
+%\CR XXX, YYY, ZZZ               % CR Subject Classification : XXX, YYY, ZZZ.
+\AMS \Primary 65J15,            % AMS(MOS) Classification : Primary : XXX, Se-
+     \Secondary 65P05.          % condary : YYY, ZZZ.
+
+\end{coverpage}
 
 % \leftmargin    0mm
 % \rightmargin -20mm
