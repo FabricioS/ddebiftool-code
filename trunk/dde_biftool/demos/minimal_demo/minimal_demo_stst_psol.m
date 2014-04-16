@@ -32,8 +32,7 @@ triv_eqs=SetupStst(funcs,'x',[0;0],'parameter',[0.2,0.5,0.6,0.05],...
     'contpar',indtau,'max_step',[indtau,0.3],'max_bound',[indtau,20],...
     'newheuristics_tests',0);
 %% Stability of trivial equilibria
-% The system has only the trivial equilibrium for positive values of the
-% parameter $a$. We continue this equilibrium in |tau| and compute its
+% We continue the trivial equilibrium in |tau| and compute its
 % stability (which changes).  The convenience function |GetStability|
 % recomputes the eigenvalues if not yet present and returns as its first
 % output |nunst_eqs| the number of unstable eigenvalues for bifurcation
@@ -46,7 +45,7 @@ triv_eqs=br_stabl(funcs,triv_eqs,0,1);
 nunst_eqs=GetStability(triv_eqs);
 %% Branch off at 2nd Hopf bifurcation to find periodic orbits
 % We find the first point at which the number of unstable eigenvalues is
-% greater than 2. The convenience function |per_from_hopf| performs the
+% greater than 2. The convenience function |SetupPsol| performs the
 % initial corrections for the first two points along the branch of periodic
 % orbits.
 %
