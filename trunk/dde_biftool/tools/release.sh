@@ -38,23 +38,13 @@ svn export ^/trunk/dde_biftool  $destdir --native-eol CRLF
 #
 # compile manual
 cd $destdir/manual
-tex="TWcover manual ExtensionChanges-v3"
+tex="manual ExtensionChanges-v3"
 echo '\newcommand{\version}{'$version'}' >version.tex
 for x in $tex; do
     pdflatex $x && pdflatex $x && pdflatex $x && \
     bibtex $x && pdflatex $x && pdflatex $x
 done
-#
-# join cover and manual body
-pdfjoin=`which pdftk`
-if [[ -x $pdfjoin ]]; then
-    $pdfjoin A=TWcover.pdf B=manual.pdf cat A B output all.pdf
-else
-    gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER \
-    -sOutputFile=all.pdf TWcover.pdf manual.pdf
-fi
-mv all.pdf $destdir/manual.pdf
-mv ExtensionChanges-v3.pdf Addendum_Manual_DDE-BIFTOOL_2_03.pdf $destdir
+mv manual.pdf ExtensionChanges-v3.pdf Addendum_Manual_DDE-BIFTOOL_2_03.pdf $destdir
 # clean up manual creation
 cd $destdir
 #
