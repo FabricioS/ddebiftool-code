@@ -44,7 +44,10 @@ def main():
     tdir=rootdir+'/test/'
     ddir=rootdir+'/demos/'
     bdir=os.getcwd()
-    shutil.rmtree(tdir)
+    try:
+        shutil.rmtree(tdir)
+    except:
+        None
     os.mkdir(tdir)
     retval={}
     demosel=sys.argv[3:]
