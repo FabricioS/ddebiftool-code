@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Definition of user functions</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-04-10"><meta name="DC.source" content="demo1_funcs.m"><style type="text/css">
+      --><title>Definition of user functions</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-04-19"><meta name="DC.source" content="demo1_funcs.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -56,8 +56,8 @@ span.syscmd { color:#B28C00 }
 .footer p { margin:0px; }
 
   </style></head><body><div class="content"><h1>Definition of user functions</h1><!--introduction--><p>
-% $Id$
-</p><p>(Please load <tt>ddebiftoool</tt> into path first, see <a href="demo1.html">demo1.html</a>.) To define a system, the user should provide Matlab functions defining the right-hand side (in the example called <tt>neuron_sys_rhs</tt>) and the indices for the delays in the parameter vector (called <tt>neuron_tau</tt> in our example).</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Right-hand side</a></li><li><a href="#2">Delays</a></li><li><a href="#3">Jacobians of user-provided functions</a></li><li><a href="#4">Definition of structure <tt>funcs</tt></a></li><li><a href="#5">Save and continue to continuation and stability of steady states <a href="demo1_stst.html">demo1_stst.html</a></a></li></ul></div><h2>Right-hand side<a name="1"></a></h2><p>A function defining the right-hand side <img src="demo1_funcs_eq85998.png" alt="$f$">:</p><pre class="language-matlab"><span class="keyword">function</span> y=sys_rhs(xx,par)
+$Id$
+</p><p>(Please load <tt>ddebiftool</tt> into path first, see <a href="demo1.html">demo1.html</a>.) To define a system, the user should provide Matlab functions defining the right-hand side (in the example called <tt>neuron_sys_rhs</tt>) and the indices for the delays in the parameter vector (called <tt>neuron_tau</tt> in our example).</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Right-hand side</a></li><li><a href="#2">Delays</a></li><li><a href="#3">Jacobians of user-provided functions</a></li><li><a href="#4">Definition of structure <tt>funcs</tt></a></li><li><a href="#5">Save and continue to continuation and stability of steady states <a href="demo1_stst.html">demo1_stst.html</a></a></li></ul></div><h2>Right-hand side<a name="1"></a></h2><p>A function defining the right-hand side <img src="demo1_funcs_eq85998.png" alt="$f$">:</p><pre class="language-matlab"><span class="keyword">function</span> y=sys_rhs(xx,par)
 </pre><p>This function has two arguments, <tt>xx</tt> <img src="demo1_funcs_eq45452.png" alt="$\in R^{n\times (m+1)}$">, which contains the state variable(s) at the present and in the past, <tt>xx</tt> <img src="demo1_funcs_eq21783.png" alt="$=[x(t), x(t-\tau_1), \ldots, x(t-\tau_m)]$">, <tt>par</tt> <img src="demo1_funcs_eq21304.png" alt="$\in R^{1\times p}$"> which contains the parameters, <tt>par</tt> <img src="demo1_funcs_eq13527.png" alt="$=\eta$">.</p><p>For the example, this is (<img src="demo1_funcs_eq85998.png" alt="$f$"> is called <tt>neuron_sys_rhs</tt> in our example)</p><pre class="codeinput">neuron_sys_rhs=@(xx,par)[<span class="keyword">...</span>
     -par(1)*xx(1,1)+par(2)*tanh(xx(1,4))+par(3)*tanh(xx(2,3));<span class="keyword">...</span><span class="comment">.</span>
     -par(1)*xx(2,1)+par(2)*tanh(xx(2,4))+par(4)*tanh(xx(1,2))];
@@ -91,7 +91,7 @@ ind_taus=7; <span class="comment">% used later for continuation</span>
 % $Id$
 % </html>
 %
-% (Please load |ddebiftoool| into path first, see <demo1.html>.)
+% (Please load |ddebiftool| into path first, see <demo1.html>.)
 % To define a system, the user should provide Matlab functions defining the
 % right-hand side (in the example called |neuron_sys_rhs|) and the indices
 % for the delays in the parameter vector (called |neuron_tau| in our

@@ -9,7 +9,7 @@
 % boundary-value problems approximately with collocation schemes. A
 % typical starting point for a family of periodic orbits is a Hopf
 % bifurcation. This demo requires <demo1_hopf.html> to have run beforehand.
-%
+%%
 %#ok<*ASGLU,*NOPTS,*NASGU>
 %
 %% Constructing an initial small-amplitude orbit near a Hopf bifurcation

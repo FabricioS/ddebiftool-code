@@ -10,7 +10,7 @@
 % The demo will proceed to continue two of these Hopf bifurcations in two
 % system parameters $a_{21}$ and $\tau_s$. This part requires to run
 % <demo1_stst.html> first
-%
+%%
 %#ok<*ASGLU,*NOPTS,*NASGU>
 %
 %% Locating the first Hopf point

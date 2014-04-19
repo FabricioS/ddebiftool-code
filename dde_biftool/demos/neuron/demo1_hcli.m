@@ -5,7 +5,7 @@
 % </html>
 %
 % (requires running <demo1_psol.html> first to create branch5)
-%
+%%
 %#ok<*ASGLU,*NOPTS,*NASGU>
 %
 %% Cutting a long-period periodic orbit

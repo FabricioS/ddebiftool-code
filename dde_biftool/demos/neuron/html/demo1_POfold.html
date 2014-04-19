@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Continuation of folds of periodic orbits</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-04-10"><meta name="DC.source" content="demo1_POfold.m"><style type="text/css">
+      --><title>Continuation of folds of periodic orbits</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-04-19"><meta name="DC.source" content="demo1_POfold.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -56,7 +56,7 @@ span.syscmd { color:#B28C00 }
 .footer p { margin:0px; }
 
   </style></head><body><div class="content"><h1>Continuation of folds of periodic orbits</h1><!--introduction--><p>
-% $Id$
+$Id$
 </p><p>The extension ddebiftool_extra_psol is able to continue local bifurcations of periodic orbits in two parameters. This demo shows how one can continue folds (saddle-nodes) of periodic orbits i nthe neuron problem. (requires running of <a href="demo1_psol.html">demo1_psol.html</a> first).</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Add extension folder to path</a></li><li><a href="#2">Speed up computations by vectorization</a></li><li><a href="#3">Find initial guess</a></li><li><a href="#4">Initialize branch and set up extended system</a></li><li><a href="#5">Branch continuation</a></li><li><a href="#6">Extracting solution components</a></li><li><a href="#7">Stability of fold orbits</a></li><li><a href="#8">Save results (end of tutorial demo, but try also <a href="demo1_hcli.html">demo1_hcli.html</a>)</a></li></ul></div><h2>Add extension folder to path<a name="1"></a></h2><p>The extension is installed in a separate folder. In addition, a folder with utilities for user convenience is loaded.</p><pre class="codeinput">addpath(<span class="string">'../../ddebiftool_extra_psol/'</span>);
 addpath(<span class="string">'../../ddebiftool_utilities/'</span>);
 <span class="comment">%#ok&lt;*ASGLU,*NOPTS,*NASGU&gt;</span>
@@ -213,5 +213,6 @@ xlabel('point number');
 ylabel('defect of trivial Floquet multiplier');
 %% Save results (end of tutorial demo, but try also <demo1_hcli.html>)
 save('demo1_POfold_results.mat')
+
 ##### SOURCE END #####
 --></body></html>

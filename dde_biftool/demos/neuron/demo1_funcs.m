@@ -4,7 +4,7 @@
 % $Id$
 % </html>
 %
-% (Please load |ddebiftoool| into path first, see <demo1.html>.)
+% (Please load |ddebiftool| into path first, see <demo1.html>.)
 % To define a system, the user should provide Matlab functions defining the
 % right-hand side (in the example called |neuron_sys_rhs|) and the indices
 % for the delays in the parameter vector (called |neuron_tau| in our
