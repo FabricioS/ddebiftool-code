@@ -56,6 +56,7 @@ revised for v.~\version{} by\\ Jan Sieber,  April 2014}
 \newcommand{\file}[1]{\textbf{\texttt{#1}}}
 \newcommand{\parm}[1]{\mathsf{#1}}
 \newcommand{\define}[1]{\emph{#1}}
+\newcommand{\demobase}{\url{demos/index.html}}
 \renewcommand{\i}{\mathrm{i}}
 \newcommand{\T}{\mathrm{T}}
 \renewcommand{\H}{\mathrm{H}}
@@ -109,6 +110,7 @@ revised for v.~\version{} by\\ Jan Sieber,  April 2014}
 % set typearea here
 \typearea{11}
 \begin{document}
+\pagenumbering{roman}
 \begin{coverpage}
 
 \begin{abstract}
@@ -139,7 +141,78 @@ analysis of delay differential equations}
 %\begin{abstract}
 %\input{abstract.tex}
 %\end{abstract}
+\renewcommand{\contentsname}{}
 \tableofcontents
+\clearpage
+\pagenumbering{arabic}
+\section{Citation, license, and obtaining the package}
+\label{sec:app:get}
+{\DDEBIFCODE} % is freely available for scientific (non-commercial)
+% use. It
+was started by the first author as a part of his PhD at
+the Computer Science Department of the K.U.Leuven under supervision
+of Prof.\ D.\ Roose.
+
+\paragraph{Citation}
+Scientific publications, for which the package DDE-BIFTOOL has been
+used, shall mention usage of the package DDE-BIFTOOL, and shall cite
+the following publications to ensure proper attribution and
+reproducibility:
+\begin{itemize}\item 
+  K. Engelborghs, T. Luzyanina, and D. Roose. Numerical bifurcation
+  analysis of delay differential equations using DDE-BIFTOOL, ACM
+  Trans. Math. Softw. 28 (1), pp. 1-21, 2002.
+\item K. Engelborghs, T. Luzyanina, G. Samaey. DDE-BIFTOOL v. 2.00: a
+  Matlab package for bifurcation analysis of delay differential
+  equations.  Technical Report TW-330, Department of Computer Science,
+  K.U.Leuven, Leuven, Belgium, 2001.
+\end{itemize}
+
+\paragraph{License}
+The following terms cover the use of the software package {\DDEBIFCODE}:
+\iffalse
+\begin{enumerate}
+\item The package {\DDEBIFCODE} can be used only for the purpose of internal
+research excluding any commercial use of the package {\DDEBIFCODE} as such
+or as a part of a software product.
+\item {\scshape K.U.Leuven, Department of Computer Science} shall for all
+purposes be considered the owner of {\DDEBIFCODE} and of all copyright,
+trade secret, patent or other intellectual property rights therein.
+\item The package {\DDEBIFCODE} is provided on an "as is" basis and
+for the purposes described in paragraph 1 only. In no circumstances
+can {\scshape K.U.Leuven} be held liable for any deficiency, fault
+or other mishappening with regard to the use or performance of
+the package {\DDEBIFCODE}.
+\item All scientific publications, for which the package {\DDEBIFCODE}
+has been used, shall mention usage of the package {\DDEBIFCODE},
+and shall refer to the following publication:
+\begin{quote}
+K.~Engelborghs, T.~Luzyanina, G.~Samaey. DDE-BIFTOOL\ v.~2.00 user manual: 
+a Matlab package for bifurcation analysis
+of delay differential equations. Technical Report TW-330, Department of
+Computer Science, K.U.Leuven, Leuven, Belgium, 2001.
+\end{quote}
+\end{enumerate}
+\fi
+\bigskip\hrule
+{\ttfamily
+\begin{flushleft} {\parindent0pt
+    \parskip5pt \input{license.txt} }
+\end{flushleft}
+}
+\hrule\bigskip
+
+\paragraph{Download}
+
+Upon acceptance of the above terms, one can obtain the package
+{\DDEBIFCODE} (version \version{}) from
+\begin{quote}
+  \ddebifweb{}.
+\end{quote}
+The web page
+contains also up-to-date information on newer versions and helpful
+resources.
+
 \section{Changes from 2.0x to \version}
 \label{sec:changes}
 Version \version{} changes the user interface for many \DDEBIFCODE{}
@@ -187,7 +260,7 @@ Furthermore,
   eigenvalues) can now be performed more conveniently with some
   auxiliary functions provided in a separate folder
   \texttt{ddebiftool\_utilities}. See
-  \url{../demos/neuron/html/demo1_simple.html} for a demonstration.
+  \url{demos/neuron/html/demo1_simple.html} for a demonstration.
 \end{itemize}
 
 \paragraph{Note}
@@ -210,19 +283,19 @@ constant delays (called DDEs) or state-dependent delays (here called
 sd-DDEs).  It also allows users to compute homoclinic and heteroclinic
 orbits in DDEs (with constant delays).  
 
-\paragraph{Availability}
-The package is freely available for scientific use.  % A list of the
-% files which constitute {\DDEBIFCODE} is contained in
-% \ref{sec:app:files}.
-A copyright and warranty notice together with
-instructions on obtaining the package can be found in
-Appendix~\ref{sec:app:get}.  Up-to-date information can be found on the web
-page
-\begin{quote}
-  \ddebifweb{}.
-\end{quote}
-Note that the package is typical research software and is provided "as
-is" without warranty of any kind (see \ref{sec:app:get}).
+% \paragraph{Availability}
+% The package is freely available for scientific use.  % A list of the
+% % files which constitute {\DDEBIFCODE} is contained in
+% % \ref{sec:app:files}.
+% A copyright and warranty notice together with
+% instructions on obtaining the package can be found in
+% Appendix~\ref{sec:app:get}.  Up-to-date information can be found on the web
+% page
+% \begin{quote}
+%   \ddebifweb{}.
+% \end{quote}
+% Note that the package is typical research software and is provided "as
+% is" without warranty of any kind (see \ref{sec:app:get}).
 
 % \DDEBIFCODE{} v. 2.00 is compatible with the previous
 % versions. This manual describes both the material of v. 1.00 
@@ -234,7 +307,7 @@ for version v.\,2.03 continues to be available at the above web
 address \ddebifweb{}.  For readers who intend to analyse only systems
 with constant delays, the parts of the manual related to systems with
 state-dependent delays can be skipped (sections \ref{sd_dde},
-\ref{sys_def2} and \ref{demo2}).  In the rest of this report we assume
+\ref{sys_def2}).  In the rest of this report we assume
 the reader is familiar with the notion of a delay differential
 equation and with the basic concepts of bifurcation analysis for
 ordinary differential equations.  The theory on delay differential
@@ -245,6 +318,14 @@ books. Most notably the early
 contain introductions to dynamical systems and bifurcation theory of
 ordinary differential equations, see, e.g.,
 \cite{Chow82,Guck83,Argy94,Seyd94,Kuzn04}.
+
+\textbf{\textsf{Note}}\quad The tutorial demos \texttt{demo1} and
+\texttt{sd\_demo}, providing a step-by-step walk-through for the
+typical working mode with \DDEBIFCODE{} are now included as separate
+\texttt{html} files, published directly from the comments in the demo
+code. See \demobase{} for links to all demos, many of which are
+extensively commented.
+
 
 \paragraph{Related software}
 A large number of packages exist for bifurcation analysis of systems
@@ -269,15 +350,17 @@ DDVERK, RADAR and dde23, see
 \cite{Paul95,Thom97,Erme98,Enri97,Sham00,Gugl07}.  Of these, only
 XPPAUT has a graphical interface (and allows limited stability
 analysis of steady state solutions of DDEs along the lines of
-\cite{Luzy96}). An up-to-date list of (and links to) available
-software for DDEs can be found on the web page \ddebifweb{}.
+\cite{Luzy96}). TRACE-DDE is a Matlab tool (with graphical interface)
+for linear stability analysis of linear constant-coefficient DDEs
+\cite{breda09}. An up-to-date list of (and links to) available software
+for DDEs can be found on the web page \ddebifweb{}.
 
 \paragraph{Capabilities}
 {\DDEBIFCODE} can perform the following computations:
 \begin{compactitem}
 \item continuation of steady state solutions (typically in a single
   parameter);
-\item approximation of the rightmost, stability determining roots of
+\item approximation of the rightmost, stability-determining roots of
   the characteristic equation which can further be corrected using a
   Newton iteration;
 \item continuation of steady state folds and Hopf bifurcations
@@ -292,7 +375,7 @@ software for DDEs can be found on the web page \ddebifweb{}.
 \item continuation of folds, period doublings and torus bifurcations
   (typically in two system parameters) using the extension
   \texttt{ddebiftool\_extra\_psol};
-\item continuation of connection orbits (using the appropriate number
+\item continuation of connecting orbits (using the appropriate number
   of parameters).  
 \end{compactitem}
 All computations can be performed for problems with an arbitrary
@@ -400,17 +483,17 @@ extend a given branch (that is, to compute extra points using
 continuation), to (re)compute stability along the branch and to
 visualize the branch and/or its stability.
 
-Layers 2 and 3 require specific data structures,
-explained in section~\ref{data_structures}, to represent
-points, stability information, branches, to pass method 
-parameters and to specify plotting information.
-Usage of these layers 
-is demonstrated in section~\ref{demo}
-through a step-by-step analysis of the demo systems.
-Descriptions of input/output parameters and functionality
-of all routines in layers 2 and 3 are given in 
-sections~\ref{point_manipulation}
-respectively \ref{branch_manipulation}. 
+Layers 2 and 3 require specific data structures, explained in
+section~\ref{data_structures}, to represent points, stability
+information, branches, to pass method parameters and to specify
+plotting information.  Usage of these layers is
+demonstrated %in section~\ref{demo}
+through a step-by-step analysis of the demo systems \texttt{neuron},
+\texttt{sd\_demo} and \texttt{hom\_demo} (see
+\demobase{}).  Descriptions of input/output parameters and
+functionality of all routines in layers 2 and 3 are given in
+sections~\ref{point_manipulation} respectively
+\ref{branch_manipulation}.
 
 \section{Delay differential equations}\label{explain_dde}
 \label{sec:ddes}
@@ -628,9 +711,9 @@ functions for the user to provide are the right-hand side
 (\blist{'sys_rhs'}) and the function returning the delay indices
 (\blist{'sys_tau'}). The names of the user functions can be arbitrary,
 and user functions can be anonymous. This is a change from previous
-versions. See the tutorials in sections \ref{ride-through} and
-\ref{demo2} for examples of usage, and the function description in
-section~\ref{sec:funcs} for details.
+versions. See the tutorials in \demobase{} for examples of
+usage, and the function description in section~\ref{sec:funcs} for
+details.
 \subsection{Equations with constant delays}\label{sys_def1}
 
 As an illustrative example we will use the following system of delay 
@@ -647,7 +730,8 @@ equations, taken from \cite{Shay99},
 This system models two coupled neurons with time delayed connections.
 It has two components ($x_1$ and $x_2$), three delays ($\tau_1$,
 $\tau_2$ and $\tau_s$), and four parameters ($\kappa$, $\beta$,
-$a_{12}$ and $a_{21}$).  Section \ref{ride-through} walks through the
+$a_{12}$ and $a_{21}$).  The demo \texttt{neuron} (see
+\demobase{}) walks through the
 bifurcation analysis of system \eqref{example_sys} step by step to
 demonstrate the working pattern for \DDEBIFCODE.
 
@@ -849,8 +933,8 @@ where
 This system has five components $(x_1,\ldots,x_5)$, six delays
 $(\tau_1,\ldots,\tau_6)$ and eleven parameters $(p_1,\ldots,p_{11})$,
 where $p_{10}=\tau_1$ and $p_{11}=\tau_2$.  A step-by-step tutorial
-for analysis of sd-DDEs is given in section \ref{demo2} of this system
-using \eqref{example_sys2}.
+for analysis of sd-DDEs is given in demo \texttt{sd\_demo} (see
+\demobase{}) of this system using \eqref{example_sys2}.
 
 To define a system with state-dependent delays, the user should
 provide the following Matlab functions, given in the following
@@ -1017,8 +1101,9 @@ beginning of the script performing the bifurcation analysis:
 Its argument format is in the form of name-value pairs (in arbitrary
 order, similar to options at the end of a call to \blist{plot}). For
 the example \eqref{example_sys} of a neuron, discussed in
-section~\ref{sys_def1} and later in section~\ref{ride-through}, the
-call to \blist{set_funcs} could look as follows:
+section~\ref{sys_def1} and in demo \texttt{neuron} (see
+\demobase{}), the call to \blist{set_funcs} could look as
+follows:
 \begin{lstlisting}
 funcs=set_funcs('sys_rhs',neuron_sys_rhs,'sys_tau',@()[5,6,7],...
                 'sys_deri',@neuron_sys_deri);
@@ -1167,8 +1252,8 @@ but calls the routine \blist{set_funcs}, which returns the structure
 \blist{funcs} to be passed on to other functions. The usage of
 \blist{set_funcs} and the meaning of the fields of its output are
 described in detail in section~\ref{sec:funcs}. See also the tutorial
-demos in section~\ref{ride-through} and \ref{demo2} for examples of
-usage.
+demos \texttt{neuron} and \texttt{sd\_demo} (see
+\demobase{} for examples of usage.
 
 \subsection{Point structures}\label{sec:point:struct}
 
@@ -1524,23 +1609,24 @@ see table \ref{branch_struct}.
 
 
 The branch structure has three fields. One, called \blist{'point'},
-which contains an array of point structures, one, called \blist{'method'},
-which is itself a structure containing three subfields and a third,
-called \blist{'parameter'} which contains four subfields.  The three subfields
-of the method field are again structures. The first, called \blist{'point'},
-contains point method parameters as described in Table
-\ref{point_method_structures}.  The second, called \blist{'stability'},
-contains stability method parameters as described in Table
-\ref{meth_stab_struct} and the third, called \blist{'continuation'}, contains
-continuation method parameters as described in Table
-\ref{continuation_structure}.  Hence the branch structure incorporates
-all necessary method parameters which are thus automatically kept when
-saving a branch variable to file.  The parameter field contains a list
-of free parameter numbers which are allowed to vary during
-computations, and a list of parameter bounds and maximal
-steplengths. Each row of the bound and steplength subfields consists
-of a parameter number (first element) and the value for the bound or
-steplength limitation. Examples are given in section \ref{demo}.
+which contains an array of point structures, one, called
+\blist{'method'}, which is itself a structure containing three
+subfields and a third, called \blist{'parameter'} which contains four
+subfields.  The three subfields of the method field are again
+structures. The first, called \blist{'point'}, contains point method
+parameters as described in Table \ref{point_method_structures}.  The
+second, called \blist{'stability'}, contains stability method
+parameters as described in Table \ref{meth_stab_struct} and the third,
+called \blist{'continuation'}, contains continuation method parameters
+as described in Table \ref{continuation_structure}.  Hence the branch
+structure incorporates all necessary method parameters which are thus
+automatically kept when saving a branch variable to file.  The
+parameter field contains a list of free parameter numbers which are
+allowed to vary during computations, and a list of parameter bounds
+and maximal steplengths. Each row of the bound and steplength
+subfields consists of a parameter number (first element) and the value
+for the bound or steplength limitation. Examples are given in demo
+\texttt{neuron} (see \demobase{}).
 
 A default, empty branch structure can be obtained by passing
 a list of free parameters and the point kind 
@@ -1602,6 +1688,7 @@ field  & content & meaning      \\\hline \noalign{\smallskip}
   a measure of a point.}
 \end{table}
 
+\iffalse
 \section{Tutorial examples}\label{demo}
 Note that the content of this section is also available as html
 documentation for the demos \blist{neuron} and \blist{sd_demo},
@@ -3413,7 +3500,7 @@ xlabel('\Re\lambda');ylabel('\Im\lambda');
   \end{center}
 \end{figure}
 
-
+\fi
 \section{Point manipulation}\label{point_manipulation}
 
 Several of the point manipulation routines have already been used in
@@ -3649,14 +3736,13 @@ such that $\tau_{\blist{tz}}=0$ and ${\d}\tau_{\blist{tz}}/{\d}t=0$.
 
 \section{Branch manipulation}\label{branch_manipulation}
 
-Usage of most of
-the branch manipulation routines has already been illustrated
-in section \ref{demo}.
-Here we outline their functionality and input and output variables.
-As for all routines in the package, 
-a brief description of the parameters is also contained
-within the source code and can be obtained in Matlab using the
-\blist{help} command.
+Usage of most of the branch manipulation routines is illustrated in
+the demos \texttt{neuron} and \texttt{sd\_demo} (see
+\demobase{}).  Here we outline their functionality and
+input and output variables.  As for all routines in the package, a
+brief description of the parameters is also contained within the
+source code and can be obtained in Matlab using the \blist{help}
+command.
 \begin{lstlisting}
 function [c_branch,succ,fail,rjct]=br_contn(funcs,branch,max_tries)  
 \end{lstlisting}
@@ -4318,7 +4404,7 @@ better with the size of the problem.
 
 \paragraph{Existing extensions}
 Simple extensions exist that enable \DDEBIFCODE{} to continue the
-three local codimension-one bifurcations of periodic orbits, the fold
+three local co\-dim\-ension-one bifurcations of periodic orbits, the fold
 bifurcation, the period doubling and the torus bifurcation for
 constant and state-dependent delays.
 
@@ -4344,15 +4430,16 @@ Other possible future developments include
 \end{itemize}
 \section*{Acknowledgements}
 
-This report presents results of the research project 
-OT/98/16, funded by the Research Council K.U.Leuven;
-of the research project G.0270.00 funded 
-by the Fund for Scientific Research - Flanders (Belgium) and of the 
-research project IUAP P4/02 funded by the programme
-on Interuniversity Poles of Attraction, initiated by the Belgian State,
+This report presents results of the research project OT/98/16, funded
+by the Research Council K.U.Leuven; of the research project G.0270.00
+funded by the Fund for Scientific Research - Flanders (Belgium) and of
+the research project IUAP P4/02 funded by the programme on
+Interuniversity Poles of Attraction, initiated by the Belgian State,
 Prime Minister's Office for Science, Technology and Culture.
-K.~Engelborghs is a Postdoctoral Fellow of the Fund for Scientific 
-Research - Flanders (Belgium).
+K.~Engelborghs is a Postdoctoral Fellow of the Fund for Scientific
+Research - Flanders (Belgium).  J.~Sieber's contribution to the
+revision leading to version \version{} was supported by EPSRC grant
+EP/J010820/1.
 
 Thanks to D.~Roose for being the promoter of
 the research that culminated into this package.
@@ -4369,7 +4456,8 @@ the research that culminated into this package.
 \label{sec:sys:deri}
 The meaning of input arguments to \blist{sys_deri} is explained in
 section~\ref{sec:constjac}. The analysis of tutorial example
-\blist{neuron} is demonstrated step by step in section~\ref{ride-through}.
+\blist{neuron} is demonstrated in demo \texttt{neuron} step by step
+(see \demobase{}).
 
 \lstinputlisting[frame=lines,caption={Jacobians of right-hand side
   \blist{neuron_sys_rhs} in section~\ref{sec:constrhs} for
@@ -4377,7 +4465,8 @@ section~\ref{sec:constjac}. The analysis of tutorial example
 
 The meaning of input arguments to \blist{sys_dtau} is explained in
 section~\ref{sec:sddtau}. The analysis of tutorial example
-\blist{sd_demo} is demonstrated step by step in section~\ref{demo2}.
+\blist{sd_demo} is demonstrated step by step in demo \texttt{sd\_demo}
+(see \demobase{}).
 \lstinputlisting[frame=lines,caption={Jacobians of the delay function
   \blist{sd_tau} in Listing~\ref{sd_tau} for sd-DDE tutorial example
   \eqref{example_sys2}.},label=sd_dtau]{sd_dtau.m} \newpage
@@ -4463,43 +4552,5 @@ any \blist{fprintf} or \blist{disp} commands immediately;
 \item \blist{page_screen_output(false);} stops paging the terminal
 output.
 \end{compactitem}
-
-
-\section{Obtaining the package}
-\label{sec:app:get}
-{\DDEBIFCODE} is freely available for scientific (non-commercial)
-use. It was started by the first author as a part of his PhD at
-the Computer Science Department of the K.U.Leuven under supervision
-of Prof.\ D.\ Roose.
-
-The following terms cover the use of the software package {\DDEBIFCODE}:
-\begin{enumerate}
-\item The package {\DDEBIFCODE} can be used only for the purpose of internal
-research excluding any commercial use of the package {\DDEBIFCODE} as such
-or as a part of a software product.
-\item {\scshape K.U.Leuven, Department of Computer Science} shall for all
-purposes be considered the owner of {\DDEBIFCODE} and of all copyright,
-trade secret, patent or other intellectual property rights therein.
-\item The package {\DDEBIFCODE} is provided on an "as is" basis and
-for the purposes described in paragraph 1 only. In no circumstances
-can {\scshape K.U.Leuven} be held liable for any deficiency, fault
-or other mishappening with regard to the use or performance of
-the package {\DDEBIFCODE}.
-\item All scientific publications, for which the package {\DDEBIFCODE}
-has been used, shall mention usage of the package {\DDEBIFCODE},
-and shall refer to the following publication:
-\begin{quote}
-K.~Engelborghs, T.~Luzyanina, G.~Samaey. DDE-BIFTOOL\ v.~2.00 user manual: 
-a Matlab package for bifurcation analysis
-of delay differential equations. Technical Report TW-330, Department of
-Computer Science, K.U.Leuven, Leuven, Belgium, 2001.
-\end{quote}
-\end{enumerate}
-
-Upon acceptance of the above terms, one can obtain the package
-{\DDEBIFCODE} (version 3.00) 
-by mailing your full name, affiliation and 
-address to \verb#koen.engelborghs@cs.kuleuven.ac.be#.
-The package will then be forwarded to you.
 
 \end{document}

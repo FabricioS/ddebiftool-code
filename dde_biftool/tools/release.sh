@@ -30,28 +30,40 @@ fi
 name="dde_biftool_v"$version
 destdir="$name"
 destdir=$base/$destdir
+license=$destdir/tools/bsd-license.txt
 zip=$name".zip"
 files="*/*.*"
 rm -rf $destdir
 svn export ^/trunk/dde_biftool  $destdir --native-eol CRLF
 #
+# set year in license.txt
+cd $destdir
+year=`date +%G`
+sed -i -- "s/|year|/$year/g" $license
+#
 # compile manual
 cd $destdir/manual
+cp -p $license ./license.txt
 tex="manual ExtensionChanges-v3"
 echo '\newcommand{\version}{'$version'}' >version.tex
+
 for x in $tex; do
     pdflatex $x && pdflatex $x && pdflatex $x && \
     bibtex $x && pdflatex $x && pdflatex $x
 done
 mv manual.pdf ExtensionChanges-v3.pdf Addendum_Manual_DDE-BIFTOOL_2_03.pdf $destdir
-# clean up manual creation
 cd $destdir
 #
 # set (c) line in all m and html files that have (c) or Id
 python $destdir/tools/c_insert.py $destdir $version
 #
-# set version readme
-sed -i -- "s/|version|/$version/g" Readme.html
+# insert license and set version in readme
+nr=`awk -- '/\|license\|/{print NR}' Readme.html`
+awk -- "NR<$nr {print $0}" Readme.html >tmp.txt
+cat $license >>tmp.txt
+awk -- "NR>$nr {print $0}" Readme.html >>tmp.txt
+sed  -- "s/|version|/$version/g" tmp.txt > Readme.html
+rm -f tmp.txt
 html2text Readme.html >Readme.txt
 unix2dos Readme.txt
 #
