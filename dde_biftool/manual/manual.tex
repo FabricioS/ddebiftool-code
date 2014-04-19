@@ -67,7 +67,7 @@ revised for v.~\version{} by\\ Jan Sieber,  April 2014}
 \newcommand{\CC}{\mathbb{C}}
 %\newcommand{\mod}{\operatorname{mod}}
 \newcommand{\defeq}{:=}
-
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
 \renewcommand{\topfraction}{.85}
 \renewcommand{\bottomfraction}{.7}
 \renewcommand{\textfraction}{.05}
@@ -3972,16 +3972,14 @@ determining system using one free parameter.
 Periodic solutions are found as solutions $(u(s),\,s\in[0,1];T\in\RR)$
 of the following $(n(Ld+1)+1$-dimensional system with no free
 parameters.
-\begin{equation}\label{determ_psol}
-\begin{aligned}
+\begin{align*}\label{determ_psol}
 \dot{u}(c_{i,j})=&\
 Tf\left(u(c_{i,j}),u\left(\left[c_{i,j}-\frac{\tau_1}{T}\right\vert_{\mod[0,1]}\right),\ldots,
-u\left(\left[c_{i,j}-\frac{\tau_m}{T}\right\vert_{\mod[0,1]}\right)\right)\mbox{,}\quad % \\
-i=0,\ldots,L-1,\ j=1,\ldots,d \\
+u\left(\left[c_{i,j}-\frac{\tau_m}{T}\right\vert_{\mod[0,1]}\right)\right)\mbox{,}\\
+&\quad i=0,\ldots,L-1,\ j=1,\ldots,d \numberthis\\
 u(0)=&\ u(1), \\
 p(u)=&\ 0.
-\end{aligned}
-\end{equation}
+\end{align*}
 Here the notation $t\vert_{\mod[0,1]}$ refers to
 $t-\max\{k\in\ZZ:k\leq t\}$, and $p$ represents the integral phase
 condition
@@ -4007,14 +4005,14 @@ Connecting orbits can be found as solutions of the following
 determining system with $s^+-s^-+1$ free parameters, where $s^+$ and
 $s^-$ denote the number of unstable eigenvalues of $x^+$ and $x^-$
 respectively.
-\begin{equation}\label{determ_hcli}
-\begin{aligned}
+{\allowdisplaybreaks
+\begin{align*}
   \dot{u}(c_{i,j})=& Tf(u(c_{i,j}),u(c_{i,j}-\frac{\tau_1}{T}),\ldots,
   u(c_{i,j}-\frac{\tau_m}{T}),\eta)=0\mbox{,\quad}(i=0,\ldots,L-1,\ j=1,\ldots,d) \\
   u(\tilde{c})=&x^{-}+\epsilon
   \sum_{k=1}^{s^{-}}\alpha_{k}v_{k}^{-}e^{\lambda_{k}^{-}T\tilde{c}}, \qquad \tilde{c}<0\\
   0=&f(x^{-},x^{-},\eta)\\
-  0=&f(x^{+},x^{+},\eta)\\
+  0=&f(x^{+},x^{+},\eta)\numberthis\label{determ_hcli}\\
   0=&\Delta(x^{-},\lambda_k^-,\eta) v_{k}^{-} \\
   0=&c_k^{H}v_{k}^{-}-1\mbox{,\quad} (k=1,\ldots,s^{-})\\
   0=&\Delta^{H}(x^{+},\lambda_k^+,\eta)w_{k}^{+} \\
@@ -4025,9 +4023,8 @@ respectively.
   u(0)=&x^{-}+\epsilon\sum_{i=1}^{s^{-}}\alpha_{k}v_{k}^{-}\\
   1=&\sum_{i=1}^{s^-}|\alpha_{k}|^{2}\\
   0=&p(u,\eta)
-\end{aligned}
-\end{equation}
-Again, all arguments of $u$ are taken modulo $[0,1]$. We choose the
+\end{align*}
+}Again, all arguments of $u$ are taken modulo $[0,1]$. We choose the
 same phase condition as for periodic solutions and similar
 normalization of $v_k^-$ and $w+k^+$ as in \eqref{determ_hopf}.
 
