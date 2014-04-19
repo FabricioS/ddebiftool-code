@@ -59,9 +59,9 @@ python $destdir/tools/c_insert.py $destdir $version
 #
 # insert license and set version in readme
 nr=`awk -- '/\|license\|/{print NR}' Readme.html`
-awk -- "NR<$nr {print $0}" Readme.html >tmp.txt
+awk -- "NR<$nr"'{print $0}' Readme.html >tmp.txt
 cat $license >>tmp.txt
-awk -- "NR>$nr {print $0}" Readme.html >>tmp.txt
+awk -- "NR>$nr"'{print $0}' Readme.html >>tmp.txt
 sed  -- "s/|version|/$version/g" tmp.txt > Readme.html
 rm -f tmp.txt
 html2text Readme.html >Readme.txt
