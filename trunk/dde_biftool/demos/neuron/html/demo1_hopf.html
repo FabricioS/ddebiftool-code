@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>demo1_hopf</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-04-10"><meta name="DC.source" content="demo1_hopf.m"><style type="text/css">
+      --><title>Hopf bifurcation</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-04-19"><meta name="DC.source" content="demo1_hopf.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -55,9 +55,9 @@ span.syscmd { color:#B28C00 }
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Hopf bifurcation</a></li><li><a href="#2">Locating the first Hopf point</a></li><li><a href="#3">Figure: eigenvalues at Hopf point</a></li><li><a href="#4">Initialize and continue first Hopf bifurcation</a></li><li><a href="#5">Figure: Continuation (predictions and corrections) of Hopf bifurcation</a></li><li><a href="#6">Hopf continuation and detecton of Takens-Bogdanov point</a></li><li><a href="#7">Figures: Stability and frequency along first Hopf bifurcation</a></li><li><a href="#8">Comments</a></li><li><a href="#9">Switch to second Hopf bifurcation at double Hopf bifurcation</a></li><li><a href="#10">Changing the Newton iteration and correction with other system parameter</a></li><li><a href="#11">Continuation of second Hopf bifurcation</a></li><li><a href="#12">Figure: Continuation (predictions and corrections) of both Hopf bifurcations</a></li><li><a href="#13">Save and continue with periodic orbits <a href="demo1_psol.html">demo1_psol.html</a></a></li></ul></div><h2>Hopf bifurcation<a name="1"></a></h2><p>
-% $Id$
-</p><p>The eigenvalues of the linearized system along branches of equilibria indicate potential bifurcations. In this demo complex conjugate pairs of eigenvalues cross the imaginary axis, corresponding to Hopf bifurcations. The demo will proceed to continue two of these Hopf bifurcations in two system parameters <img src="demo1_hopf_eq33802.png" alt="$a_{21}$"> and <img src="demo1_hopf_eq73830.png" alt="$\tau_s$">. This part requires to run <a href="demo1_stst.html">demo1_stst.html</a> first</p><pre class="codeinput"><span class="comment">%#ok&lt;*ASGLU,*NOPTS,*NASGU&gt;</span>
+  </style></head><body><div class="content"><h1>Hopf bifurcation</h1><!--introduction--><p>
+$Id$
+</p><p>The eigenvalues of the linearized system along branches of equilibria indicate potential bifurcations. In this demo complex conjugate pairs of eigenvalues cross the imaginary axis, corresponding to Hopf bifurcations. The demo will proceed to continue two of these Hopf bifurcations in two system parameters <img src="demo1_hopf_eq33802.png" alt="$a_{21}$"> and <img src="demo1_hopf_eq73830.png" alt="$\tau_s$">. This part requires to run <a href="demo1_stst.html">demo1_stst.html</a> first</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Locating the first Hopf point</a></li><li><a href="#3">Figure: eigenvalues at Hopf point</a></li><li><a href="#4">Initialize and continue first Hopf bifurcation</a></li><li><a href="#5">Figure: Continuation (predictions and corrections) of Hopf bifurcation</a></li><li><a href="#6">Hopf continuation and detecton of Takens-Bogdanov point</a></li><li><a href="#7">Figures: Stability and frequency along first Hopf bifurcation</a></li><li><a href="#8">Comments</a></li><li><a href="#9">Switch to second Hopf bifurcation at double Hopf bifurcation</a></li><li><a href="#10">Changing the Newton iteration and correction with other system parameter</a></li><li><a href="#11">Continuation of second Hopf bifurcation</a></li><li><a href="#12">Figure: Continuation (predictions and corrections) of both Hopf bifurcations</a></li><li><a href="#13">Save and continue with periodic orbits <a href="demo1_psol.html">demo1_psol.html</a></a></li></ul></div><pre class="codeinput"><span class="comment">%#ok&lt;*ASGLU,*NOPTS,*NASGU&gt;</span>
 <span class="comment">%</span>
 </pre><h2>Locating the first Hopf point<a name="2"></a></h2><p>Where eigenvalue curves in the stability plot (see <a href="demo1_stst.html#stststability">demo1_stst.html#stststability</a>) cross the zero line, bifurcations occur. If we want to compute the Hopf bifurcation near <img src="demo1_hopf_eq07177.png" alt="$a_{21}\approx0.8$"> we need its point number. This is most easily obtained by plotting the stability versus the point numbers along the branch. We select the last point with positive eigenvalues and turn it into an (approximate) Hopf bifurcation point. We correct the Hopf point using appropriate method parameters and one free parameter (<img src="demo1_hopf_eq33802.png" alt="$a_{21}$">). We then copy the corrected point to keep it for later use. Computing and plotting stability of the Hopf point clearly reveals the pair of purely imaginary eigenvalues.</p><pre class="codeinput">ind_hopf=find(arrayfun(@(x)real(x.stability.l0(1))&gt;0,branch1.point),1,<span class="string">'last'</span>);
 hopf=p_tohopf(funcs,branch1.point(ind_hopf));
@@ -192,7 +192,7 @@ BR_CONTN warning: boundary hit.
 % The demo will proceed to continue two of these Hopf bifurcations in two
 % system parameters $a_{21}$ and $\tau_s$. This part requires to run
 % <demo1_stst.html> first
-%
+%%
 %#ok<*ASGLU,*NOPTS,*NASGU>
 %
 %% Locating the first Hopf point
@@ -333,5 +333,6 @@ branch3=br_rvers(branch3);
 
 %% Save and continue with periodic orbits <demo1_psol.html>
 save('demo1_hopf_results.mat');
+
 ##### SOURCE END #####
 --></body></html>

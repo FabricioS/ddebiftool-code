@@ -1,3 +1,5 @@
+BSD 2-Clause license
+
 Copyright (c) |year|, K.U. Leuven, Department of Computer Science
 
 All rights reserved.

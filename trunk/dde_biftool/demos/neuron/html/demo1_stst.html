@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>demo1_stst</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-04-10"><meta name="DC.source" content="demo1_stst.m"><style type="text/css">
+      --><title>Continuation and stability of steady states (equilibria)</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-04-19"><meta name="DC.source" content="demo1_stst.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -55,9 +55,9 @@ span.syscmd { color:#B28C00 }
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Continuation and stability of steady states (equilibria)</a></li><li><a href="#2">Initial guess for steady state</a></li><li><a href="#3">Linear stability of initial equilibrium</a></li><li><a href="#4">Ask for roots with more negative real part</a></li><li><a href="#5">Figures: Spectrum of equilibrium</a></li><li><a href="#6">Initialize branch of trivial equilibria</a></li><li><a href="#7">Extend and continue branch of trivial equilibria</a></li><li><a href="#8">Stability of branch of equilibria</a></li><li><a href="#9">Figures: Stability of equilibria</a></li><li><a href="#10">Save and continue with Hopf bifurcations: <a href="demo1_hopf.html">demo1_hopf.html</a></a></li></ul></div><h2>Continuation and stability of steady states (equilibria)<a name="1"></a></h2><p>
-% $Id$
-</p><p>Once the user-defined functions are prepared, DDE-Biftool can compute and continue equilibria of the DDE, and compute their linearized stability, thus detecting local bifurcations. This demo requires <a href="demo1_funcs.html">demo1_funcs.html</a> to have run beforehand.</p><pre class="codeinput"><span class="comment">%#ok&lt;*ASGLU,*NOPTS,*NASGU&gt;</span>
+  </style></head><body><div class="content"><h1>Continuation and stability of steady states (equilibria)</h1><!--introduction--><p>
+$Id$
+</p><p>Once the user-defined functions are prepared, DDE-Biftool can compute and continue equilibria of the DDE, and compute their linearized stability, thus detecting local bifurcations. This demo requires <a href="demo1_funcs.html">demo1_funcs.html</a> to have run beforehand.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Initial guess for steady state</a></li><li><a href="#3">Linear stability of initial equilibrium</a></li><li><a href="#4">Ask for roots with more negative real part</a></li><li><a href="#5">Figures: Spectrum of equilibrium</a></li><li><a href="#6">Initialize branch of trivial equilibria</a></li><li><a href="#7">Extend and continue branch of trivial equilibria</a></li><li><a href="#8">Stability of branch of equilibria</a></li><li><a href="#9">Figures: Stability of equilibria</a></li><li><a href="#10">Save and continue with Hopf bifurcations: <a href="demo1_hopf.html">demo1_hopf.html</a></a></li></ul></div><pre class="codeinput"><span class="comment">%#ok&lt;*ASGLU,*NOPTS,*NASGU&gt;</span>
 <span class="comment">%</span>
 </pre><h2>Initial guess for steady state<a name="2"></a></h2><p>It is clear that the neuron DDE has a steady state solution <img src="demo1_stst_eq58210.png" alt="$(x_1^*,x_2^*)=(0,0)$"> for all values of the parameters. We define a first steady state solution using the parameter values <img src="demo1_stst_eq21207.png" alt="$\kappa=0.5$">, <img src="demo1_stst_eq55772.png" alt="$\beta=-1$">, <img src="demo1_stst_eq09896.png" alt="$a_{12}=1$">, <img src="demo1_stst_eq03786.png" alt="$a_{21}=2.34$">, <img src="demo1_stst_eq33348.png" alt="$\tau_1=\tau_2=0.2$"> and <img src="demo1_stst_eq36433.png" alt="$\tau_s=1.5$">. Remember that we chose <tt>par</tt> <img src="demo1_stst_eq56913.png" alt="$=[\kappa, \beta, a_{12}, a_{21},\tau_1,\tau_2, \tau_s]$">.</p><pre class="codeinput">stst.kind=<span class="string">'stst'</span>;
 stst.parameter=[1/2, -1, 1, 2.34, 0.2, 0.2, 1.5];
@@ -193,6 +193,7 @@ ym =
 % continue equilibria of the DDE, and compute their linearized stability,
 % thus detecting local bifurcations. This demo requires <demo1_funcs.html> to
 % have run beforehand.
+%%
 %#ok<*ASGLU,*NOPTS,*NASGU>
 %
 %% Initial guess for steady state
@@ -312,5 +313,6 @@ xlabel('point number along branch');ylabel('\Re(\lambda)');
 % number along the branch (bottom).
 %% Save and continue with Hopf bifurcations: <demo1_hopf.html>
 save('demo1_stst_results.mat');
+
 ##### SOURCE END #####
 --></body></html>

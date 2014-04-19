@@ -8,6 +8,7 @@
 % continue equilibria of the DDE, and compute their linearized stability,
 % thus detecting local bifurcations. This demo requires <demo1_funcs.html> to
 % have run beforehand.
+%%
 %#ok<*ASGLU,*NOPTS,*NASGU>
 %
 %% Initial guess for steady state
