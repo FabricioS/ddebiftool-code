@@ -112,7 +112,7 @@ hpars=cell2mat(arrayfun(@(x)x.parameter(1:2)',hbranch1.point,'uniformoutput',fal
 % iterations. The stability along the fold may indicate codimensions.
 % However, increasing |triv_defect| indicates increasing errors in Floquet
 % multiplier computations.
-pf_ind0=find(diff(pernunst)==1,1,'first');
+pf_ind0=find(diff(pernunst)==1,1,'first')+1;
 per.method.point.print_residual_info=1;
 per.parameter.max_step=[];
 per.method.point.newton_max_iterations=8;

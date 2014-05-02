@@ -372,7 +372,7 @@ for i=1:max_iter
     point.parameter=par;
     
     % compute residual:
-    norm_res=norm(res);
+    norm_res=norm(res,'inf');
     if print_r
         fprintf('it=%d, res=%g\n',i, norm_res);
     end;
@@ -393,7 +393,7 @@ end;
 
 % compute final residual
 
-n_res=norm(res);
+n_res=norm(res,'inf');
 
 success=(n_res<=method.minimal_accuracy);
 
