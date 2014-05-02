@@ -47,11 +47,12 @@ J=[];
 if length(nx)==1 && isempty(np) && isempty(v),
     J=zeros(n,n,nvec);
     on=ones(n,1);
+    f0=sys_rhs(xx,par);
     for j=1:n
         xx_eps=xx;
         eps=abs_eps_x1+rel_eps_x1*abs(xx(j,nx+1,:));
         xx_eps(j,nx+1,:)=xx(j,nx+1,:)+eps;
-        J(:,j,:)=reshape(sys_rhs(xx_eps,par)-sys_rhs(xx,par),[n,1,nvec])./eps(on,1,:);
+        J(:,j,:)=reshape(sys_rhs(xx_eps,par)-f0,[n,1,nvec])./eps(on,1,:);
     end;
     % first order parameter derivatives:
 elseif isempty(nx) && length(np)==1 && isempty(v),
@@ -70,13 +71,14 @@ elseif length(nx)==2 && isempty(np) && ~isempty(v),
     else
         mult=@(a,b)a*b;
     end
+    J0=mult(df_deriv(funcs,xx,par,nx(1),[],[],hjac),v);
     for j=1:n
-        J(:,j,:)=mult(df_deriv(funcs,xx,par,nx(1),[],[],hjac),v);
+        J(:,j,:)=J0;
         xx_eps=xx;
         eps=abs_eps_x2+rel_eps_x2*abs(xx(j,nx(2)+1,:));
         xx_eps(j,nx(2)+1,:)=xx(j,nx(2)+1,:)+eps;
         Je=mult(df_deriv(funcs,xx_eps,par,nx(1),[],[],hjac),v);
-        J(:,j,:)=(Je-J(:,j,:))./eps(on,1,:);
+        J(:,j,:)=(Je-J0)./eps(on,1,:);
     end
 % mixed state parameter derivatives:
 elseif length(nx)==1 && length(np)==1 && isempty(v),
