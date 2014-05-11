@@ -1,6 +1,6 @@
 function eqf=auto_eqd(dtm,ups)
 %% find cumulative discretization error on given mesh
-% function [eqf]=auto_eqd(ncol,dtm,ups)
+% function [eqf]=auto_eqd(dtm,ups)
 % INPUT:
 %   dtm interval lengths of mesh
 %   ups solution profile
