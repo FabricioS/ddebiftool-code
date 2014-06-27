@@ -2,7 +2,8 @@
 %
 % $Id$
 %
-\usepackage{CWTWcover}
+%\usepackage{CWTWcover}
+%\pdfoutput=1
 \usepackage[labelfont={small},textfont={small}]{caption}
 \usepackage{subcaption}
 \usepackage{tocloft}
@@ -35,20 +36,16 @@
   citecolor=darkblue, filecolor=darkblue,
   menucolor=darkblue,pagecolor=darkblue,urlcolor=darkblue,linkcolor=darkblue}
 
-\title{{\DDEBIFCODE\ v. \version{}}:\\
-  a Matlab package  for bifurcation analysis
+\title{{\DDEBIFCODE\ v. \version{}} Manual --- \\
+  Bifurcation analysis
           of delay differential equations} 
 
 % vertical listing of the authors     
-\author{K. Engelborghs, T. Luzyanina, G. Samaey}   
+\author{J. Sieber, K. Engelborghs, T. Luzyanina, G. Samaey, D. Roose}   
 
 % give the date
-\date{December 2001, \\[2ex]
-revised for v.~\version{} by\\ Jan Sieber,  April 2014}
+\date{\today}
 
-% give the number of the report (either CW or TW, but not both)
-%\CW{NNN}
-\TW{330}
 % commands, abbreviations (converted from gdef to newcommand)
 \newcommand{\DDEBIFCODE}{\textsc{DDE-BIFTOOL}}
 \newcommand{\ddebifweb}{\url{http://twr.cs.kuleuven.be/research/software/delay/ddebiftool.shtml}}
@@ -111,22 +108,48 @@ revised for v.~\version{} by\\ Jan Sieber,  April 2014}
 \typearea{11}
 \begin{document}
 \pagenumbering{roman}
-\begin{coverpage}
+\maketitle
+%\begin{coverpage}
 
-\begin{abstract}
-\begin{quotation}             
-\input{abstract.tex}
-\end{quotation}
-\end{abstract}
+% \begin{abstract}
+% \begin{quotation}             
+% {\DDEBIFCODE\ v.~\version} is a collection of Matlab routines for
+% numerical bifurcation analysis of systems of delay differential
+% equations with discrete constant and state-dependent delays.
+% %
+% The package supports continuation and stability analysis of steady
+% state solutions and periodic solutions.  Further one can compute and
+% continue several local and global bifurcations: fold and Hopf
+% bifurcations of steady states; folds, period doublings and torus
+% bifurcations of periodic orbits; and
+% connecting orbits between equilibria.
+% %
+% To analyse the stability of steady state solutions, approximations are
+% computed to the rightmost, stability-determining roots of the
+% characteristic equation which can sub\-sequently be used as starting
+% values in a Newton procedure.
+% %
+% For periodic solutions, approximations to the Floquet multipliers are
+% computed.  We describe the structure of the package, its routines, and
+% its data and method parameter structures.  We illustrate its use
+% through a step-by-step analysis of several demonstrations.
+% \end{quotation}
+% \end{abstract}
 
 % optionally give keywords and CR (CW) or AMS (TW) classifications
-\keywords delay equations, periodic solutions, collocation methods.   
+
+\noindent\textbf{\textsf{Keywords}} nonlinear dynamics, 
+delay-differential equations, stability analysis, periodic solutions,
+collocation methods, numerical bifurcation analysis, state-dependent
+delay.
+
+%\textbf{\textsf{AMS classification}}
 % Keywords : keyword1, kw2, kw3.
 %\CR XXX, YYY, ZZZ               % CR Subject Classification : XXX, YYY, ZZZ.
-\AMS \Primary 65J15,            % AMS(MOS) Classification : Primary : XXX, Se-
-     \Secondary 65P05.          % condary : YYY, ZZZ.
+%Primary 65J15,            % AMS(MOS) Classification : Primary : XXX, Se-
+%Secondary 65P05.          % condary : YYY, ZZZ.
 
-\end{coverpage}
+%\end{coverpage}
 
 % \leftmargin    0mm
 % \rightmargin -20mm
@@ -149,9 +172,9 @@ revised for v.~\version{} by\\ Jan Sieber,  April 2014}
 \label{sec:app:get}
 {\DDEBIFCODE} % is freely available for scientific (non-commercial)
 % use. It
-was started by the first author as a part of his PhD at
+was started by Koen Engelborghs as part of his PhD at
 the Computer Science Department of the K.U.Leuven under supervision
-of Prof.\ D.\ Roose.
+of Prof.\ Dirk Roose.
 
 \paragraph{Citation}
 Scientific publications, for which the package DDE-BIFTOOL has been
@@ -162,38 +185,15 @@ reproducibility:
   K. Engelborghs, T. Luzyanina, and D. Roose. Numerical bifurcation
   analysis of delay differential equations using DDE-BIFTOOL, ACM
   Trans. Math. Softw. 28 (1), pp. 1-21, 2002.
-\item K. Engelborghs, T. Luzyanina, G. Samaey. DDE-BIFTOOL v. 2.00: a
-  Matlab package for bifurcation analysis of delay differential
-  equations.  Technical Report TW-330, Department of Computer Science,
-  K.U.Leuven, Leuven, Belgium, 2001.
+\item\textbf{(this manual)} J. Sieber, K. Engelborghs, T. Luzyanina,
+  G. Samaey, D. Roose . \DDEBIFCODE\ v. \version{} Manual ---
+  Bifurcation analysis
+          of delay differential equations, \url{http://arxiv.org/???abs}.
 \end{itemize}
-
+All versions of this manual from v.~3.0 onward are available at
+\url{http://arxiv.org/???abs}.
 \paragraph{License}
 The following terms cover the use of the software package {\DDEBIFCODE}:
-\iffalse
-\begin{enumerate}
-\item The package {\DDEBIFCODE} can be used only for the purpose of internal
-research excluding any commercial use of the package {\DDEBIFCODE} as such
-or as a part of a software product.
-\item {\scshape K.U.Leuven, Department of Computer Science} shall for all
-purposes be considered the owner of {\DDEBIFCODE} and of all copyright,
-trade secret, patent or other intellectual property rights therein.
-\item The package {\DDEBIFCODE} is provided on an "as is" basis and
-for the purposes described in paragraph 1 only. In no circumstances
-can {\scshape K.U.Leuven} be held liable for any deficiency, fault
-or other mishappening with regard to the use or performance of
-the package {\DDEBIFCODE}.
-\item All scientific publications, for which the package {\DDEBIFCODE}
-has been used, shall mention usage of the package {\DDEBIFCODE},
-and shall refer to the following publication:
-\begin{quote}
-K.~Engelborghs, T.~Luzyanina, G.~Samaey. DDE-BIFTOOL\ v.~2.00 user manual: 
-a Matlab package for bifurcation analysis
-of delay differential equations. Technical Report TW-330, Department of
-Computer Science, K.U.Leuven, Leuven, Belgium, 2001.
-\end{quote}
-\end{enumerate}
-\fi
 \bigskip\hrule
 {\ttfamily
 \begin{flushleft} {\parindent0pt
@@ -209,71 +209,71 @@ Upon acceptance of the above terms, one can obtain the package
 \begin{quote}
   \ddebifweb{}.
 \end{quote}
-The web page
-contains also up-to-date information on newer versions and helpful
-resources.
+% The web page
+% contains also up-to-date information on newer versions and helpful
+% resources.
 
-\section{Changes from 2.0x to \version}
+\section{Version history}
 \label{sec:changes}
+
+\subsection{Changes from 2.03 to \version}
+\label{sec:v2to3}
+
+\paragraph{New features}
+\begin{itemize}
+\item\label{int:pocont} \textbf{\textsf{Continuation of local periodic orbit
+    bifurcations}} for systems with constant or state-dependent delay
+  is now supported through the extension \texttt{ddebiftool\_extra\_psol}. This
+  extension is included in the standard \DDEBIFCODE{} archive, but the
+  additional functions are kept in a separate folder.
+\item \textbf{\textsf{User-defined functions}} specifying the right-hand side
+  and delays (such as \blist{sys_rhs} and \blist{sys_tau}) can have
+  arbitrary names.  These user functions (with arbitrary names) get
+  collected in a structure \blist{funcs}, which gets then passed on to
+  the \DDEBIFCODE{} routines. This interface is similar to other
+  functions acting on Matlab functions such as \blist{fzero} or
+  \blist{ode45}. It enables users to add extensions such as
+  \texttt{ddebiftool\_extra\_psol} without changing the core routines.
+\item \textbf{\textsf{State-dependent delays}} can now have arbitrary levels of
+  nesting (for example, periodic orbits of $\dot
+  x(t)=\mu-x(t-x(t-x(t-x(t))))$ and their bifurcations can be
+  tracked).
+\item \textbf{\textsf{Vectorization}}\quad Continuation of periodic orbits
+  and their bifurcations benefits (moderately) from
+  vectorization of the user-defined functions.
+\item \textbf{\textsf{Utilities}}\quad Recurring tasks (such as branching
+  off at bifurcations, defining initial pieces of branches, or
+  extracting the number of unstable eigenvalues) can now be performed
+  more conveniently with some auxiliary functions provided in a
+  separate folder \texttt{ddebiftool\_utilities}. See
+  \url{demos/neuron/html/demo1_simple.html} for a demonstration.
+\item \textbf{\textsf{Bugs fixed}}\quad Some bugs and problems have been
+  fixed in the implementation of the heuristics applied to choose the
+  stepsize in the computation of eigenvalues of equilibria
+  \cite{VLR08}.
+\item \textbf{\textsf{Continuation of relative equilibiria and
+      relative periodic orbits}} and their local bifurcations for
+  systems with constant delay and rotational symmetry (saddle-node
+  bifurcation, Hopf bifurcation, period-doubling, and torus
+  bifurcation) is now supported through the extension
+  \texttt{ddebiftool\_extra\_rotsym}.
+\end{itemize}
+Extensions come with demos and separate documentation.
+
+\paragraph{Change of user interface}
 Version \version{} changes the user interface for many \DDEBIFCODE{}
 functions by adding one additional input argument \blist{funcs} (this
-new argument comes always \emph{first}). This change permits users now
-to choose the name of the right-hand side functions (such as
-\blist{sys_rhs} and \blist{sys_tau}) freely. These user functions
-(with arbitrary names) get collected in a structure \blist{funcs},
-which gets then passed on to the \DDEBIFCODE{} routines. This behavior
-is similar to other functions acting on functions present in Matlab
-such as \blist{fzero} or \blist{ode45}.
-
-The new user interface makes it easier to extend \DDEBIFCODE{} without
-changing its core by constructing \emph{extended} systems out of the
-user-provided functions and passing these extended systems on to the
-core \DDEBIFCODE{} routines for solving and stability analysis. Two
-extensions are currently available:
-\begin{description}
-\item[\texttt{ddebiftool\_extra\_psol}] performs \textbf{continuation of local
-  periodic orbit bifurcations} for systems with constant or
-  state-dependent delay. This extension is included in the standard
-  \DDEBIFCODE{} archive, but the additional functions are kept in a
-  separate folder.
-\item[\texttt{ddebiftool\_extra\_rotsym}] performs \textbf{continuation of
-  relative equilibiria and relative periodic orbits} and their local
-  bifurcations for systems with constant delay and rotational symmetry
-  (saddle-node, Hopf bifurcation, period-doubling, and torus
-  bifurcation).
-\end{description}
-Both extensions come with demos and separate documentation.
-Furthermore,
-\begin{itemize}
-\item \DDEBIFCODE{} can now analyze periodic orbits in systems with
-  \textbf{state-dependent delays with arbitrarily nested delayed
-    arguments} (for example, $x(t-x(t-x(t-\ldots)))$, see demo
-  \texttt{nested}). This was not the case for the original
-  \DDEBIFCODE{}.
-\item Continuation of periodic orbits and their bifurcations benefits
-  (moderately) from \textbf{vectorization} of the user-defined functions.
-\item Some bugs and problems have been fixed in the implementation of
-  the heuristics applied to choose the stepsize in the computation of
-  eigenvalues of equilibria \cite{VLR08}.
-\item Recurring tasks (such as branching off at bifurcations, defining
-  initial pieces of branches, or extracting the number of unstable
-  eigenvalues) can now be performed more conveniently with some
-  auxiliary functions provided in a separate folder
-  \texttt{ddebiftool\_utilities}. See
-  \url{demos/neuron/html/demo1_simple.html} for a demonstration.
-\end{itemize}
-
-\paragraph{Note}
-Since \DDEBIFCODE{} v.\,\version{} changes the user interface, scripts
-written for \DDEBIFCODE{} v.\,2.0x or earlier will not work with the
-new version. For this reason version 2.03 will continue to be
+new argument comes always \emph{first}).  Since \DDEBIFCODE{}
+v.\,\version{} changes the user interface, scripts written for
+\DDEBIFCODE{} v.\,2.0x or earlier will not work with the new
+version. For this reason version 2.03 will continue to be
 available. Users of both versions should ensure that only one version
 is in the Matlab path at any time to avoid naming conflicts.
 
-\section{Introduction}
+\section{Capabilities and related reading and
+  software}
 \label{sec:intro}
-This report is a user manual for the package {\DDEBIFCODE}, version
-\version{}. {\DDEBIFCODE} consists of a set of routines running in
+ {\DDEBIFCODE} consists of a set of routines running in
 Matlab\footnote{\url{http://www.mathworks.com}} \cite{Mat00} or
 octave\footnote{\url{http://www.gnu.org/software/octave}}, a widely
 used environment for scientific computing.  The aim of the package is
@@ -282,78 +282,6 @@ solutions and periodic solutions of differential equations with
 constant delays (called DDEs) or state-dependent delays (here called
 sd-DDEs).  It also allows users to compute homoclinic and heteroclinic
 orbits in DDEs (with constant delays).  
-
-% \paragraph{Availability}
-% The package is freely available for scientific use.  % A list of the
-% % files which constitute {\DDEBIFCODE} is contained in
-% % \ref{sec:app:files}.
-% A copyright and warranty notice together with
-% instructions on obtaining the package can be found in
-% Appendix~\ref{sec:app:get}.  Up-to-date information can be found on the web
-% page
-% \begin{quote}
-%   \ddebifweb{}.
-% \end{quote}
-% Note that the package is typical research software and is provided "as
-% is" without warranty of any kind (see \ref{sec:app:get}).
-
-% \DDEBIFCODE{} v. 2.00 is compatible with the previous
-% versions. This manual describes both the material of v. 1.00 
-% and the extensions of v. 2.00 (support for sd-DDEs and connecting orbits).
-
-\paragraph{About this manual --- related reading}
-This manual replaces the manual of v. 2.03 \cite{ELS01}. The manual
-for version v.\,2.03 continues to be available at the above web
-address \ddebifweb{}.  For readers who intend to analyse only systems
-with constant delays, the parts of the manual related to systems with
-state-dependent delays can be skipped (sections \ref{sd_dde},
-\ref{sys_def2}).  In the rest of this report we assume
-the reader is familiar with the notion of a delay differential
-equation and with the basic concepts of bifurcation analysis for
-ordinary differential equations.  The theory on delay differential
-equations and a large number of examples are described in several
-books. Most notably the early
-\cite{Bell63,El's73,Driv77,Hale77a,Kolm86} and the more recent
-\cite{Azbe91,Kolm92,Hale93,Diek95,Kolm99}.  Several excellent books
-contain introductions to dynamical systems and bifurcation theory of
-ordinary differential equations, see, e.g.,
-\cite{Chow82,Guck83,Argy94,Seyd94,Kuzn04}.
-
-\textbf{\textsf{Note}}\quad The tutorial demos \texttt{demo1} and
-\texttt{sd\_demo}, providing a step-by-step walk-through for the
-typical working mode with \DDEBIFCODE{} are now included as separate
-\texttt{html} files, published directly from the comments in the demo
-code. See \demobase{} for links to all demos, many of which are
-extensively commented.
-
-
-\paragraph{Related software}
-A large number of packages exist for bifurcation analysis of systems
-of ordinary differential equations. Currently maintained packages are
-\begin{tabbing}
-  \texttt{AUTO}\qquad
-  \= url: \url{http://sourceforge.net/projects/auto-07p}\qquad\=
-  using FORTRAN or C \cite{Doed99,Doed07},\\
-  \texttt{MatCont}\>url: \url{http://sourceforge.net/projects/matcont/}\>
-  for Matlab \cite{DGK03,G00}, and\\
-  \texttt{Coco}\> url: \url{http://sourceforge.net/projects/cocotools}\> for
-  Matlab \cite{DS13}.
-\end{tabbing}
-For delay differential equations the package \texttt{knut} (formerly
-\texttt{PDDECONT}, \url{http://gitorious.org/knut}) is available as a
-stand-alone package (written in C++, but with a user interface
-requiring no programming). This package was developed in parallel with
-\DDEBIFCODE{} but independently by R.~Szalai \cite{SSH06,RS07}.  For
-simulation (time integration) of delay differential equations the
-reader is, e.g., referred to the packages ARCHI, DKLAG6, XPPAUT,
-DDVERK, RADAR and dde23, see
-\cite{Paul95,Thom97,Erme98,Enri97,Sham00,Gugl07}.  Of these, only
-XPPAUT has a graphical interface (and allows limited stability
-analysis of steady state solutions of DDEs along the lines of
-\cite{Luzy96}). TRACE-DDE is a Matlab tool (with graphical interface)
-for linear stability analysis of linear constant-coefficient DDEs
-\cite{breda09}. An up-to-date list of (and links to) available software
-for DDEs can be found on the web page \ddebifweb{}.
 
 \paragraph{Capabilities}
 {\DDEBIFCODE} can perform the following computations:
@@ -368,10 +296,10 @@ for DDEs can be found on the web page \ddebifweb{}.
 \item continuation of periodic orbits using orthogonal collocation
   with adaptive mesh selection (starting from a previously computed
   Hopf point or an initial guess of a periodic solution profile);
-\item approximation of the largest stability determining Floquet
+\item approximation of the largest stability-determining Floquet
   multipliers of periodic orbits;
 \item branching onto the secondary branch of periodic solutions at a
-  period doubling bifurcation;
+  period doubling bifurcation or a branch point;
 \item continuation of folds, period doublings and torus bifurcations
   (typically in two system parameters) using the extension
   \texttt{ddebiftool\_extra\_psol};
@@ -392,6 +320,81 @@ system dimension is small but one delay is large). Instead the
 evolution of the eigenvalues can be computed along solution branches
 in a separate step if required. This allows the user to detect and
 identify bifurcations.
+
+% \paragraph{Availability}
+% The package is freely available for scientific use.  % A list of the
+% % files which constitute {\DDEBIFCODE} is contained in
+% % \ref{sec:app:files}.
+% A copyright and warranty notice together with
+% instructions on obtaining the package can be found in
+% Appendix~\ref{sec:app:get}.  Up-to-date information can be found on the web
+% page
+% \begin{quote}
+%   \ddebifweb{}.
+% \end{quote}
+% Note that the package is typical research software and is provided "as
+% is" without warranty of any kind (see \ref{sec:app:get}).
+
+% \DDEBIFCODE{} v. 2.00 is compatible with the previous
+% versions. This manual describes both the material of v. 1.00 
+% and the extensions of v. 2.00 (support for sd-DDEs and connecting orbits).
+
+\paragraph{About this manual --- related reading}
+This manual documents version~\version. Earlier versions of the manual
+for earlier versions of \DDEBIFCODE{} continue to be available at the
+above web address \ddebifweb{}.  For readers who intend to analyse
+only systems with constant delays, the parts of the manual related to
+systems with state-dependent delays can be skipped (sections
+\ref{sd_dde}, \ref{sys_def2}).  In the rest of this manual we assume
+the reader is familiar with the notion of a delay differential
+equation and with the basic concepts of bifurcation analysis for
+ordinary differential equations.  The theory on delay differential
+equations and a large number of examples are described in several
+books. Most notably the early
+\cite{Bell63,Driv77,El's73,Hale77a,Kolm86} and the more recent
+\cite{Azbe91,Kolm92,Hale93,Diek95,Kolm99}.  Several excellent books
+contain introductions to dynamical systems and bifurcation theory of
+ordinary differential equations, see, e.g.,
+\cite{Argy94,Chow82,Guck83,Kuzn04,Seyd94}.
+
+\paragraph{Turorial demos}
+The tutorial demos \texttt{demo1} and
+\texttt{sd\_demo}, providing a step-by-step walk-through for the
+typical working mode with \DDEBIFCODE{} are included as separate
+\texttt{html} files, published directly from the comments in the demo
+code. See \demobase{} for links to all demos, many of which are
+extensively commented.
+
+
+\paragraph{Related software}
+A large number of packages exist for bifurcation analysis of systems
+of ordinary differential equations. Currently maintained packages are
+\begin{tabbing}
+  \texttt{AUTO}\qquad
+  \= url: \url{http://sourceforge.net/projects/auto-07p}\qquad\=
+  using FORTRAN or C \cite{Doed99,Doed07},\\
+  \texttt{MatCont}\>url: \url{http://sourceforge.net/projects/matcont/}\>
+  for Matlab \cite{DGK03,G00}, and\\
+  \texttt{Coco}\> url: \url{http://sourceforge.net/projects/cocotools}\> for
+  Matlab \cite{DS13}.\\[1ex]
+  For delay differential equations the package\\[0.5ex]
+  \texttt{knut}\> url: \url{http://gitorious.org/knut}\> using C++
+\end{tabbing}
+(formerly \texttt{PDDECONT}) is available as a
+stand-alone package (written in C++, but with a user interface
+requiring no programming). This package was developed in parallel with
+\DDEBIFCODE{} but independently by R.~Szalai \cite{SSH06,RS07}.  For
+simulation (time integration) of delay differential equations the
+reader is, e.g., referred to the packages ARCHI, DKLAG6, XPPAUT,
+DDVERK, RADAR and dde23, see
+\cite{Paul95,Thom97,Erme98,Enri97,Sham00,Gugl07}.  Of these, only
+XPPAUT has a graphical interface (and allows limited stability
+analysis of steady state solutions of DDEs along the lines of
+\cite{Luzy96}). TRACE-DDE is a Matlab tool (with graphical interface)
+for linear stability analysis of linear constant-coefficient DDEs
+\cite{breda09}.%  An up-to-date list of (and links to) available
+% software for DDEs can be found on the web page \ddebifweb{}.
+
 
 % The remainder of this manual is structured as follows.
 % In section \ref{code_struct} the structure of {\DDEBIFCODE} is 
@@ -446,7 +449,9 @@ parameters and the constant delays.  It should be provided by the user
 and is explained in more detail in section \ref{sec:system:def}.  All
 user-provided functions are collected in a single structure (called
 \blist{funcs} in this manual), and are passed on by the user as
-arguments to layer-3 or layer-2 functions. \textbf{\emph{Note that this is a change in user interface from the previous versions!}}
+arguments to layer-3 or layer-2 functions. \textbf{\emph{Note that
+    this is a change in user interface between version 2.03 and
+    version~\version{}!}}
 
 Layer 1 forms the numerical core of the package and is (normally)
 not directly accessed by the user. The numerical methods used
@@ -497,6 +502,8 @@ sections~\ref{point_manipulation} respectively
 
 \section{Delay differential equations}\label{explain_dde}
 \label{sec:ddes}
+This section introduces the mathematical notation that we refer to in
+this manual to describe the problems solved by \DDEBIFCODE{}.
 \subsection{Equations with constant delays}\label{dde}
 
 Consider the system of delay differential equations with constant
@@ -519,8 +526,7 @@ is the \define{variational equation}, given by,
 \end{equation}
 where, using $f\equiv f(x^0,x^1,\ldots,x^m,\eta)$,  
 \begin{equation}\label{A_def}
-A_i(t)=\left.\frac{\partial f}{\partial x^i}
-\right|_{(x^*(t),x^*(t-\tau_1),\ldots,x^*(t-\tau_m),\eta)}, 
+A_i(t)=\frac{\partial f}{\partial x^i}(x^*(t),x^*(t-\tau_1),\ldots,x^*(t-\tau_m),\eta), 
 \ i=0,\ldots,m. 
 \end{equation}
 
@@ -703,17 +709,17 @@ of differential equations with state-dependent delay see
 \cite{luz01,HKWW06} and the references therein.
 
 \section{System definition}\label{sec:system:def}
-\subsection{Change in \version} Note that in \DDEBIFCODE{} \version{}
-all user-provided functions can be arbitrary function handles,
-collected into a structure using the function \blist{set_funcs},
-explained in section~\ref{sec:funcs}. The only typical mandatory
-functions for the user to provide are the right-hand side
-(\blist{'sys_rhs'}) and the function returning the delay indices
-(\blist{'sys_tau'}). The names of the user functions can be arbitrary,
-and user functions can be anonymous. This is a change from previous
-versions. See the tutorials in \demobase{} for examples of
-usage, and the function description in section~\ref{sec:funcs} for
-details.
+\subsection{Change from \DDEBIFCODE{} v.~2.03 to
+  v.~\version} Note that in \DDEBIFCODE{} \version{} all
+user-provided functions can be arbitrary function handles, collected
+into a structure using the function \blist{set_funcs}, explained in
+section~\ref{sec:funcs}. The only typical mandatory functions for the
+user to provide are the right-hand side (\blist{'sys_rhs'}) and the
+function returning the delay indices (\blist{'sys_tau'}). The names of
+the user functions can be arbitrary, and user functions can be
+anonymous. This is a change from previous versions. See the tutorials
+in \demobase{} for examples of usage, and the function description in
+section~\ref{sec:funcs} for details.
 \subsection{Equations with constant delays}\label{sys_def1}
 
 As an illustrative example we will use the following system of delay 
@@ -1211,12 +1217,12 @@ of points, method parameters and plotting information.
       \hline\noalign{\smallskip}
       field     & content &  default   \\\hline\noalign{\smallskip}
       %
-      \blist{'sys_rhs'} \textbf{[!]} & function handle &  function in file \file{sys\_rhs.m} if found in 
+      \blist{'sys_rhs'} \textbf{\textsf{(mandatory)}} & function handle &  function in file \file{sys\_rhs.m} if found in 
       current working folder \\[1ex]
       % 
       \blist{'sys_ntau'} & function handle &  \blist{@()0} \\[1ex]
       %
-      \blist{'sys_tau'}  \textbf{[!]} & function handle &  function in file 
+      \blist{'sys_tau'} \textbf{\textsf{(mandatory)}} & function handle &  function in file 
       \file{sys\_tau.m} if found in current working folder\\[1ex]
       %
       \blist{'sys_cond'} & function handle & \blist{@(p)dummy_cond}, a built-in routine that adds no conditions\\[1ex]
@@ -1238,7 +1244,7 @@ of points, method parameters and plotting information.
       \\\noalign{\smallskip}\hline
   \end{tabular}
   \caption{\textbf{\textsf{Problem definition structure}} containing (at least) 
-    the user-provided functions. Fields marked with \textbf{[!]} are mandatory arguments of \blist{set_funcs}. 
+    the user-provided functions. 
     Fields in brackets should not normally be set or manually changed by the user. See also section~\ref{sec:funcs}.}
   \label{tab:funcs}
 \end{table}
@@ -4424,22 +4430,21 @@ Other possible future developments include
   also Barton \emph{et al} \cite{Barton06} for a demonstration of how
   to extend \DDEBIFCODE{} to neutral functional differential
   equations.
+\item determination of normal-form coefficients to detect
+  co-dimension-two bifurcations.
 \end{itemize}
 \section*{Acknowledgements}
 
-This report presents results of the research project OT/98/16, funded
-by the Research Council K.U.Leuven; of the research project G.0270.00
-funded by the Fund for Scientific Research - Flanders (Belgium) and of
-the research project IUAP P4/02 funded by the programme on
-Interuniversity Poles of Attraction, initiated by the Belgian State,
-Prime Minister's Office for Science, Technology and Culture.
-K.~Engelborghs is a Postdoctoral Fellow of the Fund for Scientific
-Research - Flanders (Belgium).  J.~Sieber's contribution to the
-revision leading to version \version{} was supported by EPSRC grant
-EP/J010820/1.
-
-Thanks to D.~Roose for being the promoter of
-the research that culminated into this package.
+\DDEBIFCODE{} v.~2.03 is a result of the research project OT/98/16,
+funded by the Research Council K.U.Leuven; of the research project
+G.0270.00 funded by the Fund for Scientific Research - Flanders
+(Belgium) and of the research project IUAP P4/02 funded by the
+programme on Interuniversity Poles of Attraction, initiated by the
+Belgian State, Prime Minister's Office for Science, Technology and
+Culture.  K.~Engelborghs is a Postdoctoral Fellow of the Fund for
+Scientific Research - Flanders (Belgium).  J.~Sieber's contribution to
+the revision leading to version \version{} was supported by EPSRC
+grant EP/J010820/1.
 
 \bibliographystyle{plain}
 
