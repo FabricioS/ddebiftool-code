@@ -41,17 +41,17 @@ cd $destdir
 year=`date +%G`
 sed -i -- "s/|year|/$year/g" $license
 #
-# compile manual
+# compile manuals
 cd $destdir/manual
 cp -p $license ./license.txt
-tex="manual ExtensionChanges-v3"
+tex="manual Changes-v3 Extra_psol_extension"
 echo '\newcommand{\version}{'$version'}' >version.tex
 
 for x in $tex; do
     pdflatex $x && pdflatex $x && pdflatex $x && \
-    bibtex $x && pdflatex $x && pdflatex $x
+    bibtex $x && pdflatex $x && pdflatex $x && mv $x".pdf" $destdir
 done
-mv manual.pdf ExtensionChanges-v3.pdf Addendum_Manual_DDE-BIFTOOL_2_03.pdf $destdir
+mv Addendum_Manual_DDE-BIFTOOL_2_03.pdf $destdir
 cd $destdir
 #
 # set (c) line in all m and html files that have (c) or Id
