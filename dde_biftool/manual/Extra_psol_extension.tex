@@ -50,8 +50,8 @@
   identifierstyle=\color{var},%
   upquote=true,%
   deletekeywords={beta,gamma,mesh}%
-} \title{Description of extensions \texttt{ddebiftool_extra_psol} and
-  \texttt{ddebiftool_extra_rotsym}} \author{Jan Sieber}\date{}
+} \title{Description of extensions \texttt{ddebiftool\_extra\_psol} and
+  \texttt{ddebiftool\_extra\_rotsym}} \author{Jan Sieber}\date{\today}
 \begin{document}
 \maketitle
 \noindent This addendum describes two extensions to DDE-BifTool
@@ -59,10 +59,10 @@
 toolbox running in
 \texttt{Matlab}\footnote{\url{http://www.mathworks.com}} or
 \texttt{octave}\footnote{\url{http://www.gnu.org/software/octave}}. The
-extension \texttt{ddebiftool_extra_psol} enables continuation of
+extension \texttt{ddebiftool\_extra\_psol} enables continuation of
 periodic orbit bifurcations for delay-differential equations with
 constant or state-dependent delay. The extension
-\texttt{ddebiftool_extra_rotsym} enables continuation of relative
+\texttt{ddebiftool\_extra\_rotsym} enables continuation of relative
 equilibria, relative periodic orbits and their local bifurcations in
 systems with rotational symmetry. The extensions are implemented by
 creating \emph{extended problems} and re-using the core DDE-BifTool
@@ -395,17 +395,16 @@ effect of vectorization on speed.
 %   periodic orbits.
 \end{compactitem}
 
-\subsection{Relative equilibria and periodic orbits in systems with
+\section{Relative equilibria and periodic orbits in systems with
   rotational symmetry}
 \label{sec:rot}
 
-As a showcase demonstrating how the change of DDE-BifTool's user
-interface permits one to extend its functionality, the subfolder
-\texttt{ddebiftool\_extra\_rotsym} and the demo \texttt{rotsym\_demo}
-are included. The routines in \texttt{ddebiftool\_extra\_rotsym}
-enable users to track relative equilibria and periodic orbits of DDE
-systems with rotational symmetry and constant delays. Specifically, if
-the right-hand side of the DDE
+As a showcase demonstrating how one can extend DDE-BifTool's
+functionality, the subfolder \texttt{ddebiftool\_extra\_rotsym} and
+the demo \texttt{rotsym\_demo} are included. The routines in
+\texttt{ddebiftool\_extra\_rotsym} enable users to track relative
+equilibria and periodic orbits of DDE systems with rotational symmetry
+and constant delays. Specifically, if the right-hand side of the DDE
 \begin{equation}\label{eq:rot}
   \dot x=f(x(t),x(t-\tau_1),\ldots,x(t-\tau_{n_\tau}),p)
 \end{equation}
@@ -425,7 +424,7 @@ $x_0$,\ldots,$x_{n_\tau}\in\R^n$ and parameters $p$, then
     x(t)=\exp(A\rho t)x_0\mbox{.}\label{eq:rw}
 \end{equation}
 \item \emph{Relative periodic orbits} (or \emph{modulated
-    waves}. These are invariant two-tori of the form
+    waves}). These are invariant two-tori of the form
   \begin{equation}
     x(t)=\exp(A(\rho t+\phi))x_0(t)\label{eq:mw}
   \end{equation}
@@ -447,61 +446,7 @@ classical counterparts found in \texttt{ddebiftool\_extra\_psol}. The
 demo \texttt{rotsym\_demo} shows how to use the extensions for
 rotational symmetry for the Lang-Kobayashi equations \cite{LK80}.
 
-\section{Octave compatibility considerations}
-\label{sec:octave}
 
-\paragraph{\blist{nargin} incompatibility}
-The original DDE-BifTool code was likely
-\texttt{octave}
-compatible. The changes, replacing function names by function handles,
-broke this compatibility initially, because, for example, the call
-\blist{nargin(sys_tau)} gives an error message in \texttt{octave}
-(version 3.2.3) if \blist{sys_tau} is a function handle. To remedy
-this problem the additional field \blist{tp_del} is attached to the
-structure \blist{funcs} defining the problem. The field
-\blist{funcs.tp_del} is set in \blist{set_funcs}.
-
-\paragraph{Output}
-The gradual updating of plots using \blist{drawnow} slows down for the
-\texttt{gnuplot}\footnote{\url{http://www.gnuplot.info/}}-based plot
-interface of \texttt{octave} as points get added to the plot. Setting
-the field \blist{continuation.plot} to \blist{0.5} (that is, less than
-$1$ but larger than $0$), prints the values on the screen instead of
-updating the plot.
-
-Other useful options:
-\begin{compactitem}
-\item \blist{page_output_immediately(true);} prints out the results of any
-  \blist{fprintf} or \blist{disp} commands immediately
-\item \blist{page_screen_output(false);} stops paging the terminal output.
-\end{compactitem}
-
-\section{To do}
-\label{sec:todo}
-
-\begin{compactitem}
-\item Stability computation for equilibria with the new more efficient
-  heuristics results in error and wrong results sometimes (for example
-  when one has a moderately large delay with a small coefficient in
-  front of the delayed term). This is an old bug.
-\item Adapt routines for connecting orbits (point type
-  \blist{'hcli'}) to exploit vectorization and remove code duplication.
-\item Implement \blist{sys_deri_SD_POfold} and
-  \blist{sys_deri_SD_TorusBifurcation}. At the moment these are
-  approximated by finite differences.
-% \item Implement features ``on the outside'' as extended systems. For
-%   example, detection and continuation of solutions which have a
-%   minimal $\tau(x,p)=0$. This is currently incorporated as an aside into
-%   \blist{p_correc}.
-\item Ensure full functionality for delays with mixed signs (mostly
-  the stability computations have to be adapted).
-\item (Possibly) enable implicit differential equations by passing on
-  a constant mass matrix to be put in front of the left-hand side (see
-  \texttt{knut}\footnote{\url{http://gitorious.org/knut}}
-  \cite{RS07}). The changes for periodic orbits and their stability
-  are straightforward. The stability computation for equilibria would
-  require substantial changes.
-\end{compactitem}
 
 {\small\bibliographystyle{unsrt} \bibliography{manual}
 }
