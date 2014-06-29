@@ -35,5 +35,5 @@ function [foldbranch,suc]=SetupFold(funcs,branch,ind,varargin)
 %
 %% process options
 %% wrapper around SetupStstBifurcation to ensure backward compatibility
-[foldbranch,suc]=SetupStstBifurcation(funcs,branch,ind,'fold',varargin);
+[foldbranch,suc]=SetupStstBifurcation(funcs,branch,ind,'fold',varargin{:});
 end
