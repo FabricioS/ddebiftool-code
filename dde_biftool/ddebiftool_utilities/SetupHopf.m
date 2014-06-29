@@ -9,8 +9,8 @@ function [hbranch,suc]=SetupHopf(funcs,branch,ind,varargin)
 %
 % Important name-value pair inputs
 %
-% * |'contpar'| (integers default |[]|): index of additional continuation parameters
-%  (in addition to free pars of branch
+% * |'contpar'| (integers default |[]|): index of continuation parameters
+%  (replacing free pars of branch)
 % * |'correc'| (logical, default true): apply |p_correc| to first points on
 % hopf branch
 % * |'dir'| (integer, default |[]|): which parameter to vary initially
@@ -28,19 +28,6 @@ function [hbranch,suc]=SetupHopf(funcs,branch,ind,varargin)
 %
 % $Id$
 %
-%% process options
-default={'contpar',[],'correc',true,'dir',[],'step',1e-3,'excludefreqs',[]};
-[options,pass_on]=dde_set_options(default,varargin,'pass_on');
-% initialize branch of folds (pbranch)
-hbranch=branch;
-hbranch=replace_branch_pars(hbranch,options.contpar,pass_on);
-point=branch.point(ind);
-if ~isfield(point,'stability') || isempty(point.stability)
-    point.stability=p_stabil(funcs,point,branch.method.stability);
-end
-%% create initial guess for correction
-hini0=p_tohopf(funcs,point,options.excludefreqs);
-%% correct and add 2nd point if desired
-[hbranch,suc]=correct_ini(funcs,hbranch,hini0,...
-    options.dir,options.step,options.correc);
+%% wrapper around SetupStstBifurcation to ensure backward compatibility
+[hbranch,suc]=SetupStstBifurcation(funcs,branch,ind,'hopf',varargin);
 end
