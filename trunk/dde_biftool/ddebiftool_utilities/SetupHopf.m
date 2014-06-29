@@ -29,5 +29,5 @@ function [hbranch,suc]=SetupHopf(funcs,branch,ind,varargin)
 % $Id$
 %
 %% wrapper around SetupStstBifurcation to ensure backward compatibility
-[hbranch,suc]=SetupStstBifurcation(funcs,branch,ind,'hopf',varargin);
+[hbranch,suc]=SetupStstBifurcation(funcs,branch,ind,'hopf',varargin{:});
 end
