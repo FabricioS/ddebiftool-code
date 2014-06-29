@@ -34,19 +34,6 @@ function [foldbranch,suc]=SetupFold(funcs,branch,ind,varargin)
 % $Id$
 %
 %% process options
-default={'contpar',[],'correc',true,'dir',[],'step',1e-3};
-[options,pass_on]=dde_set_options(default,varargin,'pass_on');
-% initialize branch of folds (branch)
-foldbranch=branch;
-foldbranch=replace_branch_pars(foldbranch,options.contpar,pass_on);
-point=branch.point(ind);
-if ~isfield(point,'stability')
-    point.stability=p_stabil(funcs,point,branch.method.stability);
-end
-%% set up functions of extended system
-%% create initial guess for correction
-foldini0=p_tofold(funcs,point);
-%% correct and add 2nd point if desired
-[foldbranch,suc]=correct_ini(funcs,foldbranch,foldini0,...
-    options.dir,options.step,options.correc);
+%% wrapper around SetupStstBifurcation to ensure backward compatibility
+[foldbranch,suc]=SetupStstBifurcation(funcs,branch,ind,'fold',varargin);
 end
