@@ -20,9 +20,11 @@ function [hbranch,suc]=SetupHopf(funcs,branch,ind,varargin)
 % All other named arguments are passed on to fields of |hbranch|
 %% Outputs
 % 
-% * |hbranch|: Fold branch with first point (or two points)
+% * |hbranch|: Hopf branch with first point (or two points)
 % * |suc|: flag whether corection was successful
 %
+% Parameter limits for etc are inherited from branch, unless overridden by
+% optional input arguments.
 %
 % $Id$
 %

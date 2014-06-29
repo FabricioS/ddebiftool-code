@@ -22,33 +22,23 @@ function [foldbranch,suc]=SetupFold(funcs,branch,ind,varargin)
 %   branch (foldbranch has only single point if dir is empty)
 % * |'step'| (real, default |1e-3|): size of initial step if dir is non-empty
 %
-% All other named arguments are passed on to fields of |foldbranch|
+% All other named arguments are passed on to fields of |foldbranch|.
 %% Outputs
 % 
-% * |foldbranch|: Hopf branch with first point (or two points)
+% * |foldbranch|: Fold branch with first point (or two points)
 % * |suc|: flag whether corection was successful
+%
+% Parameter limits for etc are inherited from branch, unless overridden by
+% optional input arguments.
 %
 % $Id$
 %
 %% process options
 default={'contpar',[],'correc',true,'dir',[],'step',1e-3};
 [options,pass_on]=dde_set_options(default,varargin,'pass_on');
-% initialize branch of folds (pbranch)
-foldbranch=df_brnch(funcs,options.contpar,'fold');
-foldbranch.method.point=branch.method.point;
-foldbranch.method.continuation=dde_set_options(foldbranch.method.continuation,pass_on,'pass_on');
-foldbranch.method.point=dde_set_options(foldbranch.method.point,pass_on,'pass_on');
-foldbranch.method.stability=dde_set_options(foldbranch.method.stability,pass_on,'pass_on');
-if isempty(options.contpar)
-    % if no continuation parameters are given use free parameters of branch
-    foldbranch.parameter.free=branch.parameter.free;
-elseif length(options.contpar)==1;
-    % if single continuation parameter is given prepend to free parameters of branch
-    foldbranch.parameter.free=[options.contpar,branch.parameter.free];
-else
-    foldbranch.parameter.free=options.contpar(:)';
-end
-foldbranch.parameter=dde_set_options(foldbranch.parameter,pass_on,'pass_on');
+% initialize branch of folds (branch)
+foldbranch=branch;
+foldbranch=replace_branch_pars(foldbranch,options.contpar,pass_on);
 point=branch.point(ind);
 if ~isfield(point,'stability')
     point.stability=p_stabil(funcs,point,branch.method.stability);
