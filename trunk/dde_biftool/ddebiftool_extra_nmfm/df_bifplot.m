@@ -1,6 +1,9 @@
 function bifplot = df_bifplot()
-% Default linetypes for a bifurcation plot
-
+%% Default linetypes for a bifurcation plot
+%
+% $Id$
+%
+%%
 bifplot.stst = '-';
 bifplot.hopf = 'o';
 bifplot.fold = 'o';

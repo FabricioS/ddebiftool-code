@@ -1,4 +1,5 @@
 function [sign, product] = nmfm_hopfdet(roots)
+%% Monitoring function for Hopf bifurcation along steady-state branch
 % function sign = detect_hopf(point)
 % Purpose:
 %   This routine computes the product of all sums of the eigenvalues in
@@ -7,7 +8,10 @@ function [sign, product] = nmfm_hopfdet(roots)
 %	roots: the eigenvalues of a suspected Hopf point
 % OUTPUT:
 %	sign: +1 or -1
-
+%
+% $Id$
+%
+%%
 product = 1;
 sign = 0;
 n = length(roots);
@@ -30,5 +34,4 @@ elseif ~isfinite(product)
 else
     sign = real(product)/abs(real(product));
 end
-
-return;
+end

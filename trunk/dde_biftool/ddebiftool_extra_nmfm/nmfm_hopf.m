@@ -1,4 +1,9 @@
 function newpoint = nmfm_hopf(funcs, point, varargin)
+%% Compute Lyapunov coefficient of Hopf point
+%
+% $Id$
+%
+%%
 
 coord = point.x;
 par = point.parameter;
@@ -12,7 +17,7 @@ if ~strcmp(kind,'hopf')
     error('NMFM_HOPF: did not receive a hopf point as argument.');
 end
 
-% Select eigenvalue pair
+%% Select eigenvalue pair
 omega = point.omega;
 if isempty(omega) || omega == 0
     fprintf('NMFM_HOPF: omega is empty or zero, returning L1 = NaN.\n');
@@ -22,9 +27,8 @@ end
 
 lambda0 = ii*omega;
 
-% Construct characteristic matrix
-eqtype = nargin(funcs.sys_tau);
-if eqtype == 0
+%% Construct characteristic matrix
+if ~funcs.tp_del
    taus = par(funcs.sys_tau());
    taus = [0, taus]; % First delay zero
    r = length(taus); % Number of delays
@@ -34,16 +38,16 @@ else % state-dependent delays
    xx = repmat(coord, 1, r); % All delayed vectors the same
    taus = zeros(1,r); % First delay zero
    for i = 2:r
-      taus(i) = funcs.sys_tau(i,xx,par);
+      taus(i) = funcs.sys_tau(i-1,xx(:,1:i-1),par);
    end
 end
 
 Delta1 = nmfm_charmat(funcs, xx,par,lambda0);
 Delta2 = nmfm_charmat(funcs, xx,par,2*lambda0);
 Delta0 = nmfm_charmat(funcs, xx,par,0);
-DDelta1 = nmfm_charmatderi(funcs,xx,par,lambda0);
+DDelta1 = nmfm_charmat(funcs,xx,par,lambda0,'deri',1);
 
-% Compute nullvectors
+%% Compute nullvectors
 if n == 1
     p0 = 1;
     q0 = 1;
@@ -55,8 +59,16 @@ else
     end
     % Construct null vectors
     if isfield(nullpoint, 'nvec')
-       if isfield(nullpoint.nvec,'p'), pp0 = nullpoint.nvec.p; else pp0 = []; end
-       if isfield(nullpoint.nvec,'q'), qq0 = nullpoint.nvec.q; else qq0 = []; end
+       if isfield(nullpoint.nvec,'p') 
+           pp0 = nullpoint.nvec.p; 
+       else
+           pp0 = []; 
+       end
+       if isfield(nullpoint.nvec,'q')
+           qq0 = nullpoint.nvec.q; 
+       else
+           qq0 = []; 
+       end
     else
        pp0 = []; qq0 = [];
     end
@@ -71,12 +83,12 @@ if isempty(p0) || isempty(q0)
    return;
 end
 
-% Normalize eigenvectors
+%% Normalize eigenvectors
 alpha = 1/sqrt(p0*DDelta1*q0);
 p = alpha*p0;
 q = alpha*q0;
 
-% Implement normal form computations
+%% Implement normal form computations
 phi = @(theta) exp(lambda0*theta)*q;
 phibar = @(theta) conj(exp(lambda0*theta)*q);
 
@@ -88,7 +100,9 @@ h11 = @(theta) Delta0\funcs.sys_mfderi(xx,par, PHI, PHIBAR);
 H20 = nmfm_handletomatrix(h20,-taus);
 H11 = nmfm_handletomatrix(h11,-taus);
 
-c1 = (1/2)*p*(funcs.sys_mfderi(xx,par, PHIBAR, H20) + 2*funcs.sys_mfderi(xx,par, PHI, H11) + funcs.sys_mfderi(xx,par,PHI,PHI,PHIBAR));
+c1 = (1/2)*p*(funcs.sys_mfderi(xx,par, PHIBAR, H20) + ...
+    2*funcs.sys_mfderi(xx,par, PHI, H11) +...
+    funcs.sys_mfderi(xx,par,PHI,PHI,PHIBAR));
 
 L1 = real(c1)/(omega);
 

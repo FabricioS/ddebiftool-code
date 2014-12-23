@@ -1,5 +1,5 @@
 function flaggedbranch = br_flag(branch)
-
+%% set empty flag on all points of branch
 % function flaggedbranch = br_flag(branch)
 % Purpose:
 %   Sets flag = '' on all points of the branch.
@@ -7,15 +7,16 @@ function flaggedbranch = br_flag(branch)
 %	branch 
 % OUTPUT:
 %	flaggedbranch
-
-% (c) DDE-BIFTOOL v. 2.00, 23/12/2000
+%
+% $Id$
+%
 
 flaggedbranch = branch;
 ll=length(branch.point);
 
 if ll<1
    error('BR_FLAG: branch is empty!');
-end;
+end
 
 for i=1:ll
    if ~isfield(flaggedbranch.point(i),'flag') || isempty(flaggedbranch.point(i).flag)
@@ -27,8 +28,5 @@ for i=1:ll
    if ~isfield(flaggedbranch.point(i),'nvec')
       flaggedbranch.point(i).nvec = [];
    end
-end;
-
-
-
-return;
+end
+end

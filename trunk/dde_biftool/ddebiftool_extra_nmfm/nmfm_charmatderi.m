@@ -1,11 +1,15 @@
 function DDelta = nmfm_charmatderi(funcs, xx,par,lambda)
+%% Derivative of characteristic matrix Delta(lambda) in xx,par wrt lambda
 % INPUT:
 %   lambda: spectral value
 % OUTPUT:
 %   Delta: derivative of characteristic matrix at lambda
-
+%
+% $Id$
+%
+%%
 [n,r] = size(xx); % n = #coordinates, r = #delays+1
-eqtype = nargin(funcs.sys_tau);
+eqtype = funcs.tp_del;
 if eqtype == 0
    taus = par(funcs.sys_tau());
    taus = [0, taus]; % First delay zero

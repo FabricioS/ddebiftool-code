@@ -1,5 +1,9 @@
 function newpoint = nmfm_hoho(funcs, point, varargin)
-
+%% Compute normal form of Double Hopf point
+%
+% $Id$
+%
+%%
 coord = point.x;
 par = point.parameter;
 kind = point.kind;
@@ -12,7 +16,7 @@ if ~strcmp(kind,'hoho')
    error('NMFM_HOHO: did not receive a zero hopf point as argument.');
 end
 
-% Select eigenvalue pairs
+%% Select eigenvalue pairs
 omega1 = point.omega1;
 omega2 = point.omega2;
 if isempty(omega1) || omega1 == 0
@@ -27,9 +31,8 @@ end
 lambda1 = ii*omega1;
 lambda2 = ii*omega2;
 
-% Get delays
-eqtype = nargin(funcs.sys_tau);
-if eqtype == 0
+%% Get delays
+if ~funcs.tp_del
    taus = par(funcs.sys_tau());
    taus = [0, taus]; % First delay zero
    r = length(taus); % Number of delays
@@ -39,7 +42,7 @@ else % state-dependent delays
    xx = repmat(coord, 1, r); % All delayed vectors the same
    taus = zeros(1,r); % First delay zero
    for i = 2:r
-      taus(i) = funcs.sys_tau(i,xx,par);
+      taus(i) = funcs.sys_tau(i-1,xx(:,1:i-1),par);
    end
 end
 
@@ -78,11 +81,11 @@ if isempty(p2) || isempty(q2) || isempty(q1) || isempty(p1)
 end
 
 % Normalize eigenvectors
-alpha1 = 1/sqrt(p1*nmfm_charmatderi(funcs,xx,par,lambda1)*q1);
+alpha1 = 1/sqrt(p1*nmfm_charmat(funcs,xx,par,lambda1,'deri',1)*q1);
 p1 = alpha1*p1;
 q1 = alpha1*q1;
 
-alpha2 = 1/sqrt(p2*nmfm_charmatderi(funcs,xx,par,lambda2)*q2);
+alpha2 = 1/sqrt(p2*nmfm_charmat(funcs,xx,par,lambda2,'deri',1)*q2);
 p2 = alpha2*p2;
 q2 = alpha2*q2;
 

@@ -1,5 +1,5 @@
 function BINV = nmfm_binv(funcs, xx, par, lambda, q, p, zeta, kappa)
-% PURPOSE: compute a bordered inverse
+%% Compute a bordered inverse
 % INPUT:
 %   xx: state vector
 %   par: parameter vector
@@ -10,14 +10,17 @@ function BINV = nmfm_binv(funcs, xx, par, lambda, q, p, zeta, kappa)
 %   kappa: scalar
 % OUTPUT:
 %	BINV: solution *function* to the bordered inverse problem
-
-DDelta = nmfm_charmatderi(funcs,xx,par,lambda);
+%
+% $Id$
+%
+%%
+DDelta = nmfm_charmat(funcs,xx,par,lambda,'deri',1);
 
 A = [nmfm_charmat(funcs,xx,par,lambda), q; p, 0];
 B = [zeta + kappa*DDelta*q; 0];
 X = A\B;
 xi = [X(1,1); X(2,1)];
-gamma = -p*DDelta*xi + (1/2)*kappa*p*nmfm_charmatderi2(funcs,xx,par,lambda)*q;
+gamma = -p*DDelta*xi + (1/2)*kappa*p*nmfm_charmat(funcs,xx,par,lambda,'deri',2)*q;
 
 BINV = @(theta) exp(lambda*theta)*(xi+gamma*q - kappa*theta*q);
 
