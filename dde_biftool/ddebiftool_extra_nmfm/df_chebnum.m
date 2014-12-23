@@ -1,4 +1,4 @@
-%% single-variable derivative using numerical finite difference
+%% Single-variable derivative using numerical finite difference
 %
 % $$ y=\frac{d^m}{dt^m}f(x+tv,p) 
 %

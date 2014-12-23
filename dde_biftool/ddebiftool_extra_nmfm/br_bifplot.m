@@ -7,38 +7,38 @@ function br_bifplot(branch,x_m,y_m,method)
 %	y_measure: scalar measure for y_coordinate
 %	varargin: list of type 'bifurcation', 'line type', 'bifurcation',
 %	'line type'
-
-% (c) DDE-BIFTOOL v. 3.0(19), 11/04/2014
 %
-% 
-%
-ll = length(branch.point);
+%  $Id$
+%%
 
 FPI = br_getflags(branch);
 [totalbifnum,~] = size(FPI);
 if isempty(FPI)
    fprintf('BR_BIFPLOT: no bifurcations present in branch!\n');
-   return;
+   return
 end
 
-% Check all bifurcation types
+%% Check all bifurcation types
 for i = 1:totalbifnum
    bifcount = length(FPI(i,:)); 
    if bifcount <= 0
-      continue;
+      continue
    end
    linetype = method.(num2bif(i));
-   if isempty(linetype), continue, end;
+   if isempty(linetype)
+       continue
+   end
    % Plot all points
    for j = 1:bifcount
       pointno = FPI(i,j);
-      if pointno <= 0, break, end;
+      if pointno <= 0
+          break
+      end
       point = branch.point(pointno);
       y = p_measur(point,y_m);
       x = p_measur(point,x_m);
       plot(x,y,linetype);
    end
 end
+end
 
-
-return;
