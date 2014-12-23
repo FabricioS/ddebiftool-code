@@ -23,7 +23,11 @@ defaults={...
     'sys_dtau',[],...            % Jacobians and second-order derivatives for delay (SD-DDEs only)
     'sys_mfderi',{},...          % higher-order derivatives (up to 5) for normal form computations
     'x_vectorized',false};
-funcs=dde_set_options(defaults,varargin);
+if isstruct(varargin{1})
+    funcs=dde_set_options(varargin{1},varargin(2:end));
+else
+    funcs=dde_set_options(defaults,varargin);
+end
 if isempty(funcs.sys_rhs)
     file=exist('sys_rhs','file');
     if file==2
@@ -48,38 +52,46 @@ try
 catch %#ok<CTCH>
     funcs.tp_del=true;
 end
+%% for vectorization make sure that the output has expected shape
 if funcs.x_vectorized
     funcs.sys_rhs=@(x,p)reshape(funcs.sys_rhs(x,p),[size(x,1),1,size(x,3)]);
     if funcs.tp_del
         funcs.sys_tau=@(itau,x,p)reshape(funcs.sys_tau(itau,x,p),[1,1,size(x,3)]);
     end        
 end
+%% if sys_deri is not provided, insert finite difference approximation
 if isempty(funcs.sys_deri)
     funcs.sys_deri_provided=false;
     funcs.sys_deri=@(x,p,nx,np,v)df_deriv(funcs,x,p,nx,np,v);
-else
-    funcs.sys_deri_provided=true;
-    if funcs.x_vectorized
-        funcs.sys_deri=@(x,p,nx,np,v)wrap_deri(x,p,nx,np,v,funcs.sys_deri);
-    end
+elseif any(strcmp('sys_deri',varargin)) ||...
+        (isfield(funcs,'sys_deri_provided') && funcs.sys_deri_provided)
+        funcs.sys_deri_provided=true;
+        if funcs.x_vectorized
+            funcs.sys_deri=@(x,p,nx,np,v)wrap_deri(x,p,nx,np,v,funcs.sys_deri);
+        end
 end
+%% if sys_dtau is not provided, insert finite difference approximation
 if isempty(funcs.sys_dtau)
     funcs.sys_dtau_provided=false;
     funcs.sys_dtau=@(it,x,p,nx,np)df_derit(funcs,it,x,p,nx,np);
-else
+elseif  any(strcmp('sys_dtau',varargin)) ||...
+        (isfield(funcs,'sys_dtau_provided') && funcs.sys_dtau_provided)
     funcs.sys_dtau_provided=true;
     if funcs.x_vectorized
         funcs.sys_dtau=@(itau,x,p,nx,np)wrap_dtau(itau,x,p,nx,np,funcs.sys_dtau);
     end
 end
+%% if sys_mfderi is not provided, insert finite difference approximation
 if iscell(funcs.sys_mfderi)
     funcs.sys_mfderi_provided=false;
     mfargs=funcs.sys_mfderi;
     funcs.sys_mfderi=@(x,p,varargin)df_mfderiv(funcs,x,p,varargin,mfargs{:});    
-else
+elseif any(strcmp('sys_mfderi',varargin)) ||...
+        (isfield(funcs,'sys_mfderi_provided') && funcs.sys_mfderi_provided)
     funcs.sys_mfderi_provided=true;    
 end
 end
+%% dummy condition
 function [resi,condi]=dummy_cond(point) %#ok
 resi=[];
 condi=[];
