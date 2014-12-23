@@ -1,19 +1,23 @@
-function hopf=p_tohopf(funcs,point,excludefreqs)
+function hopf=p_tohopf(funcs,point,freqs)
 %% convert point to Hopf bifurcation point
-% function hopf_point=p_tohopf(funcs,point {,excludefreqs})
+% function hopf_point=p_tohopf(funcs,point {,freqs})
 % INPUT:
 %   funcs problem functions
 %	point with stability information 
+%   optional freqs: frequency to be excluded from consideration
 % OUTPUT:
 %	hopf_point uncorrected starting guess for hopf point
+%
+% If point is of type 'hoho' freqs can be string 'omega1' or 'omega2': then
+% omega1 or omega2 will be selected as Hopf frequency, if freqs is value,
+% it will be excluded
 
-% (c) DDE-BIFTOOL v. 1.01, 14/07/2000
 %
 % $Id$
 %
 %%
 if nargin<3
-    excludefreqs=[];
+    freqs=[];
 end
 
 hopf.kind='hopf';
@@ -30,13 +34,13 @@ switch point.kind
         end
         if strcmp(point.kind,'hopf')
             % remove known imaginary pair
-            excludefreqs=[abs(point.omega),excludefreqs];
+            freqs=[abs(point.omega),freqs];
         end
-        if ~isempty(excludefreqs)
-            for i=1:length(excludefreqs)
-                [i1,i2]=min(abs(real(l1))+abs(abs(imag(l1)-excludefreqs(i)))); %#ok<ASGLU>
+        if ~isempty(freqs)
+            for i=1:length(freqs)
+                [i1,i2]=min(abs(real(l1))+abs(abs(imag(l1)-freqs(i)))); %#ok<ASGLU>
                 l1(i2)=-1;
-                [i1,i2]=min(abs(real(l1))+abs(abs(imag(l1)+excludefreqs(i)))); %#ok<ASGLU>
+                [i1,i2]=min(abs(real(l1))+abs(abs(imag(l1)+freqs(i)))); %#ok<ASGLU>
                 l1(i2)=-1;
             end
         end
@@ -51,6 +55,32 @@ switch point.kind
     case 'psol'
         x=sum(point.profile,2)/size(point.profile,2);
         omega=2*pi/point.period;
+   % BW: Addition
+   case {'genh','zeho'}
+      hopf = point;
+      x = point.x;
+      omega = point.omega;
+   % BW: Addition (extended by JS)
+   case 'hoho'
+      hopf = point;
+      x = point.x;
+      % this ensures hopf = p_tohopf(p_tohoho(hopf)):
+      if isempty(freqs)
+          omega = point.omega1;
+      elseif ischar(freqs)
+          omega=point.(freqs);
+      else
+          d1=min(abs(point.omega1-freqs));
+          d2=min(abs(point.omega2-freqs));
+          if d1<d2
+              omega=point.omega2;
+          else
+              omega=point.omega1;
+          end
+      end
+      hopf = rmfield(hopf,'omega1');
+      hopf = rmfield(hopf,'omega2');
+      hopf.kind = 'hopf';        
     otherwise
         error('p_tohopf: point type %s not supported',point.kind);
 end

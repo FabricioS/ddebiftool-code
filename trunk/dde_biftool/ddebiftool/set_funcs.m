@@ -14,8 +14,15 @@ function funcs=set_funcs(varargin)
 % $Id$
 %
 %% Process options
-defaults={'sys_rhs',[],'sys_ntau',@()0,'sys_tau',[],...
-    'sys_cond',@dummy_cond,'sys_deri',[],'sys_dtau',[],'x_vectorized',false};
+defaults={...
+    'sys_rhs',[],...             % user-defined r.h.s.
+    'sys_ntau',@()0,...          % number of delays (SD-DDEs only)
+    'sys_tau',[],...             % index of delays as parameters or dependence of delays
+    'sys_cond',@dummy_cond,...   % extra conditions
+    'sys_deri',[],...            % Jacobians and second-order derivatives
+    'sys_dtau',[],...            % Jacobians and second-order derivatives for delay (SD-DDEs only)
+    'sys_mfderi',{},...          % higher-order derivatives (up to 5) for normal form computations
+    'x_vectorized',false};
 funcs=dde_set_options(defaults,varargin);
 if isempty(funcs.sys_rhs)
     file=exist('sys_rhs','file');
@@ -64,7 +71,13 @@ else
     if funcs.x_vectorized
         funcs.sys_dtau=@(itau,x,p,nx,np)wrap_dtau(itau,x,p,nx,np,funcs.sys_dtau);
     end
-
+end
+if iscell(funcs.sys_mfderi)
+    funcs.sys_mfderi_provided=false;
+    mfargs=funcs.sys_mfderi;
+    funcs.sys_mfderi=@(x,p,varargin)df_mfderiv(funcs,x,p,varargin,mfargs{:});    
+else
+    funcs.sys_mfderi_provided=true;    
 end
 end
 function [resi,condi]=dummy_cond(point) %#ok

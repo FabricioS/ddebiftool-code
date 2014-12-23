@@ -152,7 +152,7 @@ for i=1:max_iter
             J=[J;Jd]; %#ok<AGROW>
             % solve linear system
             if size(J,1)~=size(J,2)
-                disp('P_CORREC warning: use of nonsquare Jacobian.');
+                warning('p_correc:nonsquare','P_CORREC warning: use of nonsquare Jacobian.');
             end;
             
             dx=J\res;
@@ -180,7 +180,7 @@ for i=1:max_iter
             J=[J;Jd]; %#ok<AGROW>
             % solve linear system
             if size(J,1)~=size(J,2)
-                disp('P_CORREC warning: use of nonsquare Jacobian.');
+                warning('p_correc:nonsquare','P_CORREC warning: use of nonsquare Jacobian.');
             end;
             dx=J\res;
             % apply non-parameter corrections
@@ -211,7 +211,7 @@ for i=1:max_iter
             J=[J;Jd]; %#ok<AGROW>
             % solve linear system
             if size(J,1)~=size(J,2)
-                disp('P_CORREC warning: use of nonsquare Jacobian.');
+                warning('p_correc:nonsquare','P_CORREC warning: use of nonsquare Jacobian.');
             end;
             dx=J\res;
             % apply non-parameter corrections
@@ -244,7 +244,7 @@ for i=1:max_iter
             J=[J;Jd]; %#ok<AGROW>
             % solve linear system
             if size(J,1)~=size(J,2)
-                disp('P_CORREC warning: use of nonsquare Jacobian.');
+                warning('p_correc:nonsquare','P_CORREC warning: use of nonsquare Jacobian.');
             end;
             dx=J\res;
             % apply non-parameter corrections
@@ -325,7 +325,7 @@ for i=1:max_iter
             end;
             % solve linear system
             if size(J,1)~=size(J,2)
-                disp('P_CORREC warning: use of nonsquare Jacobian.');
+                warning('p_correc:nonsquare','P_CORREC warning: use of nonsquare Jacobian.');
             end;
             dx=J\res;
             % apply non-parameter corrections
