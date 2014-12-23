@@ -1,7 +1,9 @@
 function index = bif2num(biftype)
-% Converts a bifurcation type to its index
+%% Convert bifurcation type to its index
 % Return number of supported types on 'count'
-
+%
+% $Id$
+%%
 if strcmp(biftype, 'stst')
    index = 0;
 elseif strcmp(biftype,'hopf')
