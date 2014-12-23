@@ -1,7 +1,10 @@
 function biftype = num2bif(index)
-% Convert an index to a bifurcation type
+%% Convert an index to a bifurcation type
 % Return number of supported types on 'count'
-
+%
+% $Id$
+%
+%%
 switch index
    case 0
       biftype = 'stst';
