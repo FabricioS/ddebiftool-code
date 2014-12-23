@@ -1,6 +1,9 @@
 function [smallest_real_part, fullroots] = nmfm_smrpip(funcs,point, stmethod, rmomega)
-% Compute smallest real part of imaginary pairs
-
+%% Compute smallest real part of imaginary pairs
+%
+% $Id$
+%
+%%
 if ~isfield(point, 'stability') || isempty(point.stability) || isempty(point.stability.l1)
 	point.stability = p_stabil(funcs,point, stmethod);
 end
