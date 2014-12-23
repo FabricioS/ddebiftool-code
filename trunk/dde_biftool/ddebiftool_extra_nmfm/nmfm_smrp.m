@@ -1,4 +1,4 @@
-function [smallest_real_part, fullroots] = nmfm_smrp(...
+function [smallest_real_part, fullroots,selectedroot] = nmfm_smrp(...
     funcs,point, stmethod,rmomega,threshold)
 %% Compute smallest real part of imaginary pairs or of real eigenvalues
 %
@@ -34,5 +34,5 @@ realparts = real(selectedroots);
 [dum, rpind] = sort(abs(realparts)); %#ok<ASGLU>
 realparts = realparts(rpind);
 smallest_real_part = realparts(1);
-
+selectedroot=selectedroots(rpind);
 end

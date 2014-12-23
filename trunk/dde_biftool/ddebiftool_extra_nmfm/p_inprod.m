@@ -1,21 +1,23 @@
 function ip = p_inprod(p1, p2)
+%% Inner product between p1 and p2
 % function ip = p_inprod(p1, p2)
 % PURPOSE: compute the inner product between p1 and p2
 % INPUT:
 %	p1, p2: points 
 % OUTPUT:
 %   ip: inner product of the points
-
+%
 % BW: the structure of this function is based on p_norm.
 % The expressions were chosen such that p_inprod(p1,p1) = p_norm(p1)^2.
-
+%
+% $Id$
+%
+%%
 kind = p1.kind;
 if ~strcmp(kind, p2.kind)
     % Not the same kind!
     error('P_INPROD: input points must be of the same kind!');
 end
-
-ip = 1;
 
 switch kind
     case 'stst'
@@ -43,7 +45,4 @@ if length(ip) ~= 1
     display(ip);
     error('P_INPROD: inner product does not result in scalar.');
 end
-
-
 end
-
