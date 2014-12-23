@@ -1,6 +1,9 @@
 function [smallest_real_part, fullroots] = nmfm_smlrp(funcs,point, stmethod, rmomega)
-% Compute smallest real part of the real roots
-
+%% Compute smallest real part of the real roots
+%
+% $Id$
+%
+%%
 if ~isfield(point, 'stability') || isempty(point.stability) || isempty(point.stability.l1)
 	point.stability = p_stabil(funcs, point, stmethod);
 end
@@ -22,7 +25,7 @@ if isempty(realroots)
    return;
 end
 realparts = real(realroots);
-[~, rpind] = sort(abs(realparts));
+[dum, rpind] = sort(abs(realparts)); %#ok<ASGLU>
 realparts = realparts(rpind);
 smallest_real_part = realparts(1);
 
