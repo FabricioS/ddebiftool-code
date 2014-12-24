@@ -84,7 +84,12 @@ else
 end
 
 %% Normalize eigenvectors
-alpha0 = 1/sqrt(p0*DDelta0*q0);
+a2inv=p0*DDelta0*q0;
+if a2inv<0
+    q0=-q0;
+    a2inv=-a2inv;
+end
+alpha0 = 1/sqrt(a2inv);
 p0 = alpha0*p0;
 q0 = alpha0*q0;
 
