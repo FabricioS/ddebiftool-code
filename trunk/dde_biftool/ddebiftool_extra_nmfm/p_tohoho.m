@@ -26,7 +26,7 @@ if strcmp(point.kind, 'hopf')
    end
    hoho.omega1 = point.omega;
    hoho = rmfield(hoho,'omega');
-   [dum,dum,selroot]=nmfm_smrp([],point,[],true,1e-8); %#ok<ASGLU>
+   [dum,dum,selroot]=nmfm_smrp([],point,[],true,@(x)x>1e-8); %#ok<ASGLU>
    if isempty(selroot)
       fprintf('P_TOHOHO: no second imaginary pair!');
       success = 0;

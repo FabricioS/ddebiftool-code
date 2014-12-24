@@ -154,20 +154,6 @@ while curind < length(tempbranch.point)
          detection_status(bif2num('hoho')) = 1;
       end
       
-      %% GENERALIZED HOPF
-      if ~biffound && detection_status(bif2num('genh')) == 0 && strcmp(kind,'hopf')
-         % Do double hopf detection
-         %new_point = nmfm_hopf(funcs,new_point);
-         new_sign = new_point.nmfm.L1;
-         new_sign = new_sign/abs(new_sign);
-         if new_sign ~= last_sign(bif2num('genh')) && ~isnan(last_sign(bif2num('genh')))
-            biffound = 1;
-            bifkind = 'genh';
-         end
-         last_sign(bif2num('genh')) = new_sign;
-         detection_status(bif2num('genh')) = 1;
-      end
-      
       %% ZERO HOPF
       if ~biffound && detection_status(bif2num('zeho')) == 0 && strcmp(kind,'hopf')
          % Check whether the smallest real eigenvalue crosses 0
@@ -185,6 +171,20 @@ while curind < length(tempbranch.point)
          detection_status(bif2num('zeho')) = 1;
       end
       
+      %% GENERALIZED HOPF
+      if ~biffound && detection_status(bif2num('genh')) == 0 && strcmp(kind,'hopf')
+         % Do double hopf detection
+         %new_point = nmfm_hopf(funcs,new_point);
+         new_sign = new_point.nmfm.L1;
+         new_sign = new_sign/abs(new_sign);
+         if new_sign ~= last_sign(bif2num('genh')) && ~isnan(last_sign(bif2num('genh')))
+            biffound = 1;
+            bifkind = 'genh';
+         end
+         last_sign(bif2num('genh')) = new_sign;
+         detection_status(bif2num('genh')) = 1;
+      end
+      
       %% NO MATCH
       if ~biffound
          break;
@@ -199,7 +199,8 @@ while curind < length(tempbranch.point)
          bifcand = new_point;
       else
          % Use halfway point as bifurcation candidate
-         bifcand = p_correc(funcs, halfway_point, free_par, [], method);
+         secant=p_normlz(p_axpy(-1,new_point,tempbranch.point(curind-1)));
+         bifcand = p_correc(funcs, halfway_point, free_par, secant, method);
          % Use this approximate stability only to convert to Hopf
          bifcand.stability = stability;
       end
@@ -308,10 +309,11 @@ while curind < length(tempbranch.point)
             pospoint = prevpoint;
             negpoint = hopfpoint;
          end
+         secant=p_normlz(p_axpy(-1,negpoint,pospoint));
          for i = 1:max_iter
             sumpoint = p_axpy(1, pospoint, negpoint);
             halfpoint = p_axpy(0.5, sumpoint, []);
-            halfpoint = p_correc(funcs, halfpoint,free_par,[],method);
+            halfpoint = p_correc(funcs, halfpoint,free_par,secant,method);
             [cursign, roots_hoho] = nmfm_smrp(funcs, halfpoint, stmethod, 1,isimag);
             if abs(cursign) < conv_r
                halfpoint.stability.l1 = roots_hoho;

@@ -23,10 +23,10 @@ end
 lfac=[lambda,1,zeros(1,options.deri-1)];
 tpow=options.deri;
 tfac=(-1)^options.deri;
-Delta = lfac*eye(n);
+Delta = lfac(options.deri+1)*eye(n);
 for k = 1:r % For every delay
    Ak = funcs.sys_deri(xx,par,k-1,[],[]);
-   Delta = Delta -tfac*tau(k)^tpow*Ak*exp(-lambda*taus(k));
+   Delta = Delta -tfac*taus(k)^tpow*Ak*exp(-lambda*taus(k));
 end
 
 end

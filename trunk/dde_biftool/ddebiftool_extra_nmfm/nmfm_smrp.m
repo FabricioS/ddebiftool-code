@@ -19,9 +19,9 @@ fullroots = roots;
 %% Remove roots closest to known eigenvalue pair
 if rmomega
    [dum,ix]=sort(abs(roots - 1i*point.omega)); %#ok<ASGLU>
-   roots(ix)=[];
+   roots(ix(1))=[];
    [dum,ix]=sort(abs(roots + 1i*point.omega)); %#ok<ASGLU>
-   roots(ix)=[];
+   roots(ix(1))=[];
 end
 
 selectedroots = roots(threshold(abs(imag(roots))));
@@ -32,7 +32,6 @@ end
 %% Assume all imaginary eigenvalues come in pairs
 realparts = real(selectedroots);
 [dum, rpind] = sort(abs(realparts)); %#ok<ASGLU>
-realparts = realparts(rpind);
-smallest_real_part = realparts(1);
-selectedroot=selectedroots(rpind);
+smallest_real_part = realparts(rpind(1));
+selectedroot=selectedroots(rpind(1));
 end
