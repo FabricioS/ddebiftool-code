@@ -12,15 +12,15 @@ ii = sqrt(-1);
 newpoint = point;
 
 if ~strcmp(kind,'zeho')
-    display(kind);
-    error('NMFM_ZEHO: did not receive a zero hopf point as argument.');
+    error('NMFM_ZEHO: did not receive a zero hopf point, but %s, as argument.',kind);
 end
 
 %% Select eigenvalue pair
 omega = point.omega;
 if isempty(omega) || omega == 0
-    fprintf('NMFM_ZEHO: omega is empty or zero, unable to compute normal form.\n');
-    return;
+    warning('NMFM_ZEHO:omega',...
+        'NMFM_ZEHO: omega is empty or zero, unable to compute normal form.');
+    return
 end
 
 lambda0 = 0; % We could try to take the actual eigenvalue approximately equal to 0
@@ -72,7 +72,8 @@ else
             qq1 = [];
         end
     else
-        pp1 = []; qq1 = [];
+        pp1 = []; 
+        qq1 = [];
     end
     [p0, q0] = nmfm_border(Delta0, pp0, qq0);
     [p1, q1] = nmfm_border(Delta1, pp1, qq1);

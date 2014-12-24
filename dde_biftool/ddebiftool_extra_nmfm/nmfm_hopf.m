@@ -13,16 +13,16 @@ ii = sqrt(-1);
 newpoint = point;
 
 if ~strcmp(kind,'hopf')
-    display(kind);
-    error('NMFM_HOPF: did not receive a hopf point as argument.');
+    error('NMFM_HOPF: did not receive a hopf point, but %s, as argument.',kind);
 end
 
 %% Select eigenvalue pair
 omega = point.omega;
 if isempty(omega) || omega == 0
-    fprintf('NMFM_HOPF: omega is empty or zero, returning L1 = NaN.\n');
+    warning('NMFM_HOPF:omega',...
+        'NMFM_HOPF:  omega is empty or zero, returning L1 = NaN.');
     newpoint.nmfm.L1 = NaN;
-    return;
+    return
 end
 
 lambda0 = ii*omega;
@@ -78,9 +78,10 @@ else
 end
 
 if isempty(p0) || isempty(q0)
-   fprintf('NMFM_HOPF: null vectors are empty, returning L1 = NaN.\n');
+   warning('NMFM_HOPF:nullvectors',...
+       'NMFM_HOPF: null vectors are empty, returning L1 = NaN.\n');
    newpoint.nmfm.L1 = NaN;
-   return;
+   return
 end
 
 %% Normalize eigenvectors

@@ -11,42 +11,12 @@ function [p,q] = nmfm_border(A, p0, q0)
 % $Id$
 %
 %%
-[n,~] = size(A);
+n = size(A,1);
 
 if isempty(p0) || isempty(q0) % No previous null vectors specified
-   Q = null(A); % Right
-   P = null(A'); % Left
-   if isempty(Q) || isempty(P)
-      % Do it by eigenvalues, QZ method works best
-      [V,D] = eig(A,eye(n),'qz');
-      evs = diag(D);
-      zeroeigind = find(abs(evs) < 1e-5); % the zero eigenvalue
-      if length(zeroeigind) == 1
-         Q = V(:,zeroeigind);
-      end
-      [V,D] = eig(A',eye(n),'qz');
-      evs = diag(D);
-      zeroeigind = find(abs(evs) < 1e-5); % the zero eigenvalue
-      if length(zeroeigind) == 1
-         P = V(:,zeroeigind);
-      end
-   end
-   if isempty(Q) || isempty(P)
-      % Matrix may be too close to singular, try rounding off to 4 decimals
-      Ar = floor(1e4*A)*1e-4;
-      Q = null(Ar);
-      P = null(Ar');
-      if isempty(Q) || isempty(P)
-         fprintf('NMFM_BORDER: could not construct null vectors.\n');
-         p = [];
-         q = [];
-         return;
-      else
-         fprintf('NMFM_BORDER: had to round off characteristic matrix.\n');
-      end
-   end
-   pp0 = P(:,1)';
-   qq0 = Q(:,1);
+    [U,S,V]=svd(A); %#ok<ASGLU>
+    pp0=U(:,end).';
+    qq0=V(:,end);
 else
    pp0 = p0;
    qq0 = q0;
