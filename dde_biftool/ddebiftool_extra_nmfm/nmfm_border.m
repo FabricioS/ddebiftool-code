@@ -15,14 +15,14 @@ n = size(A,1);
 
 if isempty(p0) || isempty(q0) % No previous null vectors specified
     [U,S,V]=svd(A); %#ok<ASGLU>
-    pp0=U(:,end).';
+    pp0=U(:,end);
     qq0=V(:,end);
 else
-   pp0 = p0;
+   pp0 = p0';
    qq0 = q0;
 end
 % Use bordering technique
-Border = [A, pp0'; conj(qq0'), 0];
+Border = [A, pp0; conj(qq0'), 0];
 qsol = Border\[zeros(n,1) ;1];
 q = qsol(1:n);
 psol = [zeros(1,n), 1]/Border;
