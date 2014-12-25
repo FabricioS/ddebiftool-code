@@ -4,14 +4,15 @@ function hopf=p_tohopf(funcs,point,freqs)
 % INPUT:
 %   funcs problem functions
 %	point with stability information 
-%   optional freqs: frequency to be excluded from consideration
+%   optional freqs: frequency to be excluded from consideration (or
+%   used otherwise, depending on input point type)
 % OUTPUT:
 %	hopf_point uncorrected starting guess for hopf point
 %
 % If point is of type 'hoho' freqs can be string 'omega1' or 'omega2': then
 % omega1 or omega2 will be selected as Hopf frequency, if freqs is value,
 % it will be excluded
-
+%
 %
 % $Id$
 %
@@ -55,34 +56,14 @@ switch point.kind
     case 'psol'
         x=sum(point.profile,2)/size(point.profile,2);
         omega=2*pi/point.period;
-   % BW: Addition
-   case {'genh','zeho'}
-      hopf = point;
-      x = point.x;
-      omega = point.omega;
-   % BW: Addition (extended by JS)
-   case 'hoho'
-      hopf = point;
-      x = point.x;
-      % this ensures hopf = p_tohopf(p_tohoho(hopf)):
-      if isempty(freqs)
-          omega = point.omega1;
-      elseif ischar(freqs)
-          omega=point.(freqs);
-      else
-          d1=min(abs(point.omega1-freqs));
-          d2=min(abs(point.omega2-freqs));
-          if d1<d2
-              omega=point.omega2;
-          else
-              omega=point.omega1;
-          end
-      end
-      hopf = rmfield(hopf,'omega1');
-      hopf = rmfield(hopf,'omega2');
-      hopf.kind = 'hopf';        
     otherwise
-        error('p_tohopf: point type %s not supported',point.kind);
+        try
+            conversion=str2func([point.kind,'_tohopf']);
+            hopf=conversion(funcs,point,freqs);
+            return
+        catch ME
+            error('p_tohopf: point type %s not supported',point.kind);
+        end
 end
 
 hopf.x=x;

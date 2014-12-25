@@ -295,6 +295,7 @@ while curind < length(tempbranch.point)
          end
          if corrsuccess
             new_bifpoint = p_tozeho(halfpoint);
+            last_sign(bif2num('genh'))=NaN;
          end
       elseif strcmp(bifkind,'hoho')
          %% Use secant method

@@ -211,7 +211,8 @@ for i=1:max_iter
             J=[J;Jd]; %#ok<AGROW>
             % solve linear system
             if size(J,1)~=size(J,2)
-                warning('p_correc:nonsquare','P_CORREC warning: use of nonsquare Jacobian.');
+                warning('p_correc:nonsquare',...
+                    'P_CORREC warning: use of nonsquare %dx%d Jacobian.',size(J,1),size(J,2));
             end;
             dx=J\res;
             % apply non-parameter corrections

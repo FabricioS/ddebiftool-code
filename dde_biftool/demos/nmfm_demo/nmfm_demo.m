@@ -118,8 +118,6 @@ ylabel('x_1');
 % the branch.
 
 branch1.method.bifurcation.minimal_real_part = -0.03;
-branch1.method.bifurcation.secant_tolerance=1e-5;
-branch1.method.bifurcation.correction_tolerance=1e-5;
 
 fprintf('Bifurcation detection\n');
 branch1 = br_bifdet(funcs, branch1);
@@ -179,8 +177,6 @@ branch2 = br_rvers(branch2);
 % We repeat the steps for bifurcation detection, but now apply it to the
 % hopf branch. This yields several higher-order bifurcations.
 branch2.method.bifurcation.minimal_real_part = -0.03;
-branch2.method.bifurcation.secant_tolerance=1e-5;
-branch2.method.bifurcation.correction_tolerance=1e-5;
 
 branch2 = br_bifdet(funcs,branch2);
 
@@ -206,8 +202,6 @@ branch3 = br_rvers(branch3);
 [branch3,s,f,r]=br_contn(funcs,branch3,300);
 
 branch3.method.bifurcation.minimal_real_part = -0.03;
-branch3.method.bifurcation.secant_tolerance=1e-5;
-branch3.method.bifurcation.correction_tolerance=1e-5;
 branch3 = br_bifdet(funcs, branch3);
 
 %% Plotting the bifurcations on the branches
@@ -246,9 +240,4 @@ br_plot(branch1,xm,ym,'--');
 
 xlabel('a');
 ylabel('c');
-
-
-return;
-
-
 
