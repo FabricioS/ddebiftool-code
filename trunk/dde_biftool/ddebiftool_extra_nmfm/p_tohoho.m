@@ -4,7 +4,7 @@ function [hoho, success] = p_tohoho(point)
 % INPUT:
 %	point: hopf point
 % OUTPUT:
-%	hoho: uncorrected starting guess for zero hopf point
+%	hoho: uncorrected starting guess for double-Hopf point
 %   success: whether conversion was successful
 %
 % $Id$
