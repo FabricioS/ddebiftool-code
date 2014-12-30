@@ -33,9 +33,12 @@
 
 %% Additional Folder for Path
 % The utility functions are stored in a separate folder, which has to be
-% loaded in addition to |ddebiftool|.
+% loaded in addition to |ddebiftool|. We also include the folders for
+% periodic orbits and for normal form functions.
 addpath('../../ddebiftool/',...
-    '../../ddebiftool_utilities/');
+    '../../ddebiftool_extra_psol/',...
+    '../../ddebiftool_utilities/',...
+    '../../ddebiftool_extra_nmfm/');
 clear;
 close all
 %#ok<*ASGLU,*NOPTS,*NASGU>
@@ -157,6 +160,74 @@ xlabel('a21');ylabel('\tau_s');
 % Predictions and corrections in the $(a_{21},\tau_s)$-plane after
 % computation of second branch of Hopf bifurcations (superimposed on result
 % of first Hopf bifurcation).
+%% First Lyapunov coefficient L1 along both Hopf curves
+% After a Hopf curve is computed, |HopfLyapunovCoefficients| returns the
+% first Lyapunov coefficient L1, which determines if the Hopf bifurcation
+% is supercritical (L1<0) or subcritical (L1>0). Since L1 depends on
+% 3rd-order derivatives of |sys_rhs|. The default finite-difference
+% approximation |df_mfderiv| is susceptible to round-off errors. Hence,
+% |HopfLyapunovCoefficients| returns 2 results, the second one using a
+% lower-order approximation. The difference between both outputs gives an
+% error estimate. The results show that both curves are supercritical.
+[L1_br2,L1low_br2]=HopfLyapunovCoefficients(funcs,branch2);
+[L1_br3,L1low_br3]=HopfLyapunovCoefficients(funcs,branch3);
+fprintf('maximal L1 along branch2: %g\n',max(L1_br2))
+fprintf('  max error of L1 along branch2: %g\n',max(abs(L1_br2-L1low_br2)));
+fprintf('maximal L1 along branch3: %g\n',max(L1_br3))
+fprintf('  max error of L1 along branch3: %g\n',max(abs(L1_br3-L1low_br3)));
+%% Determine normal form of double Hopf point
+% Similar to the L1 coefficients, the normal form coefficients of a
+% Hopf-Hopf point depend on 3rd-order derivatives of |sys_rhs|. Thus, the
+% function computing the normal form returns two values, the difference of
+% which is an error estimate. The output of |HopfHopfNormalform| is an
+% entire point structure of kind 'hoho'. The field nmfm contains normal
+% form coefficients. Other fields of interest are |omega1| and |omega2|.
+[hoho,hoho_low]=HopfHopfNormalform(funcs,branch2,indhopf2+(0:1));
+fprintf(['Normal form coefficients of Hopf-Hopf point\n',...
+    'at (a_21,tau_s)=(%g,%g) with omega1=%g, omega2=%g:\n'],...
+    hoho.parameter(ind_a21),hoho.parameter(ind_taus),...
+    hoho.omega1,hoho.omega2);
+disp(hoho.nmfm);
+fprintf('Error of normal form coefficients: %g\n',...
+     norm(struct2array(hoho.nmfm)-struct2array(hoho_low.nmfm),'inf'));
+%% Two-parameter bifurcation diagram of Hopf bifurcations
+% with L1 coefficients
+a21_br2 =arrayfun(@(x)x.parameter(ind_a21), branch2.point);
+taus_br2=arrayfun(@(x)x.parameter(ind_taus),branch2.point);
+a21_br3 =arrayfun(@(x)x.parameter(ind_a21), branch3.point);
+taus_br3=arrayfun(@(x)x.parameter(ind_taus),branch3.point);
+figure(3);
+subplot(2,2,1);
+hold on
+ph_br2=plot(a21_br2,taus_br2,'.-');
+ph_br3=plot(a21_br3,taus_br3,'.-','color',[0,0.5,0]);
+ph_hoho=plot(hoho.parameter(ind_a21),hoho.parameter(ind_taus),...
+    'ko','markerfacecolor','k');
+lg_handles=[ph_br2,ph_br3,ph_hoho];
+lg_texts={'Hopf branch2','Hopf branch3','Hopf-Hopf interaction'};
+lh=legend(lg_handles,lg_texts);
+lc=get(lh,'position');
+set(lh,'position',[0.9-lc(3),0.45-lc(4),lc(3:4)])
+a21lim=get(gca,'xlim');
+tauslim=get(gca,'ylim');
+grid on
+xlabel('a_{21}');
+ylabel('\tau_s');
+title('(Repeated) two-parameter Hopf curves');
+subplot(2,2,2);
+plot(L1_br2,taus_br2,'.-');
+set(gca,'ylim',tauslim,'xlim',[-0.6,0]);
+grid on
+ylabel('\tau_s');
+xlabel('L1');
+title('First Lyapunov coefficient along branch2');
+subplot(2,2,3);
+plot(a21_br3,L1_br3,'.-','color',[0,0.5,0]);
+set(gca,'ylim',[-0.1,0],'xlim',a21lim);
+grid on
+xlabel('a_{21}');
+ylabel('L1');
+title('First Lyapunov coefficient along branch3');
 %% Periodic orbit continuation
 % The convenience function |SetupPsol| creates the initial branch of
 % periodic orbits. Its first arguments are |funcs|, the Hopf or
@@ -184,7 +255,7 @@ figure(2); clf;
 % look at the period along the branch:
 a21_per=arrayfun(@(x)x.parameter(4),branch4.point);
 periods=[branch4.point.period];
-figure(3); clf;
+figure(4); clf;
 plot(a21_per,periods,'b.-');
 xlabel('a21');
 ylabel('period');
@@ -199,7 +270,6 @@ ylabel('period');
 fprintf('Loss of stability at point %d\n',find(nunst_per,1,'first'));
 %% Continuation of folds of periodic orbits
 % See <demo1_POfold.html> for extensive explanation.
-addpath('../../ddebiftool_extra_psol/');
 % find inital approximate fold
 [dummy,indmax]=max(arrayfun(@(x)x.parameter(ind_a21),branch4.point));
 % initialize problem functions and branch
@@ -222,12 +292,25 @@ fprintf('max number of unstable Floquet multipliers: %d\n',max(nunst_pf));
 % plot the defect of the trivial Floquet multiplier as computed by
 % GetStability
 n_orbits=length(pf_orbits);
-figure(4);
+figure(5);
 a21_pfold=arrayfun(@(x)x.parameter(ind_a21),branch5.point);
 taus_pfold=arrayfun(@(x)x.parameter(ind_taus),branch5.point);
 plot(1:n_orbits,triv_defect);
 xlabel('point number');
 ylabel('defect of trivial Floquet multiplier');
 title('Comparison of Floquet multiplier computation with extended system');
+%% Add fold of periodic orbits to Two-parameter bifurcation diagram
+figure(3);
+subplot(2,2,1);
+hold on
+ph_pfold=plot(a21_pfold,taus_pfold,'r.-');
+lg_handles(end+1)=ph_pfold;
+lg_texts{end+1}='Fold of periodic orbits';
+lh=legend(lg_handles,lg_texts);
+lc=get(lh,'position');
+set(lh,'position',[0.9-lc(3),0.45-lc(4),lc(3:4)])
+a21lim=get(gca,'xlim');
+subplot(2,2,3);
+set(gca,'xlim',a21lim);
 %% save data:
 save('demo1_simple_results.mat');

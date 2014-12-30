@@ -13,7 +13,7 @@
 % $Id$
 %
 %%
-function [yout,yout2]=df_mfderiv(funcs,xx,par,devs,varargin)
+function [yout,yout2,options]=df_mfderiv(funcs,xx,par,devs,varargin)
 %% Input
 %
 % * funcs: structure containing problem functions (fields sys_rhs and
@@ -29,7 +29,7 @@ function [yout,yout2]=df_mfderiv(funcs,xx,par,devs,varargin)
 % * yout: n x 1 vector, approximate derivative
 % * y2: n x 1 vector, lower-order approximation, use y-y2 as an error
 % estimate
-%
+% * options: structure mirroring optional inputs used during computations
 %% Comments
 % The general mixed derivative is computed using the polarization identity,
 % reducing it to a sum of higher-order derivatives of single-variable
@@ -52,7 +52,8 @@ end
 default={...
     'chebyshev_order',24,...       % order of interpolation polynomial (multiple of 4)
     'chebyshev_interval',1e-2,...  % length h of interpolation interval
-    'x_vectorized',false};         % if rhs is vectorized (only used if funcs is rhs)
+    'x_vectorized',false,...       % if rhs is vectorized (only used if funcs is rhs)
+    'output',1};                   % which output should come first, yout or yout2?                
 options=dde_set_options(default,varargin);
 dord=length(devs);                            % order of derivative
 %% Polarization identity and interpolation at Chebyshev points
@@ -92,6 +93,11 @@ xdim=size(y,1);
 ox=ones(1,xdim);
 yout=sum(fac(ox,:).*y,2);
 yout2=sum(fac(ox,:).*y2,2);
+if options.output==2
+    tmp=yout;
+    yout=yout2;
+    yout2=tmp;
+end
 end
 %% Determine coefficients for polarization formula to compute higher-order derivatives
 % The combinations in |mats| and |signs| help to reduce an arbitrary-order

@@ -17,7 +17,7 @@ if ~strcmp(kind,'hopf')
 end
 
 %% Select eigenvalue pair
-omega = point.omega;
+omega = abs(point.omega);
 if isempty(omega) || omega == 0
     warning('NMFM_HOPF:omega',...
         'NMFM_HOPF:  omega is empty or zero, returning L1 = NaN.');
