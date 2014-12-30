@@ -62,8 +62,16 @@ else
    % Construct null vectors
    pp2 = []; qq2 = [];
    if isfield(nullpoint, 'nvec')
-      if isfield(nullpoint.nvec,'p'), pp1 = nullpoint.nvec.p; else pp1 = []; end
-      if isfield(nullpoint.nvec,'q'), qq1 = nullpoint.nvec.q; else qq1 = []; end
+      if isfield(nullpoint.nvec,'p') 
+          pp1 = nullpoint.nvec.p; 
+      else
+          pp1 = [];
+      end
+      if isfield(nullpoint.nvec,'q')
+          qq1 = nullpoint.nvec.q; 
+      else
+          qq1 = []; 
+      end
    else
       pp1 = []; qq1 = [];
    end
@@ -133,7 +141,7 @@ g0021 = (1/2)*p2*(2*funcs.sys_mfderi(xx,par,H0011,PHI2) + funcs.sys_mfderi(xx,pa
 theta0 = real(g1011)/real(g0021);
 delta0 = real(g1110)/real(g2100);
 
-fprintf('theta(0) = %.10f, delta(0) = %.10f.\n', theta0, delta0);
+%fprintf('theta(0) = %.10f, delta(0) = %.10f.\n', theta0, delta0);
 
 % Store normal form coefficients
 newpoint.nmfm.g2100 = g2100;

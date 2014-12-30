@@ -1,4 +1,4 @@
-function [smallest_real_part, fullroots,selectedroot] = nmfm_smrp(...
+function [smallest_real_part, stability,selectedroot] = nmfm_smrp(...
     funcs,point, stmethod,rmomega,threshold)
 %% Compute smallest real part of imaginary pairs or of real eigenvalues
 %
@@ -9,12 +9,12 @@ function [smallest_real_part, fullroots,selectedroot] = nmfm_smrp(...
 % $Id$
 %
 %%
-if ~isfield(point, 'stability') || isempty(point.stability) || isempty(point.stability.l1)
+if ~isfield(point, 'stability') || isempty(point.stability) || isempty(point.stability.l0)
 	point.stability = p_stabil(funcs,point, stmethod);
 end
 
-roots = point.stability.l1;
-fullroots = roots;
+stability = point.stability;
+roots = stability.l0;
 
 %% Remove roots closest to known eigenvalue pair
 if rmomega

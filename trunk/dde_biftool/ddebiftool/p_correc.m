@@ -1,16 +1,16 @@
 function [point,success]=p_correc(funcs,point,free_par,step_cnd,method,p_nr,...
-                                  previous,d_nr,tz)
+    previous,d_nr,tz)
 %% correct point using Newton iteration
 % function [point,success]=p_correc(point0,free_par,step_cnd,method,adapt,
 %                                 previous)
 % INPUT:
 %   funcs problem functions
 %   point0 initial point guess
-%   free_par free parameter numbers in N^d 
+%   free_par free parameter numbers in N^d
 %       step_cnd steplength condition(s) as point(s)
 %   method method parameters
-%   adapt if zero or absent, do not adapt mesh; if one, always adapt 
-%       previous (optional) previously computed branch point (used, in case 
+%   adapt if zero or absent, do not adapt mesh; if one, always adapt
+%       previous (optional) previously computed branch point (used, in case
 %            of periodic solutions or connecting orbits, to
 %            minimize phase shift)
 % OUTPUT:
@@ -50,7 +50,7 @@ print_r=method.print_residual_info; % print residual evolution
 % remove old stability info if present:
 
 if isfield(point,'stability')
-  point.stability=[];
+    point.stability=[];
 end;
 
 % initialize:
@@ -386,7 +386,7 @@ for i=1:max_iter
         r0=r1;
         r1=norm_res;
     end;
-    if r1<=conv_r || (i-1>nmon_iter && r1>=r0)
+    if r1<=conv_r || (i-1>nmon_iter && r1>=r0) || any(isnan(r1)) || any(isnan(dx))
         break;
     end;
     
@@ -396,28 +396,28 @@ end;
 
 n_res=norm(res,'inf');
 
-success=(n_res<=method.minimal_accuracy);
+success=(n_res<=method.minimal_accuracy) && all(~isnan(dx));
 
 % recorrect with adapted mesh if necessary
 
-if strcmp(point.kind,'psol') || strcmp(point.kind,'hcli')
-  if size(point.mesh,2)
-    ma=method.adapt_mesh_after_correct;
-    if p_nr==1 || ( p_nr>1 && mod(p_nr,ma)==0 ) 
-      % do not adapt mesh when p_nr=0
-      % adapt mesh when p_nr=1
-      % adapt mesh when p_nr>1 & mod(p_nr,ma)=0
-      if success % adapt & correct again
-        method2=method;
-        method2.adapt_mesh_before_correct=1;
-        method2.adapt_mesh_after_correct=0;
-        [point,success]=p_correc(funcs,point,free_par,step_cnd,method2,2,previous);
-      end
-    end;
-  end;
-end;
+if success && (strcmp(point.kind,'psol') || strcmp(point.kind,'hcli'))
+    if size(point.mesh,2)
+        ma=method.adapt_mesh_after_correct;
+        if p_nr==1 || ( p_nr>1 && mod(p_nr,ma)==0 )
+            % do not adapt mesh when p_nr=0
+            % adapt mesh when p_nr=1
+            % adapt mesh when p_nr>1 & mod(p_nr,ma)=0
+            if success % adapt & correct again
+                method2=method;
+                method2.adapt_mesh_before_correct=1;
+                method2.adapt_mesh_after_correct=0;
+                [point,success]=p_correc(funcs,point,free_par,step_cnd,method2,2,previous);
+            end
+        end
+    end
+end
 
 if isfield(method,'print_jacobian_condition') && exist('J','var')
     fprintf('norm(J^(-1))=%g\n',1/min(svd(J)));
 end
-return;
+end

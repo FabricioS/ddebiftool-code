@@ -282,10 +282,11 @@ while curind < length(tempbranch.point)
          for i = 1:max_iter
             sumpoint = p_axpy(1, pospoint, negpoint);
             halfpoint = p_axpy(0.5, sumpoint, []);
-            [currp, roots] = nmfm_smrp(funcs, halfpoint, stmethod,0,isreal);
+            [currp, stability] = nmfm_smrp(funcs, halfpoint, stmethod,0,isreal);
             if abs(currp) < conv_r % Smallest real part zero
-               corrsuccess = 1;
-               break;
+                halfpoint.stability=stability;
+                corrsuccess = 1;
+                break;
             end
             if currp < 0
                negpoint = halfpoint;
@@ -315,9 +316,9 @@ while curind < length(tempbranch.point)
             sumpoint = p_axpy(1, pospoint, negpoint);
             halfpoint = p_axpy(0.5, sumpoint, []);
             halfpoint = p_correc(funcs, halfpoint,free_par,secant,method);
-            [cursign, roots_hoho] = nmfm_smrp(funcs, halfpoint, stmethod, 1,isimag);
+            [cursign, stability] = nmfm_smrp(funcs, halfpoint, stmethod, 1,isimag);
             if abs(cursign) < conv_r
-               halfpoint.stability.l1 = roots_hoho;
+               halfpoint.stability = stability;
                corrsuccess = 1;
                break;
             end
