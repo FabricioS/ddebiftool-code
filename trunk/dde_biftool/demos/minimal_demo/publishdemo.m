@@ -11,5 +11,9 @@ publish('minimal_demo');
 %% Steady-state bifurcations and periodic orbits
 opts={'maxOutputLines',20};
 publish('minimal_demo_stst_psol',opts{:});
+%% Normal form coefficients for Hopf bifurcations
+publish('minimal_demo_extra_nmfm','maxOutputLines',Inf);
 %% local bifurcations of periodic orbits
 publish('minimal_demo_extra_psol',opts{:});
+%% Plot two-parameter bifurcation diagram
+publish('minimal_demo_plot_2dbif');

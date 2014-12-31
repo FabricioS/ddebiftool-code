@@ -32,7 +32,7 @@ function [nunst,dom,triv_defect,points]=GetStability(branch,varargin)
 %
 %% process options
 defaults={'exclude_trivial',false,'locate_trivial',[],'funcs',[],'critical',false,...
-    'points',[],'method',[],'recompute',false};
+    'points',[],'method',[],'recompute',false,'stabilityfield','l0'};
 options=dde_set_options(defaults,varargin);
 %% check if stability has been computed already & compute if necessary
 if isfield(branch,'point')
@@ -70,15 +70,15 @@ switch points(1).kind
         stab=@(x)log(abs(x)+eps);
         triv=@(p)1;
     case 'stst'
-        getev=@(p)p.stability.l0;
+        getev=@(p)p.stability.(options.stabilityfield);
         stab=@(x)real(x);
         triv=@(p)[];
     case 'fold'
-        getev=@(p)p.stability.l0;
+        getev=@(p)p.stability.(options.stabilityfield);
         stab=@(x)real(x);
         triv=@(p)0;
     case 'hopf'
-        getev=@(p)p.stability.l0;
+        getev=@(p)p.stability.(options.stabilityfield);
         stab=@(x)real(x);
         triv=@(p)[1i*p.omega;-1i*p.omega];
     otherwise

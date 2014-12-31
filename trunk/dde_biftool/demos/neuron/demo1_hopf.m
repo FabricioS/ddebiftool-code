@@ -149,5 +149,7 @@ branch3=br_rvers(branch3);
 % computation of second branch of Hopf bifurcations (superimposed on result
 % of first Hopf bifurcation).
 
-%% Save and continue with periodic orbits <demo1_psol.html>
+%% Save and continue 
+% Continue with with periodic orbits <demo1_psol.html> or normal forms
+% <demo1_normalforms.html>.
 save('demo1_hopf_results.mat');

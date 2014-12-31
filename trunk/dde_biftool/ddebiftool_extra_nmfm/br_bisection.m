@@ -18,7 +18,7 @@ function [branch,indbif,indmap,notcorrected]=...
 % $Id$
 %
 %%
-default={'print',1,'distance',1e-3,'min_iterations',4};
+default={'print',1,'distance',1e-3,'min_iterations',4,'stabilityfield','l1'};
 options=dde_set_options(default,varargin,'pass_on');
 %% list of possible bifurcations
 %% setup bisection
@@ -31,7 +31,7 @@ psolve=@(p)p_correc(funcs,p,free_par,secant_normalized,branch.method.point,0,p1)
 pstab=@(p)p_stabil(funcs,p,branch.method.stability);
 ppred=@(s)p_axpy(s,secant,p1);
 if ischar(bif_mon_inp)
-    bif_mon=@(p)std_bifs(branch.method,bif_mon_inp,p);
+    bif_mon=@(p)std_bifs(branch.method,bif_mon_inp,p,options.stabilityfield);
 else
     bif_mon=bif_mon_inp;
 end
@@ -58,7 +58,9 @@ while (it<options.min_iterations || dist>options.distance) && absres>0
         %% don't correct if correction fails
         pnewcor=pnewpred;
     end
-    pnewcor.stability=pstab(pnewcor);
+    if isfield(plist(1),'stability')
+        pnewcor.stability=pstab(pnewcor);
+    end
     plist=[plist,pnewcor]; %#ok<AGROW>
     slist=[slist,snew]; %#ok<AGROW>
     iscorrected=[iscorrected,logical(suc)]; %#ok<AGROW>
@@ -85,7 +87,7 @@ branch.point=[branch.point(1:inds(1)),plist(2:end-1),branch.point(inds(2):end)];
 indbif=indbif+inds(1)-1;
 notcorrected=notcorrected+inds(1)-1;
 end
-function res=std_bifs(mth,type,p)
+function res=std_bifs(mth,type,p,stabilityfield)
 bifs=struct(...
     'hopf',struct('res',@(lambda)real(lambda),'args',{{'critical',true}}),...
     'fold',struct('res',@(lambda)real(lambda),'args',{{'critical',true}}),...
@@ -110,6 +112,10 @@ bifs=struct(...
       'critical',true,...
       'exclude_trivial',true,...
       'locate_trivial',@(p)0}}));
-[nunst,dom]=GetStability(p,'method',mth,bifs.(type).args{:}); %#ok<ASGLU>
+[nunst,dom]=GetStability(p,'method',mth,bifs.(type).args{:},...
+    'stabilityfield',stabilityfield); %#ok<ASGLU>
 res=bifs.(type).res(dom);
+if isnan(res)
+    res=-Inf;
+end
 end

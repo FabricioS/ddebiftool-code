@@ -4,7 +4,7 @@
 % 
 % $$x'(t)=\beta \frac{x(t-\tau)}{1+x(t-\tau)^n}-\gamma x(t)$$
 % 
-% Parameters are (in this order) |beta|,|n|,|tau| (|gamma| is not part of
+% Parameters are (in this order) |beta|, |n|, |tau| (|gamma| is not part of
 % parameter vector).
 %
 % <html>
@@ -13,8 +13,10 @@
 %
 %% load DDE-Biftool into path
 clear
+close all
 addpath('../../ddebiftool',...
     '../../ddebiftool_extra_psol',...
+    '../../ddebiftool_extra_nmfm',...
     '../../ddebiftool_utilities');
 %% Enable vectorization
 % (disable for speed comparison)
@@ -52,9 +54,22 @@ figure(1);clf
 nontriv_eqs=br_contn(funcs,nontriv_eqs,3);
 nontriv_eqs=br_stabl(funcs,nontriv_eqs,0,1);
 nunst_eqs=GetStability(nontriv_eqs);
+ind_hopf=find(nunst_eqs<2,1,'last');
+fprintf('Hopf bifurcation near point %d\n',ind_hopf);
+%% Continue Hopf bifurcation in two parameters
+[hbranch,suc]=SetupHopf(funcs,nontriv_eqs,ind_hopf,...
+    'contpar',[beta_ind,tau_ind],'dir',beta_ind,'step',1e-3);
+figure(2);clf
+hbranch=br_contn(funcs,hbranch,30);
+hbranch=br_rvers(hbranch);
+hbranch=br_contn(funcs,hbranch,30);
+%% Compute L1 coefficient 
+% to find if Hopf bifurcation is supercritical (L1<0) or subcritical (L1>0)
+[L1,L1low]=HopfLyapunovCoefficients(funcs,hbranch);
+fprintf('maximal L1 coefficient along Hopf branch: %g\n',max(L1));
+fprintf('max of error estimate for L1 coefficient: %g\n',norm(L1-L1low,'inf'));
 %% Branch off at  Hopf bifurcation
 disp('Branch off at Hopf bifurcation');
-ind_hopf=find(nunst_eqs<2,1,'last');
 fprintf('Initial correction of periodic orbits at Hopf:\n');
 [per_orb,suc]=SetupPsol(funcs,nontriv_eqs,ind_hopf,...
     'print_residual_info',1,'intervals',20,'degree',4,...
@@ -63,11 +78,12 @@ if ~suc
     error('MackeyGlassDemo:fail',...
         'MackeyGlassDemo: initialization of periodic orbit failed');
 end
+figure(1);
 hold on
 per_orb=br_contn(funcs,per_orb,60);
 per_orb=br_stabl(funcs,per_orb,0,1);
 nunst_per=GetStability(per_orb,'exclude_trivial',true);
-%% Find period doubling bifurcations
+%% Find period doubling bifurcations in two parameters
 ind_pd=find(diff(nunst_per)==1);
 [pdfuncs,pdbranch1,suc]=SetupPeriodDoubling(funcs,per_orb,ind_pd(1),...
     'contpar',[beta_ind,tau_ind],'dir',beta_ind,'step',1e-3);
@@ -75,7 +91,7 @@ if ~suc
     error('MackeyGlassDemo:fail',...
         'MackeyGlassDemo: initialization of period doubling failed');
 end
-figure(2);clf
+figure(2);
 pdbranch1=br_contn(pdfuncs,pdbranch1,30);
 pdbranch=br_rvers(pdbranch1);
 pdbranch=br_contn(pdfuncs,pdbranch,30);
@@ -117,24 +133,26 @@ pd2sols=pdfuncs.get_comp(pdbranch2.point,'solution');
 fprintf('max defect of Floquet multiplier at -1: %g\n',max(abs(floqpd2+1)));
 
 %% Plot of period doubling bifurcation x profiles
-pdsols={pd1sols,pd2sols};
+bifsols={pd1sols,pd2sols,hbranch.point};
 floqpd={floqpd1,floqpd2};
-get_par=@(i,k)arrayfun(@(x)x.parameter(i),pdsols{k});
+get_par=@(i,k)arrayfun(@(x)x.parameter(i),bifsols{k});
 figure(3)
 clf;
 subplot(3,2,[1,2]);
 plot(get_par(beta_ind,1),get_par(tau_ind,1),'.-',...
-    get_par(beta_ind,2),get_par(tau_ind,2),'.-');
+    get_par(beta_ind,2),get_par(tau_ind,2),'.-',...
+    get_par(beta_ind,3),get_par(tau_ind,3),'.-');
+legend('PD1','PD2','Hopf');
 xlabel('\beta');
 ylabel('\tau');
-title(sprintf(['1st and 2nd period doubling in Mackey-Glass eqn ',...
-    'with n=%g, gamma=1'],n0));
+title(sprintf(['Hopf, 1st and 2nd period doubling in Mackey-Glass eqn, ',...
+    ' n=%g, gamma=1'],n0));
 grid on
 for k=1:2
     subplot(3,2,2+k);
     hold on
-    for i=1:length(pdsols{k})
-        plot(pdsols{k}(i).mesh*pdsols{k}(i).period,pdsols{k}(i).profile,'-');
+    for i=1:length(bifsols{k})
+        plot(bifsols{k}(i).mesh*bifsols{k}(i).period,bifsols{k}(i).profile,'-');
     end
     hold off
     box on
@@ -143,7 +161,7 @@ for k=1:2
     xlabel('t');
     ylabel('x');
     subplot(3,2,4+k);
-    plot(1:length(pdsols{k}),floqpd{k}+1,'.-');
+    plot(1:length(bifsols{k}),floqpd{k}+1,'.-');
     grid on
     title(sprintf('PD%d: dist crit Floq mult from -1',k));
     ylabel('error');

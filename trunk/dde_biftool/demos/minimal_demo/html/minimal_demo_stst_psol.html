@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Minimal demo - Equilibria, Hopf bifurcations, periodic orbits</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-04-16"><meta name="DC.source" content="minimal_demo_stst_psol.m"><style type="text/css">
+      --><title>Minimal demo - Equilibria, Hopf bifurcations, periodic orbits</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-12-31"><meta name="DC.source" content="minimal_demo_stst_psol.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -57,9 +57,9 @@ span.syscmd { color:#B28C00 }
 
   </style></head><body><div class="content"><h1>Minimal demo - Equilibria, Hopf bifurcations, periodic orbits</h1><!--introduction--><p>This part creates the computations that are possible with standard DDE-Biftool. This demo requires <a href="minimal_demo.html">minimal_demo.html</a> to have run beforehand.</p><p>
 $Id$
-</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Definition of initial (trivial) equilibrium</a></li><li><a href="#2">Stability of trivial equilibria</a></li><li><a href="#3">Branch off at 2nd Hopf bifurcation to find periodic orbits</a></li><li><a href="#4">1d bifurcation diagram</a></li><li><a href="#5">Continue 2nd Hopf bifurcation</a></li><li><a href="#6">Continue 1st Hopf bifurcation</a></li><li><a href="#7">For continuation of folds and torus bifurcations of periodic orbits, see <a href="minimal_demo_extra_psol.html">minimal_demo_extra_psol.html</a></a></li></ul></div><h2>Definition of initial (trivial) equilibrium<a name="1"></a></h2><p>The system has only the trivial equilibrium for positive values of the parameter <img src="minimal_demo_stst_psol_eq34276.png" alt="$a$">. Still, we initialize a branch using the convenience functions</p><p>function [br,suc]=SetupStst(funcs,varargin)</p><p>Apart from the first argument (<tt>funcs</tt>) all arguments of <tt>gen_stst</tt> are name-value pairs. Important arguments:</p><div><ul><li><tt>'x'</tt>: initial guess for equilibrium state of system</li><li><tt>'parameter'</tt>: parameter values of initial equilibrium</li><li><tt>'contpar'</tt>: index of the continuation parameter</li><li><tt>'step'</tt>: size of initial step along continuation parameter (can be    negative)</li><li><tt>'dir'</tt>: index of parameter, which will be varied in initial step (default is <tt>contpar(1)</tt>) Output <tt>br</tt> is a branch of <tt>stst</tt> (equilibria) containing the first two points, <tt>suc</tt> is a flag indicating success. Other name-value inputs pairs get passed on to the substructures of the output.</li></ul></div><pre class="codeinput">triv_eqs=SetupStst(funcs,<span class="string">'x'</span>,[0;0],<span class="string">'parameter'</span>,[0.2,0.5,0.6,0.05],<span class="keyword">...</span>
+</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Definition of initial (trivial) equilibrium</a></li><li><a href="#2">Stability of trivial equilibria</a></li><li><a href="#3">Branch off at 2nd Hopf bifurcation to find periodic orbits</a></li><li><a href="#4">1d bifurcation diagram</a></li><li><a href="#5">Continue 2nd Hopf bifurcation</a></li><li><a href="#6">Continue 1st Hopf bifurcation</a></li><li><a href="#7">Save and continue</a></li></ul></div><h2>Definition of initial (trivial) equilibrium<a name="1"></a></h2><p>The system has only the trivial equilibrium for positive values of the parameter <img src="minimal_demo_stst_psol_eq34276.png" alt="$a$">. Still, we initialize a branch using the convenience functions</p><p>function [br,suc]=SetupStst(funcs,varargin)</p><p>Apart from the first argument (<tt>funcs</tt>) all arguments of <tt>gen_stst</tt> are name-value pairs. Important arguments:</p><div><ul><li><tt>'x'</tt>: initial guess for equilibrium state of system</li><li><tt>'parameter'</tt>: parameter values of initial equilibrium</li><li><tt>'contpar'</tt>: index of the continuation parameter</li><li><tt>'step'</tt>: size of initial step along continuation parameter (can be    negative)</li><li><tt>'dir'</tt>: index of parameter, which will be varied in initial step (default is <tt>contpar(1)</tt>) Output <tt>br</tt> is a branch of <tt>stst</tt> (equilibria) containing the first two points, <tt>suc</tt> is a flag indicating success. Other name-value inputs pairs get passed on to the substructures of the output.</li></ul></div><pre class="codeinput">triv_eqs=SetupStst(funcs,<span class="string">'x'</span>,[0;0],<span class="string">'parameter'</span>,[0.2,0.5,0.6,0.05],<span class="keyword">...</span>
     <span class="string">'contpar'</span>,indtau,<span class="string">'max_step'</span>,[indtau,0.3],<span class="string">'max_bound'</span>,[indtau,20],<span class="keyword">...</span>
-    <span class="string">'newheuristics_tests'</span>,0);
+    <span class="string">'newheuristics_tests'</span>,0,<span class="string">'minimal_real_part'</span>,-1);
 </pre><h2>Stability of trivial equilibria<a name="2"></a></h2><p>We continue the trivial equilibrium in <tt>tau</tt> and compute its stability (which changes).  The convenience function <tt>GetStability</tt> recomputes the eigenvalues if not yet present and returns as its first output <tt>nunst_eqs</tt> the number of unstable eigenvalues for bifurcation detection. Its first argument is the <tt>branch</tt> structure for which stability information is required.</p><pre class="codeinput">disp(<span class="string">'Trivial equilibria'</span>);
 figure(1);clf
 triv_eqs=br_contn(funcs,triv_eqs,60);
@@ -77,24 +77,24 @@ per_orb=br_stabl(funcs,per_orb,0,1);
 nunst_per=GetStability(per_orb,<span class="string">'exclude_trivial'</span>,true);
 </pre><pre class="codeoutput">Branch off at 2nd Hopf bifurcation
 Initial correction of periodic orbits at Hopf:
-Warning: Matrix is close to singular or badly scaled. Results may
-be inaccurate. RCOND =  2.823110e-19. 
-Warning: Matrix is close to singular or badly scaled. Results may
-be inaccurate. RCOND =  9.406025e-28. 
-Warning: Matrix is close to singular or badly scaled. Results may
-be inaccurate. RCOND =  8.140509e-38. 
-Warning: Matrix is close to singular or badly scaled. Results may
-be inaccurate. RCOND =  8.370535e-56. 
-Warning: Matrix is close to singular or badly scaled. Results may
-be inaccurate. RCOND =  3.509296e-46. 
-Warning: Matrix is close to singular or badly scaled. Results may
-be inaccurate. RCOND =  6.320757e-67. 
-Warning: Matrix is close to singular or badly scaled. Results may
-be inaccurate. RCOND =  1.393794e-67. 
-Warning: Matrix is close to singular or badly scaled. Results may
-be inaccurate. RCOND =  3.115947e-89. 
-Warning: Matrix is close to singular or badly scaled. Results may
-be inaccurate. RCOND =  1.923733e-77. 
+Warning: Matrix is close to singular or badly scaled. Results may be
+inaccurate. RCOND =  8.286101e-24. 
+Warning: Matrix is close to singular or badly scaled. Results may be
+inaccurate. RCOND =  4.183132e-29. 
+Warning: Matrix is close to singular or badly scaled. Results may be
+inaccurate. RCOND =  3.003721e-50. 
+Warning: Matrix is close to singular or badly scaled. Results may be
+inaccurate. RCOND =  7.896311e-44. 
+Warning: Matrix is close to singular or badly scaled. Results may be
+inaccurate. RCOND =  9.594475e-65. 
+Warning: Matrix is close to singular or badly scaled. Results may be
+inaccurate. RCOND =  1.602239e-65. 
+Warning: Matrix is close to singular or badly scaled. Results may be
+inaccurate. RCOND =  2.953069e-87. 
+Warning: Matrix is close to singular or badly scaled. Results may be
+inaccurate. RCOND =  1.553125e-76. 
+BR_CONTN warning: boundary hit.
+Warning: Matrix is close to singular or badly scaled. Results may be
 ...</pre><img vspace="5" hspace="5" src="minimal_demo_stst_psol_02.png" alt=""> <h2>1d bifurcation diagram<a name="4"></a></h2><p>Colors indicate number of unstable Floquet multipliers</p><pre class="codeinput">colors=<span class="string">'kbcrm'</span>;
 xp1=arrayfun(@(x)x.parameter(indtau),per_orb.point);
 yp1=arrayfun(@(x)max(x.profile(1,:)),per_orb.point);
@@ -109,16 +109,19 @@ xlabel(<span class="string">'tau'</span>);
 ylabel(<span class="string">'max(x)'</span>);
 legend({<span class="string">'0'</span>,<span class="string">'1'</span>,<span class="string">'2'</span>,<span class="string">'3'</span>,<span class="string">'4'</span>})
 title(<span class="string">'1d bif diagram of p.o''s in tau, color=stability'</span>)
-</pre><img vspace="5" hspace="5" src="minimal_demo_stst_psol_03.png" alt=""> <h2>Continue 2nd Hopf bifurcation<a name="5"></a></h2><p>Similar to <tt>SetupPsol</tt> the convenience function <tt>SetupHopf</tt> creates the initial Hopf branch. Its first arguments are <tt>funcs</tt>, the branch along which the Hopf bifurcation was detected (here <tt>triv_eqs</tt>), and the index of the point near which the Hopf bifurcation was detected.</p><p>function [hbranch,suc]=SetupHopf(funcs,branch,ind,varargin)</p><p>Important parameters:</p><div><ul><li><tt>'contpar'</tt>: continuation parameters (vector of length &gt;=2),</li><li><tt>'dir'</tt>: index of parameter, which is varied at initial step. The default is [], which means that only one point on the branch is computed. This is useful if one wants to correct only a single Hopf point.</li><li><tt>'step'</tt>: initial step along branch (default <tt>1e-3</tt>)</li><li><tt>'excudefreqs'</tt>: list of frequencies that should be excluded (default []). The initial guess for the Hopf frequency is the complex conjugate pair closest to the imaginary axis, after one takes away a pair of eigenvalues for each frequency listed in <tt>excludefreqs</tt>.</li></ul></div><p>All other name-value pairs can be used to replace fields in the structures of the Hopf branch. Otherwise, the output <tt>branch2</tt> inherits all values from the input <tt>branch</tt>. The subsequent continuation computes toward smaller <tt>b</tt> for 80 steps.</p><pre class="codeinput">hopf=SetupHopf(funcs,triv_eqs,ind_hopf,<span class="string">'contpar'</span>,[indb,indtau],<span class="string">'dir'</span>,indb,<span class="keyword">...</span>
-    <span class="string">'step'</span>,-1e-3,<span class="string">'max_step'</span>,[indtau,0.2;indb,0.05]);
+</pre><img vspace="5" hspace="5" src="minimal_demo_stst_psol_03.png" alt=""> <h2>Continue 2nd Hopf bifurcation<a name="5"></a></h2><p>Similar to <tt>SetupPsol</tt> the convenience function <tt>SetupHopf</tt> creates the initial Hopf branch. Its first arguments are <tt>funcs</tt>, the branch along which the Hopf bifurcation was detected (here <tt>triv_eqs</tt>), and the index of the point near which the Hopf bifurcation was detected.</p><p>function [hbranch,suc]=SetupHopf(funcs,branch,ind,varargin)</p><p>Important parameters:</p><div><ul><li><tt>'contpar'</tt>: continuation parameters (vector of length &gt;=2),</li><li><tt>'dir'</tt>: index of parameter, which is varied at initial step. The default is [], which means that only one point on the branch is computed. This is useful if one wants to correct only a single Hopf point.</li><li><tt>'step'</tt>: initial step along branch (default <tt>1e-3</tt>)</li><li><tt>'excudefreqs'</tt>: list of frequencies that should be excluded (default []). The initial guess for the Hopf frequency is the complex conjugate pair closest to the imaginary axis, after one takes away a pair of eigenvalues for each frequency listed in <tt>excludefreqs</tt>.</li></ul></div><p>All other name-value pairs can be used to replace fields in the structures of the Hopf branch. Otherwise, the output <tt>branch2</tt> inherits all values from the input <tt>branch</tt>. The subsequent continuation computes toward smaller <tt>b</tt> for 80 steps.</p><pre class="codeinput">hopfopts={<span class="string">'step'</span>,-1e-3,<span class="string">'max_step'</span>,[indtau,0.2;indb,0.01],<span class="string">'max_bound'</span>,[indb,0.6]};
+hopf=SetupHopf(funcs,triv_eqs,ind_hopf,<span class="string">'contpar'</span>,[indb,indtau],<span class="string">'dir'</span>,indb,<span class="keyword">...</span>
+    hopfopts{:});
 figure(1);clf
-hopf=br_contn(funcs,hopf,80);
+hopf=br_contn(funcs,hopf,200);
+</pre><pre class="codeoutput">BR_CONTN warning: boundary hit.
 </pre><img vspace="5" hspace="5" src="minimal_demo_stst_psol_04.png" alt=""> <h2>Continue 1st Hopf bifurcation<a name="6"></a></h2><p>We also find the first hopf bifurction of the branch <tt>triv_eqs</tt> and continue that, too.</p><pre class="codeinput">ind_hopf1=find(nunst_eqs&gt;0,1,<span class="string">'first'</span>);
 hopf1=SetupHopf(funcs,triv_eqs,ind_hopf1,<span class="string">'contpar'</span>,[indb,indtau],<span class="string">'dir'</span>,indb,<span class="keyword">...</span>
-    <span class="string">'step'</span>,-1e-3,<span class="string">'max_step'</span>,[indtau,0.2;indb,0.05]);
+    hopfopts{:});
 figure(1);
-hopf1=br_contn(funcs,hopf1,80);
-</pre><img vspace="5" hspace="5" src="minimal_demo_stst_psol_05.png" alt=""> <h2>For continuation of folds and torus bifurcations of periodic orbits, see <a href="minimal_demo_extra_psol.html">minimal_demo_extra_psol.html</a><a name="7"></a></h2><pre class="codeinput">save(<span class="string">'minimal_demo_stst_psol_results.mat'</span>)
+hopf1=br_contn(funcs,hopf1,200);
+</pre><pre class="codeoutput">BR_CONTN warning: boundary hit.
+</pre><img vspace="5" hspace="5" src="minimal_demo_stst_psol_05.png" alt=""> <h2>Save and continue<a name="7"></a></h2><p>For continuation of folds and torus bifurcations of periodic orbits, see <a href="minimal_demo_extra_psol.html">minimal_demo_extra_psol.html</a>. For normal forms of Hopf bifurcations, see <a href="minimal_demo_extra_nmfm.html">minimal_demo_extra_nmfm.html</a>.</p><pre class="codeinput">save(<span class="string">'minimal_demo_stst_psol_results.mat'</span>)
 </pre><p class="footer"><br>
       Published with MATLAB&reg; 7.14<br></p></div><!--
 ##### SOURCE BEGIN #####
@@ -154,7 +157,7 @@ hopf1=br_contn(funcs,hopf1,80);
 %
 triv_eqs=SetupStst(funcs,'x',[0;0],'parameter',[0.2,0.5,0.6,0.05],...
     'contpar',indtau,'max_step',[indtau,0.3],'max_bound',[indtau,20],...
-    'newheuristics_tests',0);
+    'newheuristics_tests',0,'minimal_real_part',-1);
 %% Stability of trivial equilibria
 % We continue the trivial equilibrium in |tau| and compute its
 % stability (which changes).  The convenience function |GetStability|
@@ -247,19 +250,23 @@ title('1d bif diagram of p.o''s in tau, color=stability')
 % structures of the Hopf branch. Otherwise, the output |branch2| inherits
 % all values from the input |branch|. The subsequent continuation computes
 % toward smaller |b| for 80 steps.
+hopfopts={'step',-1e-3,'max_step',[indtau,0.2;indb,0.01],'max_bound',[indb,0.6]};
 hopf=SetupHopf(funcs,triv_eqs,ind_hopf,'contpar',[indb,indtau],'dir',indb,...
-    'step',-1e-3,'max_step',[indtau,0.2;indb,0.05]);
+    hopfopts{:});
 figure(1);clf
-hopf=br_contn(funcs,hopf,80);
+hopf=br_contn(funcs,hopf,200);
 %% Continue 1st Hopf bifurcation
 % We also find the first hopf bifurction of the branch |triv_eqs| and
 % continue that, too.
 ind_hopf1=find(nunst_eqs>0,1,'first');
 hopf1=SetupHopf(funcs,triv_eqs,ind_hopf1,'contpar',[indb,indtau],'dir',indb,...
-    'step',-1e-3,'max_step',[indtau,0.2;indb,0.05]);
+    hopfopts{:});
 figure(1);
-hopf1=br_contn(funcs,hopf1,80);
-%% For continuation of folds and torus bifurcations of periodic orbits, see <minimal_demo_extra_psol.html>
+hopf1=br_contn(funcs,hopf1,200);
+%% Save and continue
+% For continuation of folds and torus bifurcations of periodic orbits, see
+% <minimal_demo_extra_psol.html>. For normal forms of Hopf bifurcations,
+% see <minimal_demo_extra_nmfm.html>.
 save('minimal_demo_stst_psol_results.mat')
 ##### SOURCE END #####
 --></body></html>

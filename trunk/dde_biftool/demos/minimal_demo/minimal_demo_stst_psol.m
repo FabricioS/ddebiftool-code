@@ -30,7 +30,7 @@
 %
 triv_eqs=SetupStst(funcs,'x',[0;0],'parameter',[0.2,0.5,0.6,0.05],...
     'contpar',indtau,'max_step',[indtau,0.3],'max_bound',[indtau,20],...
-    'newheuristics_tests',0);
+    'newheuristics_tests',0,'minimal_real_part',-1);
 %% Stability of trivial equilibria
 % We continue the trivial equilibrium in |tau| and compute its
 % stability (which changes).  The convenience function |GetStability|
@@ -123,17 +123,21 @@ title('1d bif diagram of p.o''s in tau, color=stability')
 % structures of the Hopf branch. Otherwise, the output |branch2| inherits
 % all values from the input |branch|. The subsequent continuation computes
 % toward smaller |b| for 80 steps.
+hopfopts={'step',-1e-3,'max_step',[indtau,0.2;indb,0.01],'max_bound',[indb,0.6]};
 hopf=SetupHopf(funcs,triv_eqs,ind_hopf,'contpar',[indb,indtau],'dir',indb,...
-    'step',-1e-3,'max_step',[indtau,0.2;indb,0.05]);
+    hopfopts{:});
 figure(1);clf
-hopf=br_contn(funcs,hopf,80);
+hopf=br_contn(funcs,hopf,200);
 %% Continue 1st Hopf bifurcation
 % We also find the first hopf bifurction of the branch |triv_eqs| and
 % continue that, too.
 ind_hopf1=find(nunst_eqs>0,1,'first');
 hopf1=SetupHopf(funcs,triv_eqs,ind_hopf1,'contpar',[indb,indtau],'dir',indb,...
-    'step',-1e-3,'max_step',[indtau,0.2;indb,0.05]);
+    hopfopts{:});
 figure(1);
-hopf1=br_contn(funcs,hopf1,80);
-%% For continuation of folds and torus bifurcations of periodic orbits, see <minimal_demo_extra_psol.html>
+hopf1=br_contn(funcs,hopf1,200);
+%% Save and continue
+% For continuation of folds and torus bifurcations of periodic orbits, see
+% <minimal_demo_extra_psol.html>. For normal forms of Hopf bifurcations,
+% see <minimal_demo_extra_nmfm.html>.
 save('minimal_demo_stst_psol_results.mat')

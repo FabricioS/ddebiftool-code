@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Minimal demo - Folds and torus bifurcations of periodic orbits</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-04-16"><meta name="DC.source" content="minimal_demo_extra_psol.m"><style type="text/css">
+      --><title>Minimal demo - Folds and torus bifurcations of periodic orbits</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-12-31"><meta name="DC.source" content="minimal_demo_extra_psol.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -57,7 +57,7 @@ span.syscmd { color:#B28C00 }
 
   </style></head><body><div class="content"><h1>Minimal demo - Folds and torus bifurcations of periodic orbits</h1><!--introduction--><p>This part creates the computations that require the extension <tt>ddebiftool_extra_psol</tt>. This demo requires <a href="minimal_demo_stst_psol.html">minimal_demo_stst_psol.html</a> to have run beforehand.</p><p>
 $Id$
-</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Find fold of periodic orbits</a></li><li><a href="#2">Continue the fold in <tt>tau</tt> and <tt>b</tt> toward decreasing <tt>b</tt></a></li><li><a href="#3">Find first torus bifurcation</a></li><li><a href="#4">Continue torus bifurcation in parameters <tt>tau</tt> and <tt>b toward decreasing |b</tt></a></li><li><a href="#5">Find 2nd torus bifurcation</a></li><li><a href="#6">Continue 2nd torus bifurcation in parameters <tt>tau</tt> and <tt>b toward decreasing |b</tt></a></li><li><a href="#7">Plot of two-dimensional bifurcation diagram</a></li><li><a href="#8">Save all results --</a></li></ul></div><h2>Find fold of periodic orbits<a name="1"></a></h2><p>Similar to <tt>SetupHopf</tt>, one can use <tt>SetupPOfold</tt> to initialize a branch of fold periodic orbits, starting from a fold discovered by either a fold in the parameter or a change in stability along a single-parameter family of periodic orbits. However, <tt>SetupPOfold</tt> has the additional output argument <tt>pfuncs</tt>, which defines the <i>extended system</i> with the help of the user-defined functions in <tt>funcs</tt>.</p><p>function [pfuncs,pbranch,suc]=SetupPOfold(funcs,branch,ind,varargin)</p><p>Inputs:</p><div><ul><li><tt>funcs</tt>: problem-definition structure with user-defined functions</li><li><tt>branch</tt>: branch of periodic orbits (<tt>psol</tt> type) along which the fold was located</li><li><tt>ind</tt>: index in points array that is closest to fold (for initial      guess)</li></ul></div><p>Outputs</p><div><ul><li><tt>pfuncs</tt>: functions used for extended DDE</li><li><tt>pbranch</tt>: fold branch with first point (or two points)</li><li><tt>suc</tt>: flag whether corection was successful</li></ul></div><p>Other inputs are name-value pairs, the most important are</p><div><ul><li><tt>contpar</tt> (integer default <tt>[]</tt>): indices of continuation parameters,</li><li><tt>sys_deri</tt> (default <tt>1e-4</tt>): used for finite differencing when approximating   jacobian of rhs, will be replaced by funcs.sys_deri if funcs.sys_deri is   provided by user</li><li><tt>correc</tt> (logical, default true): apply <tt>p_correc</tt> to first points on fold   branch</li><li><tt>dir</tt> (integer, default <tt>[]</tt>): which parameter to vary initially along fold   branch (pbranch has only single point if <tt>dir</tt> is empty)</li><li><tt>step</tt> (real, default <tt>1e-3</tt>): size of initial step if <tt>dir</tt> is non-empty</li><li><tt>hjac</tt> (default <tt>1e-4</tt>) deviation for numerical derivatives if needed</li></ul></div><pre class="codeinput">disp(<span class="string">'Find and continue fold of periodic orbits in tau and b'</span>);
+</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Find fold of periodic orbits</a></li><li><a href="#2">Continue the fold in <tt>tau</tt> and <tt>b</tt> toward decreasing <tt>b</tt></a></li><li><a href="#3">Find first torus bifurcation</a></li><li><a href="#4">Continue torus bifurcation in parameters <tt>tau</tt> and <tt>b toward decreasing |b</tt></a></li><li><a href="#5">Find 2nd torus bifurcation</a></li><li><a href="#6">Continue 2nd torus bifurcation in parameters <tt>tau</tt> and <tt>b toward decreasing |b</tt></a></li><li><a href="#7">Save all results --</a></li></ul></div><h2>Find fold of periodic orbits<a name="1"></a></h2><p>Similar to <tt>SetupHopf</tt>, one can use <tt>SetupPOfold</tt> to initialize a branch of fold periodic orbits, starting from a fold discovered by either a fold in the parameter or a change in stability along a single-parameter family of periodic orbits. However, <tt>SetupPOfold</tt> has the additional output argument <tt>pfuncs</tt>, which defines the <i>extended system</i> with the help of the user-defined functions in <tt>funcs</tt>.</p><p>function [pfuncs,pbranch,suc]=SetupPOfold(funcs,branch,ind,varargin)</p><p>Inputs:</p><div><ul><li><tt>funcs</tt>: problem-definition structure with user-defined functions</li><li><tt>branch</tt>: branch of periodic orbits (<tt>psol</tt> type) along which the fold was located</li><li><tt>ind</tt>: index in points array that is closest to fold (for initial      guess)</li></ul></div><p>Outputs</p><div><ul><li><tt>pfuncs</tt>: functions used for extended DDE</li><li><tt>pbranch</tt>: fold branch with first point (or two points)</li><li><tt>suc</tt>: flag whether corection was successful</li></ul></div><p>Other inputs are name-value pairs, the most important are</p><div><ul><li><tt>contpar</tt> (integer default <tt>[]</tt>): indices of continuation parameters,</li><li><tt>sys_deri</tt> (default <tt>1e-4</tt>): used for finite differencing when approximating   jacobian of rhs, will be replaced by funcs.sys_deri if funcs.sys_deri is   provided by user</li><li><tt>correc</tt> (logical, default true): apply <tt>p_correc</tt> to first points on fold   branch</li><li><tt>dir</tt> (integer, default <tt>[]</tt>): which parameter to vary initially along fold   branch (pbranch has only single point if <tt>dir</tt> is empty)</li><li><tt>step</tt> (real, default <tt>1e-3</tt>): size of initial step if <tt>dir</tt> is non-empty</li><li><tt>hjac</tt> (default <tt>1e-4</tt>) deviation for numerical derivatives if needed</li></ul></div><pre class="codeinput">disp(<span class="string">'Find and continue fold of periodic orbits in tau and b'</span>);
 ind_fold=find(nunst_per==0,1,<span class="string">'first'</span>)-1;
 per_orb.parameter.max_step=[1,0.5]; <span class="comment">% remove step size restriction</span>
 [pfuncs,pbranch,suc]=SetupPOfold(funcs,per_orb,ind_fold,<span class="keyword">...</span>
@@ -68,47 +68,43 @@ per_orb.parameter.max_step=[1,0.5]; <span class="comment">% remove step size res
     warning(<span class="string">'POFold initialization failed'</span>);
 <span class="keyword">end</span>
 </pre><pre class="codeoutput">Find and continue fold of periodic orbits in tau and b
-it=1, res=0.000114484
-it=2, res=0.00417393
-it=3, res=0.000117437
-it=4, res=5.3842e-06
-it=5, res=1.61143e-07
-it=1, res=0.0103762
-it=2, res=3.14175e-08
-it=3, res=1.62231e-08
-it=4, res=1.37592e-08
-it=5, res=1.3206e-08
-it=1, res=0.0663296
-it=2, res=0.00285336
-it=3, res=8.66591e-06
-it=4, res=1.56673e-07
-it=5, res=1.33426e-08
-it=1, res=0.00170986
-it=2, res=1.20862e-08
-it=3, res=1.40173e-08
+it=1, res=3.75294e-05
+it=2, res=0.00717389
+it=3, res=7.01933e-05
+it=4, res=3.21541e-08
+it=5, res=5.78634e-09
+it=1, res=0.00420602
+it=2, res=8.20325e-09
+it=1, res=0.0100461
+it=2, res=0.000400636
+it=3, res=3.83424e-06
+it=4, res=3.63444e-07
+it=5, res=4.55071e-09
+it=1, res=0.000589369
+it=2, res=5.89413e-09
 POFold initialization finished
 </pre><h2>Continue the fold in <tt>tau</tt> and <tt>b</tt> toward decreasing <tt>b</tt><a name="2"></a></h2><p>The outputs of <tt>SetupPOfold</tt> get passed on into <tt>br_contn</tt> to perform the continuation of folds of periodic orbits.</p><pre class="codeinput">figure(1);
 pbranch=br_contn(pfuncs,pbranch,60);
-</pre><pre class="codeoutput">it=1, res=0.00779248
-it=2, res=8.27828e-07
-it=3, res=4.07439e-08
-it=4, res=1.41953e-08
-it=5, res=1.25022e-08
-it=1, res=0.0108848
-it=2, res=1.67464e-06
-it=3, res=1.49875e-08
-it=4, res=1.27225e-08
-it=5, res=1.25546e-08
-it=1, res=0.000978092
-it=2, res=1.47001e-08
-it=3, res=1.05068e-08
-it=4, res=5.74065e-09
-it=1, res=0.0158377
-it=2, res=2.8199e-06
-it=3, res=1.60679e-07
-it=4, res=1.34692e-08
-it=5, res=1.50548e-08
-it=1, res=0.0229675
+</pre><pre class="codeoutput">it=1, res=0.00106815
+it=2, res=3.28796e-07
+it=3, res=9.1715e-09
+it=1, res=0.00153169
+it=2, res=3.38639e-07
+it=3, res=2.92177e-08
+it=4, res=6.70141e-09
+it=1, res=0.000402755
+it=2, res=1.19059e-08
+it=3, res=5.45803e-09
+it=1, res=0.00223242
+it=2, res=6.96821e-07
+it=3, res=1.36168e-07
+it=4, res=5.76618e-09
+it=1, res=0.00322294
+it=2, res=1.30574e-06
+it=3, res=4.21455e-08
+it=4, res=4.96556e-09
+it=1, res=0.00468609
+it=2, res=2.28358e-06
 ...</pre><img vspace="5" hspace="5" src="minimal_demo_extra_psol_01.png" alt=""> <h2>Find first torus bifurcation<a name="3"></a></h2><p>The function <tt>SetupTorusBifurcation</tt> works in the same way as <tt>SetupPOfold</tt>. It returns an extended system suitable for continuation of torus bifurcations of periodic orbits, and the initial piece of branch with the first two points already corrected (if desired). Starting point is the last periodic orbit in <tt>per_orb</tt> with 3 unstable Floquet multipliers.</p><pre class="codeinput">disp(<span class="string">'Find and continue 1st torus bifurcation in tau and b'</span>);
 ind_tr1=find(nunst_per==3,1,<span class="string">'last'</span>);
 [trfuncs,trbranch1]=SetupTorusBifurcation(funcs,per_orb,ind_tr1,<span class="keyword">...</span>
@@ -127,22 +123,7 @@ disp(<span class="string">'TorusBif initialization finished'</span>);
 TorusBif initialization finished
 </pre><h2>Continue 2nd torus bifurcation in parameters <tt>tau</tt> and <tt>b toward decreasing |b</tt><a name="6"></a></h2><pre class="codeinput">figure(1);
 trbranch2=br_contn(trfuncs,trbranch2,60);
-</pre><img vspace="5" hspace="5" src="minimal_demo_extra_psol_03.png" alt=""> <h2>Plot of two-dimensional bifurcation diagram<a name="7"></a></h2><pre class="codeinput">figure(3);clf
-get_par=@(x,i)arrayfun(@(y)y.parameter(i),x.point);
-branches={hopf,hopf1,pbranch,trbranch1,trbranch2};
-colors=<span class="string">'rrbkk'</span>;
-pl={};
-<span class="keyword">for</span> i=1:length(branches)
-    pl=[pl,{get_par(branches{i},1),get_par(branches{i},3),[colors(i),<span class="string">'.-'</span>]}]; <span class="comment">%#ok&lt;AGROW&gt;</span>
-<span class="keyword">end</span>
-plot(pl{:},<span class="string">'linewidth'</span>,2);
-legend({<span class="string">'Hopf'</span>,<span class="string">'Hopf'</span>,<span class="string">'POFold'</span>,<span class="string">'torus bif'</span>,<span class="string">'torus bif'</span>});
-xlabel(<span class="string">'tau'</span>);
-ylabel(<span class="string">'b'</span>);
-axis([0,20,0,0.6]);
-grid <span class="string">on</span>
-title(<span class="string">'2d bif diagram of eqs and p.o''s in (tau,b)'</span>)
-</pre><img vspace="5" hspace="5" src="minimal_demo_extra_psol_04.png" alt=""> <h2>Save all results --<a name="8"></a></h2><p>A separate script checks the Floquet multipliers along the newly computed bifurcating orbits.</p><pre class="codeinput">save(<span class="string">'minimal_demo_results.mat'</span>);
+</pre><img vspace="5" hspace="5" src="minimal_demo_extra_psol_03.png" alt=""> <h2>Save all results --<a name="7"></a></h2><p>A separate script checks the Floquet multipliers along the newly computed bifurcating orbits.</p><pre class="codeinput">save(<span class="string">'minimal_demo_results.mat'</span>);
 </pre><p class="footer"><br>
       Published with MATLAB&reg; 7.14<br></p></div><!--
 ##### SOURCE BEGIN #####
@@ -235,22 +216,6 @@ disp('TorusBif initialization finished');
 %% Continue 2nd torus bifurcation in parameters |tau| and |b toward decreasing |b|
 figure(1);
 trbranch2=br_contn(trfuncs,trbranch2,60);
-%% Plot of two-dimensional bifurcation diagram
-figure(3);clf
-get_par=@(x,i)arrayfun(@(y)y.parameter(i),x.point);
-branches={hopf,hopf1,pbranch,trbranch1,trbranch2};
-colors='rrbkk';
-pl={};
-for i=1:length(branches)
-    pl=[pl,{get_par(branches{i},1),get_par(branches{i},3),[colors(i),'.-']}]; %#ok<AGROW>
-end
-plot(pl{:},'linewidth',2);
-legend({'Hopf','Hopf','POFold','torus bif','torus bif'});
-xlabel('tau');
-ylabel('b');
-axis([0,20,0,0.6]);
-grid on
-title('2d bif diagram of eqs and p.o''s in (tau,b)')
 %% Save all results REPLACE_WITH_DASH_DASH 
 % A separate script checks the Floquet multipliers along the newly computed
 % bifurcating orbits.

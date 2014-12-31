@@ -10,5 +10,9 @@
 minimal_demo;
 %% Steady-state bifurcations and periodic orbits
 minimal_demo_stst_psol;
+%% Normal form coefficients for Hopf bifurcations
+minimal_demo_extra_nmfm;
 %% local bifurcations of periodic orbits
 minimal_demo_extra_psol;
+%% Plot two-parameter bifurcation diagram
+minimal_demo_plot_2dbif;
