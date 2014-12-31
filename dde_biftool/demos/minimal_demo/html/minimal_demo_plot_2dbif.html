@@ -55,7 +55,9 @@ span.syscmd { color:#B28C00 }
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
 
-  </style></head><body><div class="content"><h1>Plot of two-dimensional bifurcation diagram for minimal demo</h1><!--introduction--><p>This script requires to have <a href="minimal_demo_stst_psol.html">minimal_demo_stst_psol.html</a>, <a href="minimal_demo_extra_psol.html">minimal_demo_extra_psol.html</a>, <a href="minimal_demo_stst_nmmfm.html">minimal_demo_stst_nmmfm.html</a> to have run beforehand.</p><p><img src="minimal_demo_plot_2dbif_eq86579.png" alt="$Id$"></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">give super- and subcritical Hopf bifurcations different color</a></li><li><a href="#3">bifurcations of periodic orbits</a></li><li><a href="#4">Plot Codimension-1 bifurcations as curves</a></li><li><a href="#5">Codimension-2 bifurcations along Hopf bifurcations</a></li></ul></div><pre class="codeinput"><span class="comment">%#ok&lt;*SAGROW&gt;</span>
+  </style></head><body><div class="content"><h1>Plot of two-dimensional bifurcation diagram for minimal demo</h1><!--introduction--><p>This script requires to have <a href="minimal_demo.html">minimal_demo.html</a>, <a href="minimal_demo_stst_psol.html">minimal_demo_stst_psol.html</a>, <a href="minimal_demo_extra_psol.html">minimal_demo_extra_psol.html</a>, <a href="minimal_demo_extra_nmfm.html">minimal_demo_extra_nmfm.html</a> to have run beforehand.</p><p>
+$Id: minimal_demo_plot_2dbif.m 74 2014-12-31 10:49:00Z jan.sieber $
+</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">give super- and subcritical Hopf bifurcations different color</a></li><li><a href="#3">bifurcations of periodic orbits</a></li><li><a href="#4">Plot Codimension-1 bifurcations as curves</a></li><li><a href="#5">Codimension-2 bifurcations along Hopf bifurcations</a></li></ul></div><pre class="codeinput"><span class="comment">%#ok&lt;*SAGROW&gt;</span>
 figure(3);clf
 hold <span class="string">on</span>
 get_par=@(x,i)arrayfun(@(y)y.parameter(i),x.point);
@@ -105,11 +107,13 @@ title(<span class="string">'2d bif diagram of eqs and p.o''s in (tau,b)'</span>)
       Published with MATLAB&reg; 7.14<br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Plot of two-dimensional bifurcation diagram for minimal demo
-% This script requires to have <minimal_demo_stst_psol.html>,
-% <minimal_demo_extra_psol.html>, <minimal_demo_stst_nmmfm.html> to have
-% run beforehand.
+% This script requires to have <minimal_demo.html>,
+% <minimal_demo_stst_psol.html>, <minimal_demo_extra_psol.html>,
+% <minimal_demo_extra_nmfm.html> to have run beforehand.
 %
-% $Id$
+% <html>
+% $Id: minimal_demo_plot_2dbif.m 74 2014-12-31 10:49:00Z jan.sieber $
+% </html>
 %
 %%
 %#ok<*SAGROW>

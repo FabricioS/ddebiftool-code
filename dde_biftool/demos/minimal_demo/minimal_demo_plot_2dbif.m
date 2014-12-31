@@ -1,7 +1,7 @@
 %% Plot of two-dimensional bifurcation diagram for minimal demo
-% This script requires to have <minimal_demo_stst_psol.html>,
-% <minimal_demo_extra_psol.html>, <minimal_demo_stst_nmmfm.html> to have
-% run beforehand.
+% This script requires to have <minimal_demo.html>,
+% <minimal_demo_stst_psol.html>, <minimal_demo_extra_psol.html>,
+% <minimal_demo_extra_nmfm.html> to have run beforehand.
 %
 % <html>
 % $Id$
