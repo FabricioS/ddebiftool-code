@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Continuation and stability of steady states (equilibria)</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-04-19"><meta name="DC.source" content="demo1_stst.m"><style type="text/css">
+      --><title>Continuation and stability of steady states (equilibria)</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-12-31"><meta name="DC.source" content="demo1_stst.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -64,7 +64,7 @@ stst.parameter=[1/2, -1, 1, 2.34, 0.2, 0.2, 1.5];
 stst.x=[0;0]
 </pre><pre class="codeoutput">stst = 
          kind: 'stst'
-    parameter: [0.5000 -1 1 2.3400 0.2000 0.2000 1.5000]
+    parameter: [0.5 -1 1 2.34 0.2 0.2 1.5]
             x: [2x1 double]
 </pre><h2>Linear stability of initial equilibrium<a name="3"></a></h2><p>We get default point method parameters and correct the point, which, being already a correct solution, remains unchanged. Computing and plotting stability of the corrected point reveals it has one unstable real mode, see figure.</p><pre class="codeinput">flag_newhheur=1; <span class="comment">% flag_newhheur=1 is the default choice if this argument is omitted</span>
 method=df_mthod(funcs,<span class="string">'stst'</span>,flag_newhheur);
@@ -76,17 +76,18 @@ figure(1); clf;
 p_splot(stst); <span class="comment">% plot its stability:</span>
 </pre><pre class="codeoutput">method = 
     continuation: [1x1 struct]
+     bifurcation: [1x1 struct]
            point: [1x1 struct]
        stability: [1x1 struct]
 stst = 
          kind: 'stst'
-    parameter: [0.5000 -1 1 2.3400 0.2000 0.2000 1.5000]
+    parameter: [0.5 -1 1 2.34 0.2 0.2 1.5]
             x: [2x1 double]
 success =
      1
 stst = 
          kind: 'stst'
-    parameter: [0.5000 -1 1 2.3400 0.2000 0.2000 1.5000]
+    parameter: [0.5 -1 1 2.34 0.2 0.2 1.5]
             x: [2x1 double]
     stability: [1x1 struct]
 </pre><img vspace="5" hspace="5" src="demo1_stst_01.png" alt=""> <h2>Ask for roots with more negative real part<a name="4"></a></h2><p>In both figures, approximations <img src="demo1_stst_eq52890.png" alt="$(\times)$"> and corrections <img src="demo1_stst_eq59642.png" alt="$(*)$"> are nearly indistinguishable.</p><pre class="codeinput">method.stability.minimal_real_part=-2;
@@ -130,7 +131,7 @@ branch1=br_rvers(branch1);
 [branch1,s,f,r]=br_contn(funcs,branch1,100)
 </pre><pre class="codeoutput">stst = 
          kind: 'stst'
-    parameter: [0.5000 -1 1 2.4400 0.2000 0.2000 1.5000]
+    parameter: [0.5 -1 1 2.44 0.2 0.2 1.5]
             x: [2x1 double]
     stability: []
 success =

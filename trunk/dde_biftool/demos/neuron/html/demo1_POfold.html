@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Continuation of folds of periodic orbits</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-04-19"><meta name="DC.source" content="demo1_POfold.m"><style type="text/css">
+      --><title>Continuation of folds of periodic orbits</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-12-31"><meta name="DC.source" content="demo1_POfold.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -72,19 +72,19 @@ vfuncs=set_funcs(<span class="keyword">...</span>
     <span class="string">'dir'</span>,ind_taus,<span class="string">'print_residual_info'</span>,1,<span class="string">'step'</span>,0.01,<span class="string">'plot_measure'</span>,[],<span class="keyword">...</span>
     <span class="string">'min_bound'</span>,[ind_a21,0],<span class="string">'max_bound'</span>,[ind_a21,4; ind_taus,10],<span class="keyword">...</span>
     <span class="string">'max_step'</span>,[ind_a21,0.2; ind_taus,0.5]);
-</pre><pre class="codeoutput">it=1, res=0.000715795
-it=2, res=0.064279
-it=3, res=0.000852831
-it=4, res=3.43449e-07
-it=5, res=1.10499e-09
-it=1, res=0.0011852
-it=2, res=1.34979e-09
-it=1, res=0.581753
-it=2, res=0.0969172
-it=3, res=4.7807e-05
-it=4, res=1.02834e-09
-it=1, res=0.000925194
-it=2, res=2.53827e-09
+</pre><pre class="codeoutput">it=1, res=0.000574744
+it=2, res=0.0083463
+it=3, res=0.000139207
+it=4, res=4.6582e-08
+it=5, res=2.22616e-10
+it=1, res=0.000267241
+it=2, res=2.96116e-10
+it=1, res=0.0699482
+it=2, res=0.014741
+it=3, res=6.29929e-06
+it=4, res=2.28572e-10
+it=1, res=0.000175272
+it=2, res=8.75278e-10
 </pre><h2>Branch continuation<a name="5"></a></h2><p>The output of <tt>SetupPOfold</tt> can be fed directly into <tt>br_contn</tt> to perform a branch continuation. Note that the computation is typically slower than a standard continuation of periodic orbits because the system dimension is twice as large and additional delays have been introduced.</p><pre class="codeinput">figure(6);
 branch7.method.point.print_residual_info=0;
 branch7=br_contn(foldfuncs,branch7,100);

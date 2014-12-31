@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Normal form calculations along Hopf bifurcation curves</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-12-30"><meta name="DC.source" content="demo1_normalforms.m"><style type="text/css">
+      --><title>Normal form calculations along Hopf bifurcation curves</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-12-31"><meta name="DC.source" content="demo1_normalforms.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -56,8 +56,8 @@ span.syscmd { color:#B28C00 }
 .footer p { margin:0px; }
 
   </style></head><body><div class="content"><h1>Normal form calculations along Hopf bifurcation curves</h1><!--introduction--><p>Using the normal form extension <tt>nmfm</tt> by Bram Wage.</p><p><b>Warning</b> Automatic bifurcation detection along branches is still in development. Its interface is likely to change, and detection is not yet reliable. With <tt>br_bifdet</tt>, normal form computations do not return error estimates. Thus, they should only be used with user-provided <tt>sys_mfderi</tt> for higher-order derivatives (in contrast to the default finite-difference approximation <tt>mf_deriv</tt>). See <a href="demo1_simple.html">demo1_simple.html</a> for an illustration, how one can perform a subset of the <tt>br_bifdet</tt> functionality with finite-difference approximations and error estimates.</p><p>
-$Id$
-</p><p>This demo requires to run <a href="demo1_hopf.html">demo1_hopf.html</a> first.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Load folder with normal form tools into matlab path</a></li><li><a href="#3">Higher-order derivatives provided by user</a></li><li><a href="#4">Automatic detection of codimension 2 bifurcations and criticality</a></li><li><a href="#5">Check Criticality</a></li><li><a href="#6">Special points</a></li><li><a href="#7">Perform bifurcation detection along second Hopf branch</a></li><li><a href="#8">Plot of Lyapunov coefficients</a></li><li><a href="#9">Special points along branch3</a></li><li><a href="#10">Save and continue with periodic orbit continuation: <a href="demo1_psol.html">demo1_psol.html</a></a></li></ul></div><pre class="codeinput"><span class="comment">%#ok&lt;*ASGLU,*NOPTS,*NASGU&gt;</span>
+$Id: demo1_normalforms.m 72 2014-12-30 10:29:58Z jan.sieber $
+</p><p>This demo requires to run <a href="demo1_hopf.html">demo1_hopf.html</a> first.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Load folder with normal form tools into matlab path</a></li><li><a href="#3">Higher-order derivatives provided by user</a></li><li><a href="#4">Automatic detection of codimension 2 bifurcations and criticality</a></li><li><a href="#5">Check Criticality</a></li><li><a href="#6">Special points</a></li><li><a href="#7">Perform bifurcation detection along second Hopf branch</a></li><li><a href="#8">Plot of Lyapunov coefficients for both Hopf branches</a></li><li><a href="#9">Special points along branch3</a></li><li><a href="#10">Save and continue with periodic orbit continuation: <a href="demo1_psol.html">demo1_psol.html</a></a></li></ul></div><pre class="codeinput"><span class="comment">%#ok&lt;*ASGLU,*NOPTS,*NASGU&gt;</span>
 <span class="comment">%</span>
 </pre><h2>Load folder with normal form tools into matlab path<a name="2"></a></h2><pre class="codeinput">addpath(<span class="string">'../../ddebiftool_extra_nmfm/'</span>);
 </pre><h2>Higher-order derivatives provided by user<a name="3"></a></h2><p>Normal form calculations require higher-order derivatives. The user can (should!) provide them in the form of a function</p><pre class="language-matlab"><span class="keyword">function</span> y=sys_mfderi(xx,par,v1,v2,<span class="keyword">...</span><span class="comment">)</span>
@@ -76,11 +76,11 @@ $Id$
       sys_dtau_provided: 0
     sys_mfderi_provided: 1
 </pre><h2>Automatic detection of codimension 2 bifurcations and criticality<a name="4"></a></h2><p>The <tt>nmfm</tt> extension provides <tt>br_bifdet</tt>, which determines Lyapunov cofficients, and codimension-two points along Hopf bifurcation curves.</p><p>The output <tt>branch_nmfm</tt> has a <tt>point</tt> array of structures that contain additional fields <tt>'nmfm'</tt>, <tt>'nvec'</tt>, <tt>'flag'</tt>. The field <tt>'flag'</tt> may have the values</p><div><ul><li><tt>''</tt> (empty): this point is not special,</li><li><tt>'hoho'</tt>: this point is a double-Hopf point,</li><li><tt>'zeho'</tt>: this point is a zero-Hopf point,</li><li><tt>'genh'</tt>: this point is a generalized (degenerate/Bautin) Hopf point.</li></ul></div><p>The field <tt>'nmfm'</tt> is a structure. If the branch was a Hopf curve, it contains the field</p><div><ul><li><tt>'L1'</tt>: the first (3rd-order) Lyapunov coefficient at the Hopf point (<tt>L1&lt;0</tt> implies that the Hopf bifurcation is supercritical, <tt>L1&gt;0</tt> implies that the Hopf bifuration is subcritical).</li><li>for special points it contains other normal form coefficients, determining the sub-case of the bifurcation. See Kuznetsov (2004) 'Elements of Applied Bifurcation Theory') for notation and definitions.</li></ul></div><pre class="codeinput">branch2_nmfm=br_bifdet(afuncs,branch2);
-</pre><pre class="codeoutput">BR_BIFDET: hoho point found at par(4) = 0.2072948763, par(7) = 8.6339178134.
-BR_BIFDET: omega1 = 0.3287207587, omega2 = 0.9157279995, par(4) = 0.2072948763, par(7) = 8.6339178134.
+</pre><pre class="codeoutput">BR_BIFDET: hoho point found at par(4) = 0.2072962661, par(7) = 8.6340742204.
+BR_BIFDET: omega1 = 0.3287154066, omega2 = 0.9157115877, par(4) = 0.2072962661, par(7) = 8.6340742204.
 BR_BIFDET: Unable to correct as hoho point near par(4) = 0.1234.
-BR_BIFDET: hoho point found at par(4) = 0.0000000001, par(7) = 2.4183783006.
-BR_BIFDET: omega1 = 0.8660288187, omega2 = 0.8660360746, par(4) = 0.0000000001, par(7) = 2.4183783006.
+BR_BIFDET: hoho point found at par(4) = 0.0000000000, par(7) = 2.4183994947.
+BR_BIFDET: omega1 = 0.8660253477, omega2 = 0.8660253477, par(4) = 0.0000000000, par(7) = 2.4183994947.
 </pre><h2>Check Criticality<a name="5"></a></h2><p>The Lyapunov coefficients are always negative along the branch, implying that the bifurcation is supercritical.</p><pre class="codeinput">L1_br2=arrayfun(@(x)x.nmfm.L1,branch2_nmfm.point);
 taus_br2=arrayfun(@(x)x.parameter(ind_taus),branch2_nmfm.point);
 a21_br2=arrayfun(@(x)x.parameter(ind_a21),branch2_nmfm.point);
@@ -157,13 +157,13 @@ Point 4 Eigenvalues:
   -0.1095 + 2.3640i
 
 Point 19 normal form parameters:
-       L1: -3.4663e+03
-    g2100: -3.0019e+03 - 8.9079e+02i
-    g1011: -3.2293e+03 - 9.5826e+02i
-    g1110: -6.0037e+03 - 1.7816e+03i
-    g0021: -1.6146e+03 - 4.7913e+02i
+       L1: -2.1110e+05
+    g2100: -1.8281e+05 - 5.4250e+04i
+    g1011: -3.6563e+05 - 1.0850e+05i
+    g1110: -3.6563e+05 - 1.0850e+05i
+    g0021: -1.8281e+05 - 5.4250e+04i
     theta: 2.0000
-    delta: 2.0000
+    delta: 2
 
 Point 19 Eigenvalues:
    0.0000 - 0.8660i
@@ -171,12 +171,12 @@ Point 19 Eigenvalues:
    0.0000 - 0.8660i
    0.0000 + 0.8660i
 </pre><h2>Perform bifurcation detection along second Hopf branch<a name="7"></a></h2><p>Along <tt>branch3</tt> we perform normal form computations and codimension-2 detection, too.</p><pre class="codeinput">branch3_nmfm=br_bifdet(afuncs,branch3);
-</pre><pre class="codeoutput">BR_BIFDET: hoho point found at par(4) = 0.0000000003, par(7) = 9.6734948740.
-BR_BIFDET: omega1 = 0.8660324279, omega2 = 0.8660363571, par(4) = 0.0000000003, par(7) = 9.6734948740.
+</pre><pre class="codeoutput">BR_BIFDET: hoho point found at par(4) = 0.0000000000, par(7) = 9.6735990351.
+BR_BIFDET: omega1 = 0.8660252363, omega2 = 0.8660252363, par(4) = 0.0000000000, par(7) = 9.6735990351.
 BR_BIFDET: Unable to correct as hoho point near par(4) = 0.1065.
 BR_BIFDET: hoho point found at par(4) = 0.2072962626, par(7) = 8.6340742187.
-BR_BIFDET: omega1 = 0.9157115883, omega2 = 0.3287154189, par(4) = 0.2072962626, par(7) = 8.6340742187.
-</pre><h2>Plot of Lyapunov coefficients<a name="8"></a></h2><p>Again, at <tt>a21=0</tt> we have a non-semisimple Hopf eigenvalue such that the Lyapunov coefficient tends to infinity. Otherwise, the Lyapunov coefficient is negative such that the Hopf bifurcation is supercritical.</p><pre class="codeinput">L1_br3=arrayfun(@(x)x.nmfm.L1,branch3_nmfm.point);
+BR_BIFDET: omega1 = 0.9157115883, omega2 = 0.3287154065, par(4) = 0.2072962626, par(7) = 8.6340742187.
+</pre><h2>Plot of Lyapunov coefficients for both Hopf branches<a name="8"></a></h2><p>Again, at <tt>a21=0</tt> we have a non-semisimple Hopf eigenvalue such that the Lyapunov coefficient tends to infinity. Otherwise, the Lyapunov coefficient is negative such that the Hopf bifurcation is supercritical.</p><pre class="codeinput">L1_br3=arrayfun(@(x)x.nmfm.L1,branch3_nmfm.point);
 a21_br3=arrayfun(@(x)x.parameter(ind_a21),branch3_nmfm.point);
 taus_br3=arrayfun(@(x)x.parameter(ind_taus),branch3_nmfm.point);
 figure(18);
@@ -224,11 +224,11 @@ special_br3 =
      3    12
 
 Point 3 normal form parameters:
-       L1: -155.6889
-    g2100: -1.3483e+02 - 1.1476e+01i
-    g1011: -1.8977e+02 - 1.6151e+01i
-    g1110: -2.6966e+02 - 2.2956e+01i
-    g0021: -94.8818 - 8.0773i
+       L1: -6.5295e+03
+    g2100: -5.6547e+03 - 4.8135e+02i
+    g1011: -1.1309e+04 - 9.6271e+02i
+    g1110: -1.1309e+04 - 9.6271e+02i
+    g0021: -5.6547e+03 - 4.8135e+02i
     theta: 2.0000
     delta: 2.0000
 
@@ -239,16 +239,16 @@ Point 3 Eigenvalues:
    0.0501 + 0.2766i
    0.0000 - 0.8660i
    0.0000 + 0.8660i
-  -0.0000 - 0.8660i
-  -0.0000 + 0.8660i
+   0.0000 - 0.8660i
+   0.0000 + 0.8660i
   -0.0459 - 1.4920i
   -0.0459 + 1.4920i
   -0.0459 - 1.4920i
   -0.0459 + 1.4920i
-  -0.0801 - 2.1311i
-  -0.0801 + 2.1311i
-  -0.0801 - 2.1311i
-  -0.0801 + 2.1311i
+  -0.0801 - 2.1310i
+  -0.0801 + 2.1310i
+  -0.0801 - 2.1310i
+  -0.0801 + 2.1310i
 
 Point 12 normal form parameters:
        L1: -0.0094
@@ -293,7 +293,7 @@ Point 12 Eigenvalues:
 % functionality with finite-difference approximations and error estimates.
 %
 % <html>
-% $Id$
+% $Id: demo1_normalforms.m 72 2014-12-30 10:29:58Z jan.sieber $
 % </html>
 %
 % This demo requires to run <demo1_hopf.html> first.
@@ -389,7 +389,7 @@ end
 % Along |branch3| we perform normal form computations and codimension-2
 % detection, too.
 branch3_nmfm=br_bifdet(afuncs,branch3);
-%% Plot of Lyapunov coefficients
+%% Plot of Lyapunov coefficients for both Hopf branches
 % Again, at |a21=0| we have a non-semisimple Hopf eigenvalue such that the
 % Lyapunov coefficient tends to infinity. Otherwise, the Lyapunov
 % coefficient is negative such that the Hopf bifurcation is supercritical.

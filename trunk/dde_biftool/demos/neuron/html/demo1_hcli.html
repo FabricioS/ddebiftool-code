@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Continuation of homoclinic connections</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-04-19"><meta name="DC.source" content="demo1_hcli.m"><style type="text/css">
+      --><title>Continuation of homoclinic connections</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-12-31"><meta name="DC.source" content="demo1_hcli.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -83,7 +83,7 @@ mh=df_mthod(funcs,<span class="string">'hcli'</span>);
             v: [2x1 double]
             w: [2x1 double]
         alpha: 1
-      epsilon: 2.7544e-04
+      epsilon: 2.7545e-04
 hcli1 = 
          kind: 'hcli'
     parameter: [0.5000 -1 1 2.3460 0.2000 0.2000 1.5000]
@@ -120,7 +120,7 @@ xlabel(<span class="string">'t/period'</span>);ylabel(<span class="string">'x1, 
             v: [2x1 double]
             w: [2x1 double]
         alpha: 1
-      epsilon: 2.7544e-04
+      epsilon: 2.7545e-04
 success =
      1
 </pre><h2>Continuation of homoclinic in two parameters<a name="6"></a></h2><p>If we free a second parameter, we can continue this homoclinic orbit with respect to two free parameters.  As a second free parameter, we choose <img src="demo1_hcli_eq73830.png" alt="$\tau_s$">. We first create a default branch of homoclinic orbits, add <tt>hcli1</tt> as a first point, perturb it, and add the corrected perturbation as a second point.</p><pre class="codeinput">figure(15);

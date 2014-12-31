@@ -20,6 +20,7 @@ of DDE-Biftool.
       <li>continuation of periodic orbits,</li>
       <li>computation of their stability, </li>
       <li>continuation of Hopf bifurcations in two parameters,</li>
+      <li>computation of normal form coefficients for Hopf bifurcations and Hopf-Hopf interactions,</li>
       <li>computation of connecting orbits</li>
     </ul>
 	An additional script <a href="neuron/html/demo1_simple.html">demo1_simple.m</a> demonstrates, how one can use convenience functions from the folder <span style="font-family: monospace;">ddebiftool_utilities</span> to perform the above tasks.<br> The script <a href="neuron/html/demo1_POfold.html">demo1_POfold.m</a> demonstrates the continuation of folds of periodic orbits.</li><br>
@@ -36,7 +37,9 @@ of DDE-Biftool.
   </li>
   <li><a href="hom_demo/html/hom_demo.html">hom_demo</a>: Step-by-step walk-through of constructing and continuing connecting orbits between equilibria using DDE-Biftool.
   </li>
-  <li><a href="minimal_demo/html/minimal_demo.html">minimal_demo</a>: This example (a Duffing oscillator with delayed feedback) demonstrates how to use the convenience functions from the folder <span style="font-family: monospace;">ddebiftool_utilities</span>  and the extension in  the folder <span style="font-family: monospace;">ddebiftool_extra_psol</span> to continue torus bifurcations and folds of periodic orbits in systems with parametric delays. It also demonstrates the option to vectorize the right-hand side to speed up computations.
+  <li><a href="nmfm_demo/html/nmfm_demo.html">nmfm_demo</a>: A demo focussing on the features of the <span style="font-family: monospace;">ddebiftool_extra_nmfm</span> extension. Along two branches of Hopf bifurcations, normal form coefficients (determining if the bifurcation is sub- or supercritical) are computed. Also, a number of codimension-two points along the Hopf branch are detected and their normal forms are computed, too.
+  </li>
+  <li><a href="minimal_demo/html/minimal_demo.html">minimal_demo</a>: This example (a Duffing oscillator with delayed feedback) demonstrates how to use the convenience functions from the folder <span style="font-family: monospace;">ddebiftool_utilities</span>  and the extension in  the folder <span style="font-family: monospace;">ddebiftool_extra_psol</span> to continue torus bifurcations and folds of periodic orbits in systems with parametric delays. It also demonstrates the option to vectorize the right-hand side to speed up computations, and computes normal forms along Hopf branches.
   </li>
   <li><a href="nested/html/nested_demo.html">nested</a>: This example shows that DDE-Biftool can treat state-dependent delays with arbitrary levels of nesting. 
   </li>
@@ -53,7 +56,7 @@ of DDE-Biftool.
       <li>continuation of period doublings and fold bifurcations of relative periodic orbits in two parameters,</li>
   </ul>
   </li>
-  <li><a href="Mackey-Glass/html/MackeyGlass_demo.html">Mackey-Glass</a>: This demo continues period doubling bifurcations in the well-known Mackey-Glass equation, a scalar DDE with parametric delay. It shows how one can branch off at a period doubling to track the period-doubled orbit. In this demo one can switch on or off vectorization to compare the speed of computations.
+  <li><a href="Mackey-Glass/html/MackeyGlass_demo.html">Mackey-Glass</a>: This demo continues period doubling bifurcations in the well-known Mackey-Glass equation, a scalar DDE with parametric delay. It shows how one can branch off at a period doubling to track the period-doubled orbit. In this demo one can switch on or off vectorization to compare the speed of computations. Also included: normal form computation for Hopf bifurcation.
   </li>
   <li><a href="humphriesetal/html/humphriesetal_demo.html">Humphries et al</a>: This demo continues folds and torus bifrucations in a scalar DDE with two state-dependent delays.  It also demonstrates the option to vectorize right-hand side, delays, and their derivatives to speed up computations.
   </li>

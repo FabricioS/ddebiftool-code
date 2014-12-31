@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Hopf bifurcation</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-04-19"><meta name="DC.source" content="demo1_hopf.m"><style type="text/css">
+      --><title>Hopf bifurcation</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-12-31"><meta name="DC.source" content="demo1_hopf.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -57,7 +57,7 @@ span.syscmd { color:#B28C00 }
 
   </style></head><body><div class="content"><h1>Hopf bifurcation</h1><!--introduction--><p>
 $Id$
-</p><p>The eigenvalues of the linearized system along branches of equilibria indicate potential bifurcations. In this demo complex conjugate pairs of eigenvalues cross the imaginary axis, corresponding to Hopf bifurcations. The demo will proceed to continue two of these Hopf bifurcations in two system parameters <img src="demo1_hopf_eq33802.png" alt="$a_{21}$"> and <img src="demo1_hopf_eq73830.png" alt="$\tau_s$">. This part requires to run <a href="demo1_stst.html">demo1_stst.html</a> first</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Locating the first Hopf point</a></li><li><a href="#3">Figure: eigenvalues at Hopf point</a></li><li><a href="#4">Initialize and continue first Hopf bifurcation</a></li><li><a href="#5">Figure: Continuation (predictions and corrections) of Hopf bifurcation</a></li><li><a href="#6">Hopf continuation and detecton of Takens-Bogdanov point</a></li><li><a href="#7">Figures: Stability and frequency along first Hopf bifurcation</a></li><li><a href="#8">Comments</a></li><li><a href="#9">Switch to second Hopf bifurcation at double Hopf bifurcation</a></li><li><a href="#10">Changing the Newton iteration and correction with other system parameter</a></li><li><a href="#11">Continuation of second Hopf bifurcation</a></li><li><a href="#12">Figure: Continuation (predictions and corrections) of both Hopf bifurcations</a></li><li><a href="#13">Save and continue with periodic orbits <a href="demo1_psol.html">demo1_psol.html</a></a></li></ul></div><pre class="codeinput"><span class="comment">%#ok&lt;*ASGLU,*NOPTS,*NASGU&gt;</span>
+</p><p>The eigenvalues of the linearized system along branches of equilibria indicate potential bifurcations. In this demo complex conjugate pairs of eigenvalues cross the imaginary axis, corresponding to Hopf bifurcations. The demo will proceed to continue two of these Hopf bifurcations in two system parameters <img src="demo1_hopf_eq33802.png" alt="$a_{21}$"> and <img src="demo1_hopf_eq73830.png" alt="$\tau_s$">. This part requires to run <a href="demo1_stst.html">demo1_stst.html</a> first</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Locating the first Hopf point</a></li><li><a href="#3">Figure: eigenvalues at Hopf point</a></li><li><a href="#4">Initialize and continue first Hopf bifurcation</a></li><li><a href="#5">Figure: Continuation (predictions and corrections) of Hopf bifurcation</a></li><li><a href="#6">Hopf continuation and detecton of Takens-Bogdanov point</a></li><li><a href="#7">Figures: Stability and frequency along first Hopf bifurcation</a></li><li><a href="#8">Comments</a></li><li><a href="#9">Switch to second Hopf bifurcation at double Hopf bifurcation</a></li><li><a href="#10">Changing the Newton iteration and correction with other system parameter</a></li><li><a href="#11">Continuation of second Hopf bifurcation</a></li><li><a href="#12">Figure: Continuation (predictions and corrections) of both Hopf bifurcations</a></li><li><a href="#13">Save and continue</a></li></ul></div><pre class="codeinput"><span class="comment">%#ok&lt;*ASGLU,*NOPTS,*NASGU&gt;</span>
 <span class="comment">%</span>
 </pre><h2>Locating the first Hopf point<a name="2"></a></h2><p>Where eigenvalue curves in the stability plot (see <a href="demo1_stst.html#stststability">demo1_stst.html#stststability</a>) cross the zero line, bifurcations occur. If we want to compute the Hopf bifurcation near <img src="demo1_hopf_eq07177.png" alt="$a_{21}\approx0.8$"> we need its point number. This is most easily obtained by plotting the stability versus the point numbers along the branch. We select the last point with positive eigenvalues and turn it into an (approximate) Hopf bifurcation point. We correct the Hopf point using appropriate method parameters and one free parameter (<img src="demo1_hopf_eq33802.png" alt="$a_{21}$">). We then copy the corrected point to keep it for later use. Computing and plotting stability of the Hopf point clearly reveals the pair of purely imaginary eigenvalues.</p><pre class="codeinput">ind_hopf=find(arrayfun(@(x)real(x.stability.l0(1))&gt;0,branch1.point),1,<span class="string">'last'</span>);
 hopf=p_tohopf(funcs,branch1.point(ind_hopf));
@@ -70,10 +70,10 @@ figure(5); clf;
 p_splot(hopf);                     <span class="comment">% plot stability of hopf point</span>
 </pre><pre class="codeoutput">hopf = 
          kind: 'hopf'
-    parameter: [0.5000 -1 1 0.8071 0.2000 0.2000 1.5000]
+    parameter: [0.5 -1 1 0.807123224967979 0.2 0.2 1.5]
             x: [2x1 double]
             v: [2x1 double]
-        omega: 0.7820
+        omega: 0.78196516212093
 success =
      1
 </pre><img vspace="5" hspace="5" src="demo1_hopf_01.png" alt=""> <h2>Figure: eigenvalues at Hopf point<a name="3"></a></h2><p>Characteristic roots at Hopf point: a pair of pure imaginary eigenvalues is clearly visible.</p><h2>Initialize and continue first Hopf bifurcation<a name="4"></a></h2><p>In order to follow a branch of Hopf bifurcations in the two parameter space <img src="demo1_hopf_eq33740.png" alt="$(a_{21},\tau_s)$"> we again need two starting points. Hence we use the Hopf point already found and one perturbed in <img src="demo1_hopf_eq73830.png" alt="$\tau_s$"> and corrected in <img src="demo1_hopf_eq33802.png" alt="$a_{21}$">, to start on a branch of Hopf bifurcations. For the free parameters, <img src="demo1_hopf_eq33802.png" alt="$a_{21}$"> and <img src="demo1_hopf_eq73830.png" alt="$\tau_s$">, we provide suitable intervals, <img src="demo1_hopf_eq11829.png" alt="$a_{21}\in[0,4]$"> and <img src="demo1_hopf_eq54723.png" alt="$\tau_s\in[0,10]$">, and maximal stepsizes, <img src="demo1_hopf_eq19692.png" alt="$0.2$"> for <img src="demo1_hopf_eq33802.png" alt="$a_{21}$"> and <img src="demo1_hopf_eq73506.png" alt="$0.5$"> for <img src="demo1_hopf_eq73830.png" alt="$\tau_s$">. We continue the branch on both sides by an intermediate order reversal and a second call to <tt>br_contn</tt>.</p><pre class="codeinput">branch2=df_brnch(funcs,[ind_a21,ind_taus],<span class="string">'hopf'</span>); <span class="comment">% use hopf point as first point of hopf branch:</span>
@@ -132,30 +132,30 @@ xm =
 hopf2=p_tohopf(funcs,branch2.point(ind_hopf2));
 method.point.print_residual_info=1;
 [hopf,success]=p_correc(funcs,hopf2,ind_a21,[],method.point) <span class="comment">%fails</span>
-</pre><pre class="codeoutput">it=1, res=0.00931161
-it=2, res=0.545737
-it=3, res=0.0626291
-it=4, res=0.00189028
-it=5, res=3.23569e-05
+</pre><pre class="codeoutput">it=1, res=0.00834454
+it=2, res=0.460349
+it=3, res=0.0546203
+it=4, res=0.00153245
+it=5, res=1.96637e-05
 hopf = 
          kind: 'hopf'
-    parameter: [0.5000 -1 1 -0.0103 0.2000 0.2000 8.5531]
+    parameter: [0.5 -1 1 -0.0103306962446629 0.2 0.2 8.55313930216643]
             x: [2x1 double]
             v: [2x1 double]
-        omega: 0.9768
+        omega: 0.976827672655547
 success =
      0
 </pre><h2>Changing the Newton iteration and correction with other system parameter<a name="10"></a></h2><p>However, the correction fails. Printing residual information gives a list of the Newton iteration number and the norm of the residual. This reveals at least temporarily divergence of the correction process. Or we did not allow enough Newton iterations, or the free parameter is not so appropriate. We successfully try again using <img src="demo1_hopf_eq73830.png" alt="$\tau_s$"> as a free parameter.</p><pre class="codeinput">[hopf,success]=p_correc(funcs,hopf2,ind_taus,[],method.point) <span class="comment">% should now work</span>
-</pre><pre class="codeoutput">it=1, res=0.00931161
-it=2, res=0.000680687
-it=3, res=2.31688e-07
-it=4, res=4.30597e-13
+</pre><pre class="codeoutput">it=1, res=0.00834454
+it=2, res=0.000618872
+it=3, res=2.10605e-07
+it=4, res=3.91466e-13
 hopf = 
          kind: 'hopf'
-    parameter: [0.5000 -1 1 0.2066 0.2000 0.2000 8.6340]
+    parameter: [0.5 -1 1 0.206568018737126 0.2 0.2 8.63403521750747]
             x: [2x1 double]
             v: [2x1 double]
-        omega: 0.9158
+        omega: 0.915807193195807
 success =
      1
 </pre><h2>Continuation of second Hopf bifurcation<a name="11"></a></h2><p>Using the second Hopf point we compute the intersecting branch of Hopf points, depicted  below. Setting <tt>plot_progress</tt> to zero disables intermediate plotting such that we see only the end result.</p><pre class="codeinput">branch3=df_brnch(funcs,[ind_a21,ind_taus],<span class="string">'hopf'</span>);
@@ -176,7 +176,7 @@ branch3=br_rvers(branch3);
 [branch3,s,f,r]=br_contn(funcs,branch3,100);
 </pre><pre class="codeoutput">BR_CONTN warning: boundary hit.
 BR_CONTN warning: boundary hit.
-</pre><img vspace="5" hspace="5" src="demo1_hopf_05.png" alt=""> <h2>Figure: Continuation (predictions and corrections) of both Hopf bifurcations<a name="12"></a></h2><p>Predictions and corrections in the <img src="demo1_hopf_eq33740.png" alt="$(a_{21},\tau_s)$">-plane after computation of second branch of Hopf bifurcations (superimposed on result of first Hopf bifurcation).</p><h2>Save and continue with periodic orbits <a href="demo1_psol.html">demo1_psol.html</a><a name="13"></a></h2><pre class="codeinput">save(<span class="string">'demo1_hopf_results.mat'</span>);
+</pre><img vspace="5" hspace="5" src="demo1_hopf_05.png" alt=""> <h2>Figure: Continuation (predictions and corrections) of both Hopf bifurcations<a name="12"></a></h2><p>Predictions and corrections in the <img src="demo1_hopf_eq33740.png" alt="$(a_{21},\tau_s)$">-plane after computation of second branch of Hopf bifurcations (superimposed on result of first Hopf bifurcation).</p><h2>Save and continue<a name="13"></a></h2><p>Continue with with periodic orbits <a href="demo1_psol.html">demo1_psol.html</a> or normal forms <a href="demo1_normalforms.html">demo1_normalforms.html</a>.</p><pre class="codeinput">save(<span class="string">'demo1_hopf_results.mat'</span>);
 </pre><p class="footer"><br>
       Published with MATLAB&reg; 7.14<br></p></div><!--
 ##### SOURCE BEGIN #####
@@ -331,7 +331,9 @@ branch3=br_rvers(branch3);
 % computation of second branch of Hopf bifurcations (superimposed on result
 % of first Hopf bifurcation).
 
-%% Save and continue with periodic orbits <demo1_psol.html>
+%% Save and continue 
+% Continue with with periodic orbits <demo1_psol.html> or normal forms
+% <demo1_normalforms.html>.
 save('demo1_hopf_results.mat');
 
 ##### SOURCE END #####

@@ -164,7 +164,7 @@ xlabel('a21');ylabel('\tau_s');
 % After a Hopf curve is computed, |HopfLyapunovCoefficients| returns the
 % first Lyapunov coefficient L1, which determines if the Hopf bifurcation
 % is supercritical (L1<0) or subcritical (L1>0). Since L1 depends on
-% 3rd-order derivatives of |sys_rhs|. The default finite-difference
+% 3rd-order derivatives of |sys_rhs|, the default finite-difference
 % approximation |df_mfderiv| is susceptible to round-off errors. Hence,
 % |HopfLyapunovCoefficients| returns 2 results, the second one using a
 % lower-order approximation. The difference between both outputs gives an

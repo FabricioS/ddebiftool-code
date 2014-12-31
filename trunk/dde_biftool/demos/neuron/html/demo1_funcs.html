@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Definition of user functions</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-04-19"><meta name="DC.source" content="demo1_funcs.m"><style type="text/css">
+      --><title>Definition of user functions</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-12-31"><meta name="DC.source" content="demo1_funcs.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -71,16 +71,18 @@ ind_taus=7; <span class="comment">% used later for continuation</span>
     <span class="string">'sys_tau'</span>,@()[5,6,7],<span class="keyword">...</span>
     <span class="string">'sys_deri'</span>,@neuron_sys_deri) <span class="comment">%#ok&lt;NOPTS&gt;</span>
 </pre><pre class="codeoutput">funcs = 
-              sys_rhs: [function_handle]
-             sys_ntau: @()0
-              sys_tau: @()[5,6,7]
-             sys_cond: @dummy_cond
-             sys_deri: @neuron_sys_deri
-             sys_dtau: @(it,x,p,nx,np)df_derit(funcs,it,x,p,nx,np)
-         x_vectorized: 0
-               tp_del: 0
-    sys_deri_provided: 1
-    sys_dtau_provided: 0
+                sys_rhs: [function_handle]
+               sys_ntau: @()0
+                sys_tau: @()[5,6,7]
+               sys_cond: @dummy_cond
+               sys_deri: @neuron_sys_deri
+               sys_dtau: @(it,x,p,nx,np)df_derit(funcs,it,x,p,nx,np)
+             sys_mfderi: [function_handle]
+           x_vectorized: 0
+                 tp_del: 0
+      sys_deri_provided: 1
+      sys_dtau_provided: 0
+    sys_mfderi_provided: 0
 </pre><h2>Save and continue to continuation and stability of steady states <a href="demo1_stst.html">demo1_stst.html</a><a name="5"></a></h2><pre class="codeinput">save(<span class="string">'demo1_funcs_results.mat'</span>);
 </pre><p class="footer"><br>
       Published with MATLAB&reg; 7.14<br></p></div><!--
