@@ -12,9 +12,13 @@ demo1_funcs;
 demo1_stst;
 %% Hopf bifurcations
 demo1_hopf;
+%% Normal forms along Hopf bifurcation
+demo1_normalforms;
 %% Periodic orbits
 demo1_psol;
 %% Homoclinic connection
 demo1_hcli;
 %% Saddle-node of periodic orbits
 demo1_POfold;
+%% repeat procedure using convenience functions
+demo1_simple;

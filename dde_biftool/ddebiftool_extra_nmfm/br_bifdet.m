@@ -143,7 +143,8 @@ while curind < length(tempbranch.point)
       %% DOUBLE HOPF
       if ~biffound && detection_status(bif2num('hoho')) == 0 && strcmp(kind,'hopf')
          % Remove known roots, look for smallest real part of imaginary pair
-         new_sign = nmfm_smrp(funcs, new_point,stmethod,1,isimag);
+         new_sign = nmfm_smrp(funcs, new_point,stmethod,...
+             'remove_omega',true,'threshold',isimag);
          new_sign = new_sign/abs(new_sign);
          if abs(new_sign + last_sign(bif2num('hoho'))) < 1e-6
             % Double Hopf found!
@@ -157,7 +158,8 @@ while curind < length(tempbranch.point)
       %% ZERO HOPF
       if ~biffound && detection_status(bif2num('zeho')) == 0 && strcmp(kind,'hopf')
          % Check whether the smallest real eigenvalue crosses 0
-         new_sign = nmfm_smrp(funcs, new_point, stmethod, 1,isreal);
+         new_sign = nmfm_smrp(funcs, new_point, stmethod,...
+             'remove_omega',true,'threshold',isreal);
          new_sign = new_sign/abs(new_sign);
          if abs(new_sign + last_sign(bif2num('zeho'))) < 1e-6
             biffound = 1;
@@ -271,7 +273,8 @@ while curind < length(tempbranch.point)
          hopfpoint = bifcand;
          hopfpoint.stability = p_stabil(funcs,bifcand,stmethod);
          prevpoint = tempbranch.point(curind-1);
-         currp = nmfm_smrp(funcs, hopfpoint, stmethod, 1,isreal);
+         currp = nmfm_smrp(funcs, hopfpoint, stmethod,...
+             'remove_omega',true,'threshold',isreal);
          if currp > 0
             pospoint = hopfpoint;
             negpoint = prevpoint;
@@ -282,7 +285,8 @@ while curind < length(tempbranch.point)
          for i = 1:max_iter
             sumpoint = p_axpy(1, pospoint, negpoint);
             halfpoint = p_axpy(0.5, sumpoint, []);
-            [currp, stability] = nmfm_smrp(funcs, halfpoint, stmethod,0,isreal);
+            [currp, stability] = nmfm_smrp(funcs, halfpoint, stmethod,...
+                'remove_omega',false,'threshold',isreal);
             if abs(currp) < conv_r % Smallest real part zero
                 halfpoint.stability=stability;
                 corrsuccess = 1;
@@ -303,7 +307,8 @@ while curind < length(tempbranch.point)
          corrsuccess = 0;
          hopfpoint = bifcand;
          prevpoint = tempbranch.point(curind-1);
-         cursign = nmfm_smrp(funcs, hopfpoint, stmethod, 1,isimag);
+         cursign = nmfm_smrp(funcs, hopfpoint, stmethod,...
+             'remove_omega',true,'threshold',isimag);
          if cursign > 0
             pospoint = hopfpoint;
             negpoint = prevpoint;
@@ -316,7 +321,8 @@ while curind < length(tempbranch.point)
             sumpoint = p_axpy(1, pospoint, negpoint);
             halfpoint = p_axpy(0.5, sumpoint, []);
             halfpoint = p_correc(funcs, halfpoint,free_par,secant,method);
-            [cursign, stability] = nmfm_smrp(funcs, halfpoint, stmethod, 1,isimag);
+            [cursign, stability] = nmfm_smrp(funcs, halfpoint, stmethod,...
+                'remove_omega',true,'threshold',isimag);
             if abs(cursign) < conv_r
                halfpoint.stability = stability;
                corrsuccess = 1;

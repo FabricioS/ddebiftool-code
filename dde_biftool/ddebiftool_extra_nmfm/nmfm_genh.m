@@ -140,7 +140,7 @@ c2 = (1/12)*p*(6*funcs.sys_mfderi(xx,par,H11,H21) + 3*funcs.sys_mfderi(xx,par,co
 L2 = real(c2)/(omega);
 
 %% Attach result to point structure
-if isempty(newpoint.nmfm.L1) || isnan(newpoint.nmfm.L1)
+if ~isfield(newpoint.nmfm,'L1') || isempty(newpoint.nmfm.L1) || isnan(newpoint.nmfm.L1)
     newpoint.nmfm.L1 = real(c1)/omega;
 end
 

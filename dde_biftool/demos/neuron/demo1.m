@@ -13,7 +13,11 @@
 % structure |funcs| (<demo1_funcs.html>)
 % * continuation of equilibria in a single parameter, <demo1_stst.html>
 % * computation of their stability (eigenvalues of linearization), <demo1_stst.html>
-% * continuation of Hopf bifurcations in two parameter, <demo1_hopf.html>
+% * continuation of Hopf bifurcations in two parameters (<demo1_hopf.html>)
+% * computation of normal form coefficients for Hopf bifurcations (to check
+% if they are supercritical or subcritical), and of normal form
+% coefficients for codimension-two bifurcations encountered along Hopf
+% curves (<demo1_normalforms.html>),
 % * branching off from a Hopf bifurcation to continue a family of periodic
 % orbits in a single parameter <demo1_psol.html>
 % * computation of stability of periodic orbits (Floquet multipliers of

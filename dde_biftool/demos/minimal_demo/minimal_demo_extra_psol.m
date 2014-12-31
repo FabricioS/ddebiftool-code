@@ -87,22 +87,6 @@ disp('TorusBif initialization finished');
 %% Continue 2nd torus bifurcation in parameters |tau| and |b toward decreasing |b|
 figure(1);
 trbranch2=br_contn(trfuncs,trbranch2,60);
-%% Plot of two-dimensional bifurcation diagram
-figure(3);clf
-get_par=@(x,i)arrayfun(@(y)y.parameter(i),x.point);
-branches={hopf,hopf1,pbranch,trbranch1,trbranch2};
-colors='rrbkk';
-pl={};
-for i=1:length(branches)
-    pl=[pl,{get_par(branches{i},1),get_par(branches{i},3),[colors(i),'.-']}]; %#ok<AGROW>
-end
-plot(pl{:},'linewidth',2);
-legend({'Hopf','Hopf','POFold','torus bif','torus bif'});
-xlabel('tau');
-ylabel('b');
-axis([0,20,0,0.6]);
-grid on
-title('2d bif diagram of eqs and p.o''s in (tau,b)')
 %% Save all results -- 
 % A separate script checks the Floquet multipliers along the newly computed
 % bifurcating orbits.
