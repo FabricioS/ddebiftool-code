@@ -13,6 +13,7 @@ Valid demo_names are
 neuron
 sd_demo
 minimal_demo
+nmfm_demo
 Mackey-Glass
 nested
 rotsym_demo
@@ -22,6 +23,7 @@ import sys, os, subprocess, shutil
 demos=[['neuron', 'rundemo'], 
        ['sd_demo', 'rundemo'], 
        ['minimal_demo', 'rundemo'], 
+       ['nmfm_demo', 'nmfm_demo'], 
        ['hom_demo', 'hom_demo'], 
        ['Mackey-Glass', 'MackeyGlass_demo'], 
        ['nested', 'nested_demo'], 
