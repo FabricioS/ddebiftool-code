@@ -216,7 +216,30 @@ Upon acceptance of the above terms, one can obtain the package
 \section{Version history}
 \label{sec:changes}
 
-\subsection{Changes from 2.03 to \version}
+
+\subsection{Changes from 3.0 to \version}
+\label{sec:v3to31}
+\paragraph{New feature: Normal form computation for bifurcations of
+  equilibria}
+The new functionality is only applicable for equations with constant
+delay. Normal form coefficients can be computed through the extension
+\texttt{ddebiftool\_extra\_nmfm}. This extension is included in the
+standard \DDEBIFCODE{} archive, but the additional functions are kept
+in a separate folder. The following bifurcations are currently
+supported.
+\begin{itemize}
+\item Hopf bifurcation (coefficient $L_1$ determining criticality),
+\item generalized Hopf (Bautin) bifurcation (of codimension two,
+  typically encountered along Hopf curves)
+\item Zero-Hopf interaction (Gavrilov-Guckenheimer bifurcation, of codimension two,
+  typically encountered along Hopf curves)
+\item Hopf-Hopf interaction (of codimension two, typically encountered
+  along Hopf curves) 
+\end{itemize}
+The extension comes with a demo \texttt{nmfm\_demo}. The demos
+\texttt{neuron}, \texttt{minimal\_demo} and \texttt{Mackey-Glass}
+illustrate the new functionality, too. Background theory is given in \cite{W14}.
+\subsection{Changes from 2.03 to 3.0}
 \label{sec:v2to3}
 
 \paragraph{New features}
