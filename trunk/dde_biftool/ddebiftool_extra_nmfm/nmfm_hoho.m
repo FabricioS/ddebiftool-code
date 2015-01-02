@@ -75,8 +75,8 @@ else
    else
       pp1 = []; qq1 = [];
    end
-   [p1, q1] = nmfm_border(nmfm_charmat(funcs,xx,par,lambda1), pp1, qq1);
-   [p2, q2] = nmfm_border(nmfm_charmat(funcs,xx,par,lambda2), pp2, qq2);
+   [p1, q1] = nmfm_border(ch_matrix(funcs,xx,par,lambda1), pp1, qq1);
+   [p2, q2] = nmfm_border(ch_matrix(funcs,xx,par,lambda2), pp2, qq2);
    p1 = p1/norm(p1);
    q1 = q1/norm(q1);
    p2 = p2/norm(p2);
@@ -89,11 +89,11 @@ if isempty(p2) || isempty(q2) || isempty(q1) || isempty(p1)
 end
 
 % Normalize eigenvectors
-alpha1 = 1/sqrt(p1*nmfm_charmat(funcs,xx,par,lambda1,'deri',1)*q1);
+alpha1 = 1/sqrt(p1*ch_matrix(funcs,xx,par,lambda1,'deri',1)*q1);
 p1 = alpha1*p1;
 q1 = alpha1*q1;
 
-alpha2 = 1/sqrt(p2*nmfm_charmat(funcs,xx,par,lambda2,'deri',1)*q2);
+alpha2 = 1/sqrt(p2*ch_matrix(funcs,xx,par,lambda2,'deri',1)*q2);
 p2 = alpha2*p2;
 q2 = alpha2*q2;
 
@@ -112,14 +112,14 @@ PHI2BAR = nmfm_handletomatrix(phi2bar, -taus);
 
 % Normal form coefficients
 % Quadratic center manifold
-h1100 = @(theta) nmfm_charmat(funcs,xx,par,0)\funcs.sys_mfderi(xx,par,PHI1,PHI1BAR);
-h2000 = @(theta) exp(2*lambda1*theta)*(nmfm_charmat(funcs,xx,par,2*lambda1)\funcs.sys_mfderi(xx,par,PHI1,PHI1));
-h1010 = @(theta) exp((lambda1+lambda2)*theta)*(nmfm_charmat(funcs,xx,par,lambda1+lambda2)\ ...
+h1100 = @(theta) ch_matrix(funcs,xx,par,0)\funcs.sys_mfderi(xx,par,PHI1,PHI1BAR);
+h2000 = @(theta) exp(2*lambda1*theta)*(ch_matrix(funcs,xx,par,2*lambda1)\funcs.sys_mfderi(xx,par,PHI1,PHI1));
+h1010 = @(theta) exp((lambda1+lambda2)*theta)*(ch_matrix(funcs,xx,par,lambda1+lambda2)\ ...
    funcs.sys_mfderi(xx,par,PHI1,PHI2));
-h1001 = @(theta) exp((lambda1-lambda2)*theta)*(nmfm_charmat(funcs,xx,par,lambda1-lambda2)\ ...
+h1001 = @(theta) exp((lambda1-lambda2)*theta)*(ch_matrix(funcs,xx,par,lambda1-lambda2)\ ...
    funcs.sys_mfderi(xx,par,PHI1,PHI2BAR));
-h0020 = @(theta) exp(2*lambda2*theta)*(nmfm_charmat(funcs,xx,par,2*lambda2)\funcs.sys_mfderi(xx,par,PHI2,PHI2));
-h0011 = @(theta) nmfm_charmat(funcs,xx,par,0)\funcs.sys_mfderi(xx,par,PHI2,PHI2BAR);
+h0020 = @(theta) exp(2*lambda2*theta)*(ch_matrix(funcs,xx,par,2*lambda2)\funcs.sys_mfderi(xx,par,PHI2,PHI2));
+h0011 = @(theta) ch_matrix(funcs,xx,par,0)\funcs.sys_mfderi(xx,par,PHI2,PHI2BAR);
 
 H1100 = nmfm_handletomatrix(h1100,-taus);
 H2000 = nmfm_handletomatrix(h2000,-taus);

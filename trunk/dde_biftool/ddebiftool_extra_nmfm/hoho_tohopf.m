@@ -29,7 +29,7 @@ else
     end
 end
 hopf.omega=omega;
-D=root_cha(funcs,point.x,point.parameter,1i*omega);
+D=ch_matrix(funcs,point.x,point.parameter,1i*omega);
 [E1,E2]=eig(D);
 [i1,i2]=min(abs(diag(E2))); %#ok<ASGLU>
 hopf.v=E1(:,i2);
