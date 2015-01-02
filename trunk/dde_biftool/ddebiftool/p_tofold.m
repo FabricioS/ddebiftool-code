@@ -26,7 +26,7 @@ switch point.kind
         error('P_TOFOLD: point type %s to fold not supported.',point.kind);     
 end
 fold.x=x;
-D=root_cha(funcs,x,point.parameter,0);
+D=ch_matrix(funcs,x,point.parameter,0);
 [E1,E2]=eig(D);
 [i1,i2]=min(abs(diag(E2))); %#ok<ASGLU>
 fold.v=real(E1(:,i2));
