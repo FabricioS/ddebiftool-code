@@ -25,7 +25,7 @@ n = size(xx,1); % n = #coordinates,
 if ~funcs.tp_del
     taus = par(funcs.sys_tau());
     taus = [0, taus]; % First delay zero
-    r=length(taus)+1; % number of delays, r = #delays+1
+    r=length(taus); % number of delays, r = #delays+1
 else % state-dependent delays
     r=funcs.sys_ntau()+1;
     taus = zeros(1,r); % First delay zero
