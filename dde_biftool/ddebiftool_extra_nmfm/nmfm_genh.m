@@ -40,13 +40,13 @@ else % state-dependent delays
       taus(i) = funcs.sys_tau(i-1,xx(:,1:i-1),par);
    end
 end
-Delta1 = nmfm_charmat(funcs,xx,par,lambda0);
-Delta2 = nmfm_charmat(funcs,xx,par,2*lambda0);
-Delta3 = nmfm_charmat(funcs,xx,par,3*lambda0);
-Delta0 = nmfm_charmat(funcs,xx,par,0);
-DDelta1 = nmfm_charmat(funcs,xx,par,lambda0,'deri',1);
-DDelta2 = nmfm_charmat(funcs,xx,par,2*lambda0,'deri',1);
-D2Delta1 = nmfm_charmat(funcs,xx,par,lambda0,'deri',2);
+Delta1 = ch_matrix(funcs,xx,par,lambda0);
+Delta2 = ch_matrix(funcs,xx,par,2*lambda0);
+Delta3 = ch_matrix(funcs,xx,par,3*lambda0);
+Delta0 = ch_matrix(funcs,xx,par,0);
+DDelta1 = ch_matrix(funcs,xx,par,lambda0,'deri',1);
+DDelta2 = ch_matrix(funcs,xx,par,2*lambda0,'deri',1);
+D2Delta1 = ch_matrix(funcs,xx,par,lambda0,'deri',2);
 
 %% Compute nullvectors
 if n == 1

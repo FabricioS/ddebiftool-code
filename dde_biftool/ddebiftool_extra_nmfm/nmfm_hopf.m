@@ -42,10 +42,10 @@ else % state-dependent delays
    end
 end
 
-Delta1 = nmfm_charmat(funcs, xx,par,lambda0);
-Delta2 = nmfm_charmat(funcs, xx,par,2*lambda0);
-Delta0 = nmfm_charmat(funcs, xx,par,0);
-DDelta1 = nmfm_charmat(funcs,xx,par,lambda0,'deri',1);
+Delta1 = ch_matrix(funcs, xx,par,lambda0);
+Delta2 = ch_matrix(funcs, xx,par,2*lambda0);
+Delta0 = ch_matrix(funcs, xx,par,0);
+DDelta1 = ch_matrix(funcs,xx,par,lambda0,'deri',1);
 
 %% Compute nullvectors
 if n == 1
