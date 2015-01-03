@@ -1,5 +1,4 @@
 %% first Lyapunov coefficient L1 in Hopf point along stst branch or Hopf branch
-function [L1,L1low]=HopfLyapunovCoefficients(funcs,branch,varargin)
 %% Input
 %
 % * funcs: problem functions
@@ -19,6 +18,9 @@ function [L1,L1low]=HopfLyapunovCoefficients(funcs,branch,varargin)
 % coefficients. Use L1-L1low to estimate the accuracy of L1. If this is
 % large, finite-differences are problematic. If this is small it may(!) be
 % ok.
+%%
+function [L1,L1low]=HopfLyapunovCoefficients(funcs,branch,varargin)
+%%
 %
 % $Id$
 %
