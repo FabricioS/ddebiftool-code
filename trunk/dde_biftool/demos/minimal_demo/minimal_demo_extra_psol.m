@@ -89,5 +89,5 @@ figure(1);
 trbranch2=br_contn(trfuncs,trbranch2,60);
 %% Save all results -- 
 % A separate script checks the Floquet multipliers along the newly computed
-% bifurcating orbits.
+% bifurcating orbits.  Final results in <minimal_demo_plot_2dbif.html>.
 save('minimal_demo_results.mat');

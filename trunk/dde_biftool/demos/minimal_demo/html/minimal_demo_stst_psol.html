@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Minimal demo - Equilibria, Hopf bifurcations, periodic orbits</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-12-31"><meta name="DC.source" content="minimal_demo_stst_psol.m"><style type="text/css">
+      --><title>Minimal demo - Equilibria, Hopf bifurcations, periodic orbits</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-01-07"><meta name="DC.source" content="minimal_demo_stst_psol.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -121,7 +121,7 @@ hopf1=SetupHopf(funcs,triv_eqs,ind_hopf1,<span class="string">'contpar'</span>,[
 figure(1);
 hopf1=br_contn(funcs,hopf1,200);
 </pre><pre class="codeoutput">BR_CONTN warning: boundary hit.
-</pre><img vspace="5" hspace="5" src="minimal_demo_stst_psol_05.png" alt=""> <h2>Save and continue<a name="7"></a></h2><p>For continuation of folds and torus bifurcations of periodic orbits, see <a href="minimal_demo_extra_psol.html">minimal_demo_extra_psol.html</a>. For normal forms of Hopf bifurcations, see <a href="minimal_demo_extra_nmfm.html">minimal_demo_extra_nmfm.html</a>.</p><pre class="codeinput">save(<span class="string">'minimal_demo_stst_psol_results.mat'</span>)
+</pre><img vspace="5" hspace="5" src="minimal_demo_stst_psol_05.png" alt=""> <h2>Save and continue<a name="7"></a></h2><p>For continuation of folds and torus bifurcations of periodic orbits, see <a href="minimal_demo_extra_psol.html">minimal_demo_extra_psol.html</a>. For normal forms of Hopf bifurcations, see <a href="minimal_demo_extra_nmfm.html">minimal_demo_extra_nmfm.html</a>. Final results in <a href="minimal_demo_plot_2dbif.html">minimal_demo_plot_2dbif.html</a>.</p><pre class="codeinput">save(<span class="string">'minimal_demo_stst_psol_results.mat'</span>)
 </pre><p class="footer"><br>
       Published with MATLAB&reg; 7.14<br></p></div><!--
 ##### SOURCE BEGIN #####
@@ -266,7 +266,8 @@ hopf1=br_contn(funcs,hopf1,200);
 %% Save and continue
 % For continuation of folds and torus bifurcations of periodic orbits, see
 % <minimal_demo_extra_psol.html>. For normal forms of Hopf bifurcations,
-% see <minimal_demo_extra_nmfm.html>.
+% see <minimal_demo_extra_nmfm.html>. Final results in
+% <minimal_demo_plot_2dbif.html>.
 save('minimal_demo_stst_psol_results.mat')
 ##### SOURCE END #####
 --></body></html>

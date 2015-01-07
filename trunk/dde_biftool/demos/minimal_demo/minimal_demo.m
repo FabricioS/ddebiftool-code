@@ -21,9 +21,6 @@
 % structure containing the user-defined functions using |set_funcs|. We
 % define the right-hand side such that it ca nbe called in vectorized form.
 %
-% Note that we include some commands that take into account the possibility
-% that the demo is run in octave (stopping live plotting, which is slow in
-% octave 3.2.3)
 clear
 close all
 addpath('../../ddebiftool',...
@@ -38,5 +35,6 @@ funcs=set_funcs(...
     -p(4)*x(2,1,:)-p(2)*x(1,1,:)-x(1,1,:).^3-p(indb)*(x(1,1,:)-x(1,2,:))],...
     'sys_tau',@()indtau,'x_vectorized',true);
 %% First step: continuation of equilibria, Hopf bifurcations and periodic orbits,
-% see <minimal_demo_stst_psol.html>
+% see <minimal_demo_stst_psol.html>, final results in
+% <minimal_demo_plot_2dbif.html>.
 save('minimal_demo_funcs_results.mat')
