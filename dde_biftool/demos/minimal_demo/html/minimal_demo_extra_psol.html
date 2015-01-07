@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Minimal demo - Folds and torus bifurcations of periodic orbits</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-12-31"><meta name="DC.source" content="minimal_demo_extra_psol.m"><style type="text/css">
+      --><title>Minimal demo - Folds and torus bifurcations of periodic orbits</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-01-07"><meta name="DC.source" content="minimal_demo_extra_psol.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -123,7 +123,7 @@ disp(<span class="string">'TorusBif initialization finished'</span>);
 TorusBif initialization finished
 </pre><h2>Continue 2nd torus bifurcation in parameters <tt>tau</tt> and <tt>b toward decreasing |b</tt><a name="6"></a></h2><pre class="codeinput">figure(1);
 trbranch2=br_contn(trfuncs,trbranch2,60);
-</pre><img vspace="5" hspace="5" src="minimal_demo_extra_psol_03.png" alt=""> <h2>Save all results --<a name="7"></a></h2><p>A separate script checks the Floquet multipliers along the newly computed bifurcating orbits.</p><pre class="codeinput">save(<span class="string">'minimal_demo_results.mat'</span>);
+</pre><img vspace="5" hspace="5" src="minimal_demo_extra_psol_03.png" alt=""> <h2>Save all results --<a name="7"></a></h2><p>A separate script checks the Floquet multipliers along the newly computed bifurcating orbits.  Final results in <a href="minimal_demo_plot_2dbif.html">minimal_demo_plot_2dbif.html</a>.</p><pre class="codeinput">save(<span class="string">'minimal_demo_results.mat'</span>);
 </pre><p class="footer"><br>
       Published with MATLAB&reg; 7.14<br></p></div><!--
 ##### SOURCE BEGIN #####
@@ -218,7 +218,7 @@ figure(1);
 trbranch2=br_contn(trfuncs,trbranch2,60);
 %% Save all results REPLACE_WITH_DASH_DASH 
 % A separate script checks the Floquet multipliers along the newly computed
-% bifurcating orbits.
+% bifurcating orbits.  Final results in <minimal_demo_plot_2dbif.html>.
 save('minimal_demo_results.mat');
 
 ##### SOURCE END #####

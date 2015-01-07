@@ -139,5 +139,6 @@ hopf1=br_contn(funcs,hopf1,200);
 %% Save and continue
 % For continuation of folds and torus bifurcations of periodic orbits, see
 % <minimal_demo_extra_psol.html>. For normal forms of Hopf bifurcations,
-% see <minimal_demo_extra_nmfm.html>.
+% see <minimal_demo_extra_nmfm.html>. Final results in
+% <minimal_demo_plot_2dbif.html>.
 save('minimal_demo_stst_psol_results.mat')

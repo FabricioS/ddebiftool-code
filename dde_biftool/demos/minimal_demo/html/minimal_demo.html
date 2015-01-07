@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>DDE-BIFTOOL Minimal demo for continuation of local bifurcations of periodic orbits</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-12-31"><meta name="DC.source" content="minimal_demo.m"><style type="text/css">
+      --><title>DDE-BIFTOOL Minimal demo for continuation of local bifurcations of periodic orbits</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-01-07"><meta name="DC.source" content="minimal_demo.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -57,7 +57,7 @@ span.syscmd { color:#B28C00 }
 
   </style></head><body><div class="content"><h1>DDE-BIFTOOL Minimal demo for continuation of local bifurcations of periodic orbits</h1><!--introduction--><p>
 $Id$
-</p><p>This demo illustrates how to track local bifurcations of periodic orbits in DDEs with contant delay, using the extension <tt>ddebiftool_extra_psol</tt> and the auxiliary functions in <tt>ddebiftool_utilities</tt>. The example is the Duffing oscillator with delayed feedback discussed in the large-delay limit by Yanchuk &amp; Perlikowski in (PRE79,0462211,2009):</p><p><img src="minimal_demo_eq44173.png" alt="$$x''(t)+d*x'(t)+a*x(t)+x^3+b*[x(t)-x(t-\tau)]=0$$"></p><p>The parameters are <img src="minimal_demo_eq29300.png" alt="$(\tau,a,b,d)$"> (used in this order in the <tt>parameter</tt> vector).</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Define path and system</a></li><li><a href="#2">First step: continuation of equilibria, Hopf bifurcations and periodic orbits,</a></li></ul></div><h2>Define path and system<a name="1"></a></h2><p>First we load the folder of DDE-Biftool and its extensions into the Matlab path, and define the right-hand side and the delays. We create the structure containing the user-defined functions using <tt>set_funcs</tt>. We define the right-hand side such that it ca nbe called in vectorized form.</p><p>Note that we include some commands that take into account the possibility that the demo is run in octave (stopping live plotting, which is slow in octave 3.2.3)</p><pre class="codeinput">clear
+</p><p>This demo illustrates how to track local bifurcations of periodic orbits in DDEs with contant delay, using the extension <tt>ddebiftool_extra_psol</tt> and the auxiliary functions in <tt>ddebiftool_utilities</tt>. The example is the Duffing oscillator with delayed feedback discussed in the large-delay limit by Yanchuk &amp; Perlikowski in (PRE79,0462211,2009):</p><p><img src="minimal_demo_eq44173.png" alt="$$x''(t)+d*x'(t)+a*x(t)+x^3+b*[x(t)-x(t-\tau)]=0$$"></p><p>The parameters are <img src="minimal_demo_eq29300.png" alt="$(\tau,a,b,d)$"> (used in this order in the <tt>parameter</tt> vector).</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Define path and system</a></li><li><a href="#2">First step: continuation of equilibria, Hopf bifurcations and periodic orbits,</a></li></ul></div><h2>Define path and system<a name="1"></a></h2><p>First we load the folder of DDE-Biftool and its extensions into the Matlab path, and define the right-hand side and the delays. We create the structure containing the user-defined functions using <tt>set_funcs</tt>. We define the right-hand side such that it ca nbe called in vectorized form.</p><pre class="codeinput">clear
 close <span class="string">all</span>
 addpath(<span class="string">'../../ddebiftool'</span>,<span class="keyword">...</span>
     <span class="string">'../../ddebiftool_extra_psol'</span>,<span class="keyword">...</span>
@@ -70,7 +70,7 @@ funcs=set_funcs(<span class="keyword">...</span>
     x(2,1,:);<span class="keyword">...</span>
     -p(4)*x(2,1,:)-p(2)*x(1,1,:)-x(1,1,:).^3-p(indb)*(x(1,1,:)-x(1,2,:))],<span class="keyword">...</span>
     <span class="string">'sys_tau'</span>,@()indtau,<span class="string">'x_vectorized'</span>,true);
-</pre><h2>First step: continuation of equilibria, Hopf bifurcations and periodic orbits,<a name="2"></a></h2><p>see <a href="minimal_demo_stst_psol.html">minimal_demo_stst_psol.html</a></p><pre class="codeinput">save(<span class="string">'minimal_demo_funcs_results.mat'</span>)
+</pre><h2>First step: continuation of equilibria, Hopf bifurcations and periodic orbits,<a name="2"></a></h2><p>see <a href="minimal_demo_stst_psol.html">minimal_demo_stst_psol.html</a>, final results in <a href="minimal_demo_plot_2dbif.html">minimal_demo_plot_2dbif.html</a>.</p><pre class="codeinput">save(<span class="string">'minimal_demo_funcs_results.mat'</span>)
 </pre><p class="footer"><br>
       Published with MATLAB&reg; 7.14<br></p></div><!--
 ##### SOURCE BEGIN #####
@@ -97,9 +97,6 @@ funcs=set_funcs(<span class="keyword">...</span>
 % structure containing the user-defined functions using |set_funcs|. We
 % define the right-hand side such that it ca nbe called in vectorized form.
 %
-% Note that we include some commands that take into account the possibility
-% that the demo is run in octave (stopping live plotting, which is slow in
-% octave 3.2.3)
 clear
 close all
 addpath('../../ddebiftool',...
@@ -114,7 +111,8 @@ funcs=set_funcs(...
     -p(4)*x(2,1,:)-p(2)*x(1,1,:)-x(1,1,:).^3-p(indb)*(x(1,1,:)-x(1,2,:))],...
     'sys_tau',@()indtau,'x_vectorized',true);
 %% First step: continuation of equilibria, Hopf bifurcations and periodic orbits,
-% see <minimal_demo_stst_psol.html>
+% see <minimal_demo_stst_psol.html>, final results in
+% <minimal_demo_plot_2dbif.html>.
 save('minimal_demo_funcs_results.mat')
 
 ##### SOURCE END #####
