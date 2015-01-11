@@ -6,8 +6,8 @@ set -e
 #
 # Check arguments
 if [[ $# -lt 1 ]]; then
-    echo "Usage: $0 tagfolder releasefolder version [testprog]"
-    echo " * calls svn export putting export of trunk into exportdir=tagfolder/dde_biftool_r{revision}"
+    echo "Usage: $0 basefolder releasefolder version [testprog]"
+    echo " * calls svn export putting export of trunk into exportdir=basefolder/tags/dde_biftool_r{revision}"
     echo " * copies export to maindir=releasefolder/dde_biftool_v{version}"
     echo " * compiles manual, cover and other docs and copies them into maindir,"
     echo " * replaces Id lines and updates (c) lines with {version}(commit)"
@@ -23,12 +23,13 @@ if [[ $# -lt 1 ]]; then
     exit
 fi
 curdir=`pwd`
-tag=`cd $1;pwd`
+base=`cd $1;pwd`
+tag=`cd $base/tags;pwd`
 cd $curdir
-base=`cd $2;pwd`
+releasebase=`cd $2;pwd`
 version=$3
 # Redirect stdout ( > ) into a named pipe ( >() ) running "tee"
-exec > >(tee "$base/logfile_v$version.txt")
+exec > >(tee "$releasebase/logfile_v$version.txt")
 if [[ $# -lt 4 ]]; then
     dotest=0
 else
@@ -36,19 +37,19 @@ else
     cmd=$4
 fi
 # obtain current revision number
-cd $tag
-pwd
-revision=`svn info | awk -- '/Revision/{print $2}'`
+cd $base
+revision=`svn -R info | awk -- '/Revision/{print $2}' | sort | tail -1`
 # generate names for folders and files
 name="dde_biftool_v"$version
 exportdir=$tag"/"$name"_r"$revision
 destdir="$name"
-destdir=$base/$destdir
+destdir=$releasebase/$destdir
 license=$destdir/tools/license.txt
 zip=$name".zip"
 files="*/*.*"
-rm -rf $exportdir
-svn export ^/trunk/dde_biftool  $exportdir --native-eol CRLF
+if [[ ! ( -e $exportdir ) ]]; then
+    svn export ^/trunk/dde_biftool  $exportdir --native-eol CRLF
+fi
 rm -rf $destdir
 cp -urp $exportdir $destdir
 #
@@ -99,13 +100,13 @@ for i in `find "$destdir" -mindepth 1 -type d`; do
     index=$i"/index.html"
     if [[ ! ( -f $index ) ]]; then
 	echo creating $index
-	sh tools/create_index.html tools/template_index.html $version $index
+	bash tools/create_index_html.sh tools/template_index.html $version $i
     fi
 done
 rm -rf tools
 
 # zip
-cd $base
+cd $releasebase
 rm -rf $zip
 zip -r $zip $name
 
