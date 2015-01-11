@@ -1,4 +1,7 @@
 #!/usr/bin/python
+#
+# $Id$
+#
 usage='''
 Usage: {0:s} basefolder command [demo_names]
 This tests demos in basefolder/demos/ by copying each subfolder to

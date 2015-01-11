@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# $Id: release.sh 39 2013-06-13 12:31:32Z jansie $
+# $Id$
 #
 set -e 
 #
