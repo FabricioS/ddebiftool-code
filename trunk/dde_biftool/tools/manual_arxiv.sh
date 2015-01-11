@@ -29,7 +29,7 @@ cp -p $figs "$curdir/$arxdir/fig"
 cd "$curdir/$arxdir"
 # insert date into license
 year=`date +%G`
-sed -i -- "s/|year|/$year/g" $license
+sed -i -- "s/|year|/$year/g" license.txt
 echo '\newcommand{\version}{'$version'}' >version.tex
 sed -i -- 's/%\\pdfoutput=1/\\pdfoutput=1/g' manual.tex
 cd ..
