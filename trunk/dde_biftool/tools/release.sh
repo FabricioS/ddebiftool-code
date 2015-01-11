@@ -100,7 +100,7 @@ for i in `find "$destdir" -mindepth 1 -type d`; do
     index=$i"/index.html"
     if [[ ! ( -f $index ) ]]; then
 	echo creating $index
-	bash tools/create_index_html.sh tools/template_index.html $version $i
+	bash $destdir/tools/create_index_html.sh $destdir/tools/index_template.html $version $i
     fi
 done
 rm -rf tools
