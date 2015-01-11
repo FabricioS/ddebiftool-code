@@ -3,14 +3,17 @@
 # $Id: release.sh 39 2013-06-13 12:31:32Z jansie $
 #
 set -e 
+#
+# Check arguments
 if [[ $# -lt 1 ]]; then
-    echo "Usage: $0 basefolder version [testprog]"
-    echo " * calls svn export putting export into maindir=basefolder/dde_biftool_v{version}"
+    echo "Usage: $0 tagfolder releasefolder version [testprog]"
+    echo " * calls svn export putting export of trunk into exportdir=tagfolder/dde_biftool_r{revision}"
+    echo " * copies export to maindir=releasefolder/dde_biftool_v{version}"
     echo " * compiles manual, cover and other docs and copies them into maindir,"
     echo " * replaces Id lines and updates (c) lines with {version}(commit)"
-    echo " * insert {version} into Readme.html and creates Readme.txt from Readme.html"
+    echo " * insert {version} and {revision} into Readme.html and creates Readme.txt from Readme.html"
     echo " * if testprog is given applies testprog to all demos (in temporary folder test)"
-    echo "    possible choices for testprog: matlab octave"
+    echo "    possible choices for testprog: {matlab octave}"
     echo " * removes folders not intended for distribution"
     echo " * zips maindir into dde_biftool_v{version}.zip"
     echo " "
@@ -19,22 +22,35 @@ if [[ $# -lt 1 ]]; then
     echo " for testing {matlab, octave}"
     exit
 fi
-base=`cd $1;pwd`
-version=$2
-if [[ $# -lt 3 ]]; then
+curdir=`pwd`
+tag=`cd $1;pwd`
+cd $curdir
+base=`cd $2;pwd`
+version=$3
+# Redirect stdout ( > ) into a named pipe ( >() ) running "tee"
+exec > >(tee "$base/logfile_v$version.txt")
+if [[ $# -lt 4 ]]; then
     dotest=0
 else
     dotest=1
-    cmd=$3
+    cmd=$4
 fi
+# obtain current revision number
+cd $tag
+pwd
+revision=`svn info | awk -- '/Revision/{print $2}'`
+# generate names for folders and files
 name="dde_biftool_v"$version
+exportdir=$tag"/"$name"_r"$revision
 destdir="$name"
 destdir=$base/$destdir
 license=$destdir/tools/license.txt
 zip=$name".zip"
 files="*/*.*"
+rm -rf $exportdir
+svn export ^/trunk/dde_biftool  $exportdir --native-eol CRLF
 rm -rf $destdir
-svn export ^/trunk/dde_biftool  $destdir --native-eol CRLF
+cp -urp $exportdir $destdir
 #
 # set year in license.txt
 cd $destdir
@@ -66,6 +82,7 @@ sed  -- "s/|version|/$version/g" tmp.txt > Readme.html
 rm -f tmp.txt
 html2text Readme.html >Readme.txt
 unix2dos Readme.txt
+
 #
 # if testing required perform tests of demos
 if [[ $dotest -eq 1 ]]; then
@@ -73,9 +90,19 @@ if [[ $dotest -eq 1 ]]; then
     python $destdir/tools/test_demos.py $destdir $cmd
 fi
 #
-# remove folders not intended for distibution
-rm -rf  tools manual FilesChangedAndAdded_V203 system test
-
+# remove folders not intended for distibution (except tools)
+rm -rf  manual FilesChangedAndAdded_V203 system test
+#
+# create index.html in folders which don't have them
+i=0
+for i in `find "$destdir" -mindepth 1 -type d`; do
+    index=$i"/index.html"
+    if [[ ! ( -f $index ) ]]; then
+	echo creating $index
+	sh tools/create_index.html tools/template_index.html $version $index
+    fi
+done
+rm -rf tools
 
 # zip
 cd $base
