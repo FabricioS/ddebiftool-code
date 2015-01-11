@@ -48,7 +48,9 @@
 
 % commands, abbreviations (converted from gdef to newcommand)
 \newcommand{\DDEBIFCODE}{\textsc{DDE-BIFTOOL}}
-\newcommand{\ddebifweb}{\url{http://twr.cs.kuleuven.be/research/software/delay/ddebiftool.shtml}}
+\newcommand{\ddebifweb}{\url{https://sourceforge.net/projects/ddebiftool}}
+\newcommand{\ddebifarx}{\url{http://arxiv.org/abs/1406.7144}}
+\newcommand{\ddebifwebold}{\url{http://twr.cs.kuleuven.be/research/software/delay/ddebiftool.shtml}}
 \input{version}
 \newcommand{\file}[1]{\textbf{\texttt{#1}}}
 \newcommand{\parm}[1]{\mathsf{#1}}
@@ -63,6 +65,8 @@
 \newcommand{\ZZ}{\mathbb{Z}}
 \newcommand{\CC}{\mathbb{C}}
 %\newcommand{\mod}{\operatorname{mod}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
 \newcommand{\defeq}{:=}
 \newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
 \renewcommand{\topfraction}{.85}
@@ -188,10 +192,10 @@ reproducibility:
 \item\textbf{(this manual)} J. Sieber, K. Engelborghs, T. Luzyanina,
   G. Samaey, D. Roose . \DDEBIFCODE\ v. \version{} Manual ---
   Bifurcation analysis
-          of delay differential equations, \url{http://arxiv.org/abs/1406.7144}.
+          of delay differential equations, \ddebifarx{}.
 \end{itemize}
 All versions of this manual from v.~3.0 onward are available at
-\url{http://arxiv.org/abs/1406.7144}.
+\ddebifarx{}.
 \paragraph{License}
 The following terms cover the use of the software package {\DDEBIFCODE}:
 \bigskip\hrule
@@ -209,6 +213,11 @@ Upon acceptance of the above terms, one can obtain the package
 \begin{quote}
   \ddebifweb{}.
 \end{quote}
+Versions up to 3.0 and resources on theoretical background continue to
+be available (under a different license) on
+\begin{quote}
+  \ddebifwebold{}.  
+\end{quote}
 % The web page
 % contains also up-to-date information on newer versions and helpful
 % resources.
@@ -219,6 +228,11 @@ Upon acceptance of the above terms, one can obtain the package
 
 \subsection{Changes from 3.0 to \version}
 \label{sec:v3to31}
+\paragraph{Change of License and move to Sourceforge}
+D. Roose has permitted to change the license to a
+Sourceforge-compliant BSD License. Thus, code and newest releases from
+version 3.0 onward are now available from \ddebifweb{}. Older versions
+will contrinue to be available from \ddebifwebold{}.
 \paragraph{New feature: Normal form computation for bifurcations of
   equilibria}
 The new functionality is only applicable for equations with constant
@@ -284,22 +298,23 @@ illustrate the new functionality, too. Background theory is given in \cite{W14}.
 Extensions come with demos and separate documentation.
 
 \paragraph{Change of user interface}
-Version \version{} changes the user interface for many \DDEBIFCODE{}
-functions by adding one additional input argument \blist{funcs} (this
-new argument comes always \emph{first}).  Since \DDEBIFCODE{}
-v.\,\version{} changes the user interface, scripts written for
-\DDEBIFCODE{} v.\,2.0x or earlier will not work with the new
-version. For this reason version 2.03 will continue to be
-available. Users of both versions should ensure that only one version
-is in the Matlab path at any time to avoid naming conflicts.
+Version from 3.0 onward have a different the user interface for many
+\DDEBIFCODE{} functions than versions up to 2.03. They add one
+additional input argument \blist{funcs} (this new argument comes
+always \emph{first}).  Since \DDEBIFCODE{} v.\,3.0 changed the user
+interface, scripts written for \DDEBIFCODE{} v.\,2.0x or earlier will
+not work with versions later than 3.0. For this reason version 2.03
+will continue to be available. Users of both versions should ensure
+that only one version is in the Matlab path at any time to avoid
+naming conflicts.
 
 \section{Capabilities and related reading and
   software}
 \label{sec:intro}
  {\DDEBIFCODE} consists of a set of routines running in
 Matlab\footnote{\url{http://www.mathworks.com}} \cite{Mat00} or
-octave\footnote{\url{http://www.gnu.org/software/octave}}, a widely
-used environment for scientific computing.  The aim of the package is
+octave\footnote{\url{http://www.gnu.org/software/octave}}, both widely
+used environments for scientific computing.  The aim of the package is
 to provide a tool for numerical bifurcation analysis of steady state
 solutions and periodic solutions of differential equations with
 constant delays (called DDEs) or state-dependent delays (here called
@@ -326,6 +341,10 @@ orbits in DDEs (with constant delays).
 \item continuation of folds, period doublings and torus bifurcations
   (typically in two system parameters) using the extension
   \texttt{ddebiftool\_extra\_psol};
+\item continuation of normal form coefficients for Hopf bifurcations
+  and codimension-two bifurcations along Hopf bifurcation curves
+  (typically in two system parameters) using the extension
+  \texttt{ddebiftool\_extra\_nmfm};
 \item continuation of connecting orbits (using the appropriate number
   of parameters).  
 \end{compactitem}
@@ -365,15 +384,19 @@ identify bifurcations.
 \paragraph{About this manual --- related reading}
 This manual documents version~\version. Earlier versions of the manual
 for earlier versions of \DDEBIFCODE{} continue to be available at the
-above web address \ddebifweb{}.  For readers who intend to analyse
-only systems with constant delays, the parts of the manual related to
-systems with state-dependent delays can be skipped (sections
-\ref{sd_dde}, \ref{sys_def2}).  In the rest of this manual we assume
-the reader is familiar with the notion of a delay differential
-equation and with the basic concepts of bifurcation analysis for
-ordinary differential equations.  The theory on delay differential
-equations and a large number of examples are described in several
-books. Most notably the early
+web addresses
+\begin{tabbing}
+  versions $\geq3.0$\qquad \= \ddebifarx{}\\
+  versions $\leq2.03$ \> \ddebifwebold{}.
+\end{tabbing}
+For readers who intend to analyse only systems with constant delays,
+the parts of the manual related to systems with state-dependent delays
+can be skipped (sections \ref{sd_dde}, \ref{sys_def2}).  In the rest
+of this manual we assume the reader is familiar with the notion of a
+delay differential equation and with the basic concepts of bifurcation
+analysis for ordinary differential equations.  The theory on delay
+differential equations and a large number of examples are described in
+several books. Most notably the early
 \cite{Bell63,Driv77,El's73,Hale77a,Kolm86} and the more recent
 \cite{Azbe91,Kolm92,Hale93,Diek95,Kolm99}.  Several excellent books
 contain introductions to dynamical systems and bifurcation theory of
@@ -390,8 +413,9 @@ extensively commented.
 
 
 \paragraph{Related software}
-A large number of packages exist for bifurcation analysis of systems
-of ordinary differential equations. Currently maintained packages are
+A large number of packages exist for numerical continuation and
+bifurcation analysis of systems of ordinary differential
+equations. Currently maintained packages are
 \begin{tabbing}
   \texttt{AUTO}\qquad
   \= url: \url{http://sourceforge.net/projects/auto-07p}\qquad\=
@@ -474,7 +498,7 @@ user-provided functions are collected in a single structure (called
 \blist{funcs} in this manual), and are passed on by the user as
 arguments to layer-3 or layer-2 functions. \textbf{\emph{Note that
     this is a change in user interface between version 2.03 and
-    version~\version{}!}}
+    version~3.0!}}
 
 Layer 1 forms the numerical core of the package and is (normally)
 not directly accessed by the user. The numerical methods used
@@ -733,7 +757,7 @@ of differential equations with state-dependent delay see
 
 \section{System definition}\label{sec:system:def}
 \subsection{Change from \DDEBIFCODE{} v.~2.03 to
-  v.~\version} Note that in \DDEBIFCODE{} \version{} all
+  v.~3.0} Note that in \DDEBIFCODE{} \version{} all
 user-provided functions can be arbitrary function handles, collected
 into a structure using the function \blist{set_funcs}, explained in
 section~\ref{sec:funcs}. The only typical mandatory functions for the
@@ -1118,12 +1142,12 @@ arguments and outputs.
 \label{sec:funcs}
 The user-provided functions are passed on as an additional argument to
 all routines of \DDEBIFCODE{} (similar to standard Matlab routines
-such as \blist{ode45}). This is a change of user interface in
-\DDEBIFCODE{}\,\version{} from previous versions. The additional
-argument is a structure \blist{funcs} containing all the handles to
-all user-provided functions. In order to create this structure the
-user is recommended to call the function \blist{set_funcs} at the
-beginning of the script performing the bifurcation analysis:
+such as \blist{ode45}). This was changed in \DDEBIFCODE{}\,3.0 from
+previous versions. The additional argument is a structure
+\blist{funcs} containing all the handles to all user-provided
+functions. In order to create this structure the user is recommended
+to call the function \blist{set_funcs} at the beginning of the script
+performing the bifurcation analysis:
 \begin{lstlisting}
   function funcs=set_funcs(...)
 \end{lstlisting}
@@ -4331,15 +4355,16 @@ delay, $\frac{h}{\tau}\geq\blist{minimal_time_step}$.
 delay, $\frac{h}{\tau}\leq\blist{minimal_time_step}$. 
 \item \blist{max_number_of_eigenvalues}: maximum number of rightmost
 eigenvalues to keep.
-\item \blist{minimal_real_part}: choose $h$ such as to approximate
-  eigenvalues with $\Re(\lambda)\geq \blist{minimal_real_part}$ well,
-  discard eigenvalues with $\Re(\lambda)<\blist{minimal_real_part}$.
-  If $h$ is smaller than its minimal value, it is set to the minimal
-  value and a warning is given. If it is larger than its maximal value
-  it is reduced to that number without warning.  If minimal and
-  maximal value coincide, $h$ is set to this value without warning.
-  If \blist{minimal_real_part} is empty, the value
-  $\blist{minimal_real_part}=\frac{1}{\tau}$ is used.
+\item \blist{minimal_real_part}: choose $h$ such as the discretized
+  system approximates eigenvalues with $\Re(\lambda)\geq
+  \blist{minimal_real_part}$ well, discard eigenvalues with
+  $\Re(\lambda)<\blist{minimal_real_part}$.  If $h$ is smaller than
+  its minimal value, it is set to the minimal value and a warning is
+  given. If it is larger than its maximal value it is reduced to that
+  number without warning.  If minimal and maximal value coincide, $h$
+  is set to this value without warning.  If \blist{minimal_real_part}
+  is empty, the value $\blist{minimal_real_part}=\frac{1}{\tau}$ is
+  used.
 \item \blist{max_newton_iterations}: maximum number of Newton
   iterations during the correction process (\ref{determ_root}).
 \item \blist{root_accuracy}: required accuracy of the norm of the
@@ -4428,17 +4453,26 @@ systems with reasonable properties in reasonable execution times.
 Furthermore, we hope future versions will include routines which scale
 better with the size of the problem.
 
-\paragraph{Existing extensions}
-Simple extensions exist that enable \DDEBIFCODE{} to continue the
-three local co\-dim\-ension-one bifurcations of periodic orbits, the fold
-bifurcation, the period doubling and the torus bifurcation for
-constant and state-dependent delays.
+\subsection{Existing extensions}
+\label{sec:extensions}
+\begin{itemize}
+\item Extension \texttt{debiftool\_extra\_psol} continues the three
+  local co\-dim\-ension-one bifurcations of periodic orbits, the fold
+  bifurcation, the period doubling and the torus bifurcation for
+  constant and state-dependent delays.
+\item Extension \texttt{debiftool\_extra\_rotsym} continues relative
+  equilibria and relative periodic orbits and their local
+  codimension-one bifurcations for constant delays in systems with
+  rotational symmetry (that is, there exists a matrix
+  $A\in\RR^{n\times n}$ such that $A^T=-A$ and
+  $\exp(At)f(x_0,\ldots,x_m)=f(\exp(At)x_0,\ldots,\exp(At)x_m)$).
+\item Extension \texttt{debiftool\_extra\_nmfm} computes normal form
+  coefficients of Hopf bifurcations, Hopf-Hopf interactions,
+  generalized Hopf (Bautin) bifurcations, and zero-Hopf interactions
+  (Gavrilov-Guckenheimer bifurcations) for equations with constant
+  delays.
+\end{itemize}
 
-Existing extensions also enable \DDEBIFCODE{} to continue relative equilibria
-and relative periodic orbits and their local codimension-one
-bifurcations for constant in systems with rotational symmetry (that
-is, there exists a matrix $A\in\RR^{n\times n}$ such that $A^T=-A$ and
-$\exp(At)f(x_0,\ldots,x_m)=f(\exp(At)x_0,\ldots,\exp(At)x_m)$).
 
 Other possible future developments include
 \begin{itemize}
@@ -4453,8 +4487,8 @@ Other possible future developments include
   also Barton \emph{et al} \cite{Barton06} for a demonstration of how
   to extend \DDEBIFCODE{} to neutral functional differential
   equations.
-\item determination of normal-form coefficients to detect
-  co-dimension-two bifurcations.
+\item determination of more normal-form coefficients to detect
+  other co-dimension-two bifurcations.
 \end{itemize}
 \section*{Acknowledgements}
 
@@ -4466,8 +4500,8 @@ programme on Interuniversity Poles of Attraction, initiated by the
 Belgian State, Prime Minister's Office for Science, Technology and
 Culture.  K.~Engelborghs is a Postdoctoral Fellow of the Fund for
 Scientific Research - Flanders (Belgium).  J.~Sieber's contribution to
-the revision leading to version \version{} was supported by EPSRC
-grant EP/J010820/1.
+the revision leading to version 3.0 was supported by EPSRC grant
+EP/J010820/1.
 
 \bibliographystyle{plain}
 
