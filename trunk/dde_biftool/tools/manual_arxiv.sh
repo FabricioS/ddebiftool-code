@@ -17,7 +17,7 @@ tooldir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 msrc="neuron_sys_deri.m  sd_dtau.m  sd_rhs.m  sd_tau.m"
 tex="manual.tex manual.bbl"
 figs="fig/*.pdf"
-license="license.txt"
+license=$tooldir"/license.txt"
 arxdir="ddebiftool_manual"
 zip=$curdir"/ddebiftool_manual.zip"
 cd $curdir
