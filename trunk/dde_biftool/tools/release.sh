@@ -38,7 +38,7 @@ else
 fi
 # obtain current revision number
 cd $base
-revision=`svn -R info | awk -- '/Revision/{print $2}' | sort | tail -1`
+revision=`svn -R info | awk -- '/Revision/{print $2}' | sort -n | tail -1`
 # generate names for folders and files
 name="dde_biftool_v"$version
 exportdir=$tag"/"$name"_r"$revision
