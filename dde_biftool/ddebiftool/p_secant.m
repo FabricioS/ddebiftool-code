@@ -3,7 +3,7 @@ function secant=p_secant(secant,norm_point)
 % function n_secant=p_secant(secant,norm_point)
 % INPUT: 
 %	secant unnormalized secant
-%	norm_point norm of computed point
+%	norm_point norm of a computed reference point
 % OUTPUT:
 %	n_secant normalized secant
 

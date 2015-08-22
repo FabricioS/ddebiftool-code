@@ -46,7 +46,8 @@ function [J,res,tT,extmesh]=psol_jac(funcs,c,T,psol_prof,t,deg,par,free_par,ph,v
 % $Id$
 %
 %% optional
-default={'wrapJ',true,'c_is_tvals',false,'bc',true,'Dtmat',eye(size(psol_prof,1))};
+default={'wrapJ',true,'c_is_tvals',false,'bc',true,'Dtmat',eye(size(psol_prof,1)),...
+    'rotationcheck',true};
 options=dde_set_options(default,varargin,'pass_on');
 %% use functions from funcs
 sys_tau=funcs.sys_tau;
@@ -266,6 +267,9 @@ if options.bc
     Jbc_dx(:,:,1)=eye(n);
     Jbc_dx(:,:,end)=-eye(n);
     resbc=psol_prof(:,1)-psol_prof(:,size(psol_prof,2));
+    if options.rotationcheck
+        resbc=mod(resbc+pi,2*pi)-pi;
+    end
     res=[res;resbc(:)];
     J=[J;reshape(Jbc_dx,[n,n*(neqs+1)]),Jbc_dT,Jbc_dp];
 end

@@ -41,6 +41,8 @@ end
 %% undo sorting
 icsort=itx(itx>nt)-nt;
 it(icsort)=it;
+it(x==1)=nt-1;
+c(x==1)=1;
 %% evaluate Lagrange polynomials on all interpolation times
 cscal=(c-tcoarse(it))./(tcoarse(it+1)-tcoarse(it));
 Pa=poly_elg(m,cscal);
