@@ -201,7 +201,8 @@ while curind < length(tempbranch.point)
          bifcand = new_point;
       else
          % Use halfway point as bifurcation candidate
-         secant=p_normlz(p_axpy(-1,new_point,tempbranch.point(curind-1)));
+         secant=p_axpy(-1,new_point,tempbranch.point(curind-1));
+         secant=p_secant(secant,p_norm(new_point));
          bifcand = p_correc(funcs, halfway_point, free_par, secant, method);
          % Use this approximate stability only to convert to Hopf
          bifcand.stability = stability;
@@ -316,7 +317,7 @@ while curind < length(tempbranch.point)
             pospoint = prevpoint;
             negpoint = hopfpoint;
          end
-         secant=p_normlz(p_axpy(-1,negpoint,pospoint));
+         secant=p_secant(p_axpy(-1,negpoint,pospoint),p_norm(pospoint));
          for i = 1:max_iter
             sumpoint = p_axpy(1, pospoint, negpoint);
             halfpoint = p_axpy(0.5, sumpoint, []);
