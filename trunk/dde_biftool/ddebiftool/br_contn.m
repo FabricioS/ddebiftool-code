@@ -1,10 +1,14 @@
-function [branch,succ,fail,rjct]=br_contn(funcs,branch,max_tries)
+function [branch,succ,fail,rjct]=br_contn(funcs,branch,max_tries,varargin)
 %% extend DDE-BIFTOOL branch
 % function [c_branch,succ,fail,rjct]=br_contn(funcs,branch,max_tries)
 % INPUT:
 %   funcs problem functions
 %	branch initial branch (contains method and initial points)
 %	max_tries maximum number of tries
+%   optional (named):
+%   'plotaxis' (default []): if plotting is on
+%   (branch.method.continuation.plot>=1) then the user may specify an axis
+%   into which to plot, default [] chooses gca
 % OUTPUT:
 %	branch extended branch
 %	succ number of succesfull corrections
@@ -15,7 +19,9 @@ function [branch,succ,fail,rjct]=br_contn(funcs,branch,max_tries)
 %
 % $Id$
 %
-%%
+%% introduce optional argument to set plotting axis 
+default={'plotaxis',[]};
+options=dde_set_options(default,varargin);
 tries=0;
 fail=0;
 rjct=0;
@@ -43,14 +49,19 @@ growth_factor=branch.method.continuation.steplength_growth_factor;
 % prepare plotting:
 
 if branch.method.continuation.plot>0,
-  hold on;
-  if isempty(branch.method.continuation.plot_measure),
-    [x_m,y_m]=df_measr(0,branch);
-  else
-    x_m=branch.method.continuation.plot_measure.x;
-    y_m=branch.method.continuation.plot_measure.y;
-  end;
-end;
+    if branch.method.continuation.plot>=1 && isempty(options.plotaxis)
+        options.plotaxis=gca;
+    end
+    if  branch.method.continuation.plot>=1
+        hold(options.plotaxis,'on');
+    end
+    if isempty(branch.method.continuation.plot_measure),
+        [x_m,y_m]=df_measr(0,branch);
+    else
+        x_m=branch.method.continuation.plot_measure.x;
+        y_m=branch.method.continuation.plot_measure.y;
+    end
+end
 
 while kontinue && (tries<=max_tries || bound || bound_tau),
 
@@ -194,11 +205,11 @@ while kontinue && (tries<=max_tries || bound || bound_tau),
       y2=j+1;
     end;
     if branch.method.continuation.plot>=1
-        plot([x1 x2],[y1 y2],'g');
-        plot(x2,y2,'g.');
-        if branch.method.continuation.plot_progress,
+        plot(options.plotaxis,[x1 x2],[y1 y2],'g');
+        plot(options.plotaxis,x2,y2,'g.');
+        if branch.method.continuation.plot_progress
             drawnow;
-        end;
+        end
     elseif branch.method.continuation.plot_progress
         fprintf('pred: (%g, %g)\n',x2,y2);
     end
@@ -257,8 +268,8 @@ while kontinue && (tries<=max_tries || bound || bound_tau),
         y2=j+1;
       end;
       if branch.method.continuation.plot>=1
-          plot([x1 x2],[y1 y2],'b');
-          plot([x1 x2],[y1 y2],'b.');
+          plot(options.plotaxis,[x1 x2],[y1 y2],'b');
+          plot(options.plotaxis,[x1 x2],[y1 y2],'b.');
       elseif branch.method.continuation.plot_progress
           fprintf('                        cor: (%g, %g)\n',x2,y2);
       end

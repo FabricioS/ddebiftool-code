@@ -189,7 +189,7 @@ fprintf(['Normal form coefficients of Hopf-Hopf point\n',...
     hoho.omega1,hoho.omega2);
 disp(hoho.nmfm);
 fprintf('Error of normal form coefficients: %g\n',...
-     norm(struct2array(hoho.nmfm)-struct2array(hoho_low.nmfm),'inf'));
+     norm(structfun(@(x)x,hoho.nmfm)-structfun(@(x)x,hoho_low.nmfm),'inf'));
 %% Two-parameter bifurcation diagram of Hopf bifurcations
 % with L1 coefficients
 a21_br2 =arrayfun(@(x)x.parameter(ind_a21), branch2.point);
