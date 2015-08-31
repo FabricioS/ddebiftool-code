@@ -51,6 +51,9 @@ ntaup1=size(xx,2);
 ox=ones(1,xdim);
 otau=ones(1,ntaup1);
 tdevh=reshape(tdevh,[1,1,1,nt]);
+xxdev_scale=max(max(abs(reshape(xxdev,xdim*ntaup1,ncalls)),1));
+xxdev_scale_vec=reshape(xxdev_scale,[1,1,ncalls]);
+xxdev=xxdev./xxdev_scale_vec(ox,otau,:);
 xxdt=xx(:,:,od,ot)+tdevh(ox,otau,od,:).*xxdev(:,:,:,ot);
 xxdt=reshape(xxdt,[xdim,ntaup1,ncalls*nt]);
 fv=rhs(xxdt,par);
@@ -62,6 +65,8 @@ df2=fv(:,1:2:end)*(D{2}'^dord)/h^dord;
 % |polarization_coeffs|.
 y=reshape(df(:,(nt+1)/2),xdim,ncalls);
 y2=reshape(df2(:,(nt+3)/4),xdim,ncalls);
+y=y.*xxdev_scale(ox,:).^dord;
+y2=y2.*xxdev_scale(ox,:).^dord;
 end
 %% Matrix corresponding to derivative of interpolant
 function [D,x,w]=dde_dchebary(n)

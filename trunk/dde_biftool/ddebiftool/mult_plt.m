@@ -1,40 +1,28 @@
-function mult_plt(mu)
-
-% function mult_plt(mu)
+%%  plot Floquet multipliers of linear problem (periodic orbits)
+%%
+function mult_plt(mu,varargin)
+%% function mult_plt(mu)
 % INPUT:
 %	mu approximated multipliers
+%   'plotaxis' (named optional, default: gca) axis on which to plot
+%
+% Different colors for unstable (red), stable (green) and critical(black)
+%
+% $Id$
+%
+%% process options
+default={'plotaxis',gca};
+options=dde_set_options(default,varargin,'pass_on');
 
-% (c) DDE-BIFTOOL v. 1.00, 11/03/2000
+theta=0:0.25:360;
 
-theta=0:0.005:2*pi;
+rmu=mu(abs(mu)>1);
+gmu=mu(abs(mu)<1);
+kmu=mu(abs(mu)==1);
 
-plot(cos(theta),sin(theta));
-hold on;
-
-rmu=[];
-gmu=[];
-kmu=[];
-
-for i=1:length(mu)
-  if abs(mu(i))>1
-    rmu(length(rmu)+1)=mu(i); % plot(real(mu(i)),imag(mu(i)),'r*');
-  else
-    if abs(mu(i))<1
-      gmu(length(gmu)+1)=mu(i); % plot(real(mu(i)),imag(mu(i)),'g*');
-    else
-      kmu(length(kmu)+1)=mu(i); % plot(real(mu(i)),imag(mu(i)),'k*');
-    end;
-  end;
-end;
-
-if length(rmu)
-  plot(real(rmu),imag(rmu),'rx');
-end;
-if length(gmu)
-  plot(real(gmu),imag(gmu),'gx');
-end;
-if length(kmu)
-  plot(real(kmu),imag(kmu),'kx');
-end;
-
-return;
+plot(options.plotaxis,...
+    cosd(theta),sind(theta),'b-',...
+    real(rmu),imag(rmu),'rx',...
+    real(gmu),imag(gmu),'gx',...
+    real(kmu),imag(kmu),'kx');
+end

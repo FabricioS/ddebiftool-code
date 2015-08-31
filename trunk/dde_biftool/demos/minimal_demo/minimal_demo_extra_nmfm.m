@@ -41,7 +41,7 @@ for i=1:length(hopfcurves)
             hoho{ind_hoho}.omega1,hoho{ind_hoho}.omega2);
         disp(hoho{ind_hoho}.nmfm);
         fprintf('Error of normal form coefficients: %g\n',...
-        norm(struct2array(hoho{ind_hoho}.nmfm)-struct2array(hoho_low.nmfm),'inf'));
+        norm(structfun(@(x)x,hoho{ind_hoho}.nmfm)-structfun(@(x)x,hoho_low.nmfm),'inf'));
     end
 end
 %% Save and continue
