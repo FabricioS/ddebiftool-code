@@ -67,6 +67,7 @@ branch1.method.continuation.plot = 0;
 [branch1,s,f,r] = br_contn(funcs,branch1,300);
 branch1 = br_rvers(branch1);
 [branch1,s,f,r] = br_contn(funcs,branch1,300);
+[nunst_stst,dom,triv,branch1.point]=GetStability(branch1,'funcs',funcs);
 
 figure;
 [xm,ym] = df_measr(0,branch1,1);

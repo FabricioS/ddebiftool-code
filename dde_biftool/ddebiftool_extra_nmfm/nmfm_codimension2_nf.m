@@ -10,7 +10,7 @@ function [nf,nflow,br_ref,indbif]=...
 % * detect: monitoring function of type res=detect(p) for points of branch,
 % or string ('hoho', 'zeho','hoze')
 % * nmfm_compute: function of type newpoint=nmfm_type(funcs,point) where
-% type is hoho, zeho etc
+% type is hoho, zeho, BT, cusp etc
 %
 %% Output
 %
@@ -28,29 +28,17 @@ function [nf,nflow,br_ref,indbif]=...
 % $Id$
 %
 %%
-default={'sys_mfderi',{}};
-[options,pass_on]=dde_set_options(default,varargin,'pass_on');
-[br_ref,indbif]=br_bisection(funcs,branch,inds,detect,pass_on{:});
-pt=br_ref.point(indbif);
-if funcs.sys_mfderi_provided
-    fin_diff=false;
-else
-    fin_diff=true;
-    if ~isempty(options.sys_mfderi)
-        funcs1=set_funcs(funcs,'sys_mfderi',options.sys_mfderi);
-    else
-        funcs1=funcs;
+default={'print',0};
+[options,pass_on]=dde_set_options(default,varargin,'pass_on'); 
+[br_ref,indbif,indmap,notcorrected]=...
+    br_bisection(funcs,branch,inds,detect,pass_on{:},'print',options.print-1); %#ok<ASGLU>
+if options.print>0
+    if notcorrected(indbif)
+        fprintf(['nmfm_codinmension2: ',...
+            'Newton correction failed in proposed bifurcation point,\n',...
+            'using secant approximation\n']);
     end
-    funcs2=set_funcs(funcs1,'sys_mfderi',[options.sys_mfderi,{'output',2}]);
 end
-if fin_diff
-    newpoint=nmfm_compute(funcs1,pt);
-    nf=newpoint;
-    newpoint=nmfm_compute(funcs2,pt);
-    nflow=newpoint;
-else
-    newpoint=nmfm_compute(funcs,pt);
-    nf=newpoint;
-    nflow=nf;
-end
+pt=br_ref.point(indbif);
+[nf,nflow]=nmfm_wrap_findiff(funcs,pt,nmfm_compute);
 end

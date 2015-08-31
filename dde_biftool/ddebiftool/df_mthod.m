@@ -27,13 +27,16 @@ method.continuation.plot_progress=1; % plot progress gradually
 method.continuation.plot_measure=[]; % use default plot measures
 method.continuation.halt_before_reject=0; % rejection of points allowed
 
-% BW: addition
+% BW+MB: addition
 method.bifurcation.radial_tolerance_factor = 0.25;
 method.bifurcation.minimal_real_part = -0.1;
-method.bifurcation.correction_tolerance = 1e-7;
+method.bifurcation.correction_tolerance = 1e-6;
 method.bifurcation.secant_iterations = 30;
-method.bifurcation.secant_tolerance = 1e-9;
+method.bifurcation.secant_tolerance = 1e-6;
 method.bifurcation.imagthreshold = 1e-6;
+method.bifurcation.monitor_eigenvalues = 0;
+method.bifurcation.plot_testfunctions = 0;
+method.bifurcation.pause_on_bifurcation= 0;
 % End addition
 
 switch kind

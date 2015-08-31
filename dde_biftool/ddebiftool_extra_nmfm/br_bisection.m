@@ -12,13 +12,14 @@ function [branch,indbif,indmap,notcorrected]=...
 %	refined_branch branch with refinements
 %   indbif index closest to bifurcation
 %   indmap point with index i in original branch, is mapped to indmap(i)
-%   notcorrected: list of indices in branch.point, where correction hads
+%   notcorrected: list of indices in branch.point, where correction has
 %   failed
 %
 % $Id$
 %
 %%
-default={'print',1,'distance',1e-3,'min_iterations',4,'stabilityfield','l1'};
+default={'print',0,'distance',branch.method.bifurcation.secant_tolerance,...
+    'min_iterations',branch.method.bifurcation.secant_iterations,'stabilityfield','l1'};
 options=dde_set_options(default,varargin,'pass_on');
 %% list of possible bifurcations
 %% setup bisection
@@ -38,7 +39,7 @@ end
 res=[bif_mon(p1),bif_mon(p2)];
 assert(prod(res)<=0,'refin:signchange',...
     'detection function does not change sign: r(1)=%g, r(2)=%g',res(1),res(2));
-if options.print
+if options.print>0
     fprintf('Bisection residual: res(1)=%g, res(2)=%g\n',res(1),res(2));
 end
 dist_ini=p_norm(secant);
@@ -65,7 +66,7 @@ while (it<options.min_iterations || dist>options.distance) && absres>0
     slist=[slist,snew]; %#ok<AGROW>
     iscorrected=[iscorrected,logical(suc)]; %#ok<AGROW>
     resnew=bif_mon(pnewcor);
-    if options.print
+    if options.print>0
         fprintf('Bisection: new residual=%g\n',resnew);
     end
     if resnew*res(1)<0

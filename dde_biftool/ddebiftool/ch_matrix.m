@@ -5,7 +5,7 @@ function Delta=ch_matrix(funcs,xx,par,lambda,varargin)
 %   funcs problem functions
 %	x steady state solution in R^n (either n x (ntau+1), or n x 1)
 %	par parameter values
-%	l root in C
+%	lamba complex number at which  charactersitic matrix is computed
 %   optional named argument: 'deri', integer (default 0) return derivative
 %   of characteristic matrix wrt lambda
 % OUTPUT: 
