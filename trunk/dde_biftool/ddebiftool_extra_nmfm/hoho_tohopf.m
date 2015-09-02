@@ -11,25 +11,25 @@ function hopf=hoho_tohopf(funcs,point,freqs)
 % $Id$
 %
 %%
-hopf = struct(...
-    'kind','hopf',...
-    'parameter',point.parameter,...
-    'x',point.x);
+hopf = point;
+[hopf.omega] = hopf.omega1;
+hopf = rmfield(hopf,'omega1');
+hopf = rmfield(hopf,'omega2');
+hopf.kind = 'hopf';
 if isempty(freqs)
-    omega = point.omega1;
+    hopf.omega = point.omega1;
 elseif ischar(freqs)
-    omega=point.(freqs);
+    hopf.omega=point.(freqs);
 else
     d1=min(abs(point.omega1-freqs));
     d2=min(abs(point.omega2-freqs));
     if d1<d2
-        omega=point.omega2;
+        hopf.omega=point.omega2;
     else
-        omega=point.omega1;
+        hopf.omega=point.omega1;
     end
 end
-hopf.omega=omega;
-D=ch_matrix(funcs,point.x,point.parameter,1i*omega);
+D=ch_matrix(funcs,point.x,point.parameter,1i*hopf.omega);
 [E1,E2]=eig(D);
 [i1,i2]=min(abs(diag(E2))); %#ok<ASGLU>
 hopf.v=E1(:,i2);

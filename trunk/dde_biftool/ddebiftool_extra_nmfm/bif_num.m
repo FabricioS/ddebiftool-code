@@ -17,7 +17,7 @@ typelist={...
     'BT',...   % Takens-Bogdanov bifurcation
     'CP',...   % cusp
     'count'};
-if nargin<2 || isempty(pointtype) || isempty(tofrom)
+if nargin<2
 %     fprintf('known point types:\n');
 %     for i=1:length(typelist)-1
 %         fprintf('type %2d: ''%s''\n',i-2,typelist{i});
@@ -49,6 +49,9 @@ switch tofrom
             else
                 warning('bif_num:unknown','type %d is unknown',pointtype(i));                
             end
+        end
+        if numel(result)==1
+            result=result{1};
         end
     otherwise
         error('bif_num:arg','illegal 2nd argument %s',tofrom);

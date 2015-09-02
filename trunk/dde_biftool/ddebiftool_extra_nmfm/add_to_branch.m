@@ -37,7 +37,7 @@ else
     if isfield(bif_point,'stability')
         new_degpoint.stability=bif_point.stability;
     end
-    if ~isfield(newbranch.point(end),'stability')
+    if ~isfield(newbranch.point(end),'stability') && isfield(new_degpoint,'stability')
         new_degpoint=rmfield(new_degpoint,'stability');
     end
     new_degpoint.flag=bif_point.kind;
