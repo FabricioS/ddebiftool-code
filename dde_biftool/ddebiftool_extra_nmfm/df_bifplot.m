@@ -12,6 +12,8 @@ bifplot.hcli = 'o';
 bifplot.genh = 'o';
 bifplot.zeho = 'o';
 bifplot.hoho = 'o';
+bifplot.BT = 'o';
+bifplot.CP = 'o';
 
 end
 

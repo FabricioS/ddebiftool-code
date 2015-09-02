@@ -69,7 +69,15 @@ for x in $tex; do
     bibtex $x && pdflatex $x && pdflatex $x && mv $x".pdf" $destdir
 done
 mv Addendum_Manual_DDE-BIFTOOL_2_03.pdf $destdir
+
+nmfm="nmfm_extension_manual"
+cd $destdir/manual/$nmfm
+tex="nmfm_extension_description"
+pdflatex $tex && pdflatex $tex && pdflatex $tex && \
+    bibtex $tex && pdflatex $tex && pdflatex $tex && mv $tex".pdf" $destdir
+
 cd $destdir
+
 #
 # set (c) line in all m and html files that have (c) or Id
 python $destdir/tools/c_insert.py $destdir $version

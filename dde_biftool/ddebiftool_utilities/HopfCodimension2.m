@@ -16,7 +16,7 @@
 % * testfuncs: structure containing fields 'cusp', 'zeho', 'BT' with
 % sign-changing test functions
 %
-% If an entry in bifpoints is empty detection or coputation have failed.
+% If an entry in bifpoints is empty detection or computation have failed.
 %%
 function [bifpoints,indices,branch,testfuncs]=HopfCodimension2(funcs,branch,varargin)
 %

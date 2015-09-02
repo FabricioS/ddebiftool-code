@@ -16,7 +16,7 @@
 % * testfuncs: structure containing fields 'cusp', 'zeho', 'BT' with
 % sign-changing test functions
 %
-% If an entry in bifpoints is empty detection or coputation have failed.
+% If an entry in bifpoints is empty, then detection or coputation have failed.
 %%
 function [bifpoints,indices,branch,testfuncs]=FoldCodimension2(funcs,branch,varargin)
 %
@@ -49,7 +49,7 @@ nby1=abs(diff(nunst(:)'))==1;                % for Takens-Bogdanov
 nby2=abs(diff(nunst(:)'))==2;                % for zero-Hopf
 nbymore=abs(diff(nunst(:)'))>2;
 bchange=bchange & (~nby1) & (~nbymore);  % fold coefficient is singular at BTs
-detect=cell(1,length(nunst));
+detect=cell(1,length(branch.point));
 rep=@(f,sel)repmat({f},1,sum(sel));
 detect(bchange)=rep(@CuspNormalform,bchange);
 detect(nby1)=rep(@TakensBogdanovNormalform,nby1);
