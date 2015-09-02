@@ -1,5 +1,8 @@
-function f = sys_rhs(xx,par)
-
+function f = cusp_rhs(xx,par)
+%% right-hand side of cusp demo (see cusp_demo.m for equations)
+%
+% $Id$
+%
 %par = [q11,q12,q21,e1,e2]
 
 % f(1,1) = -xx(1,1)+par(1)/(1+exp(-4*xx(1,2)))-par(2)*xx(2,2)+par(4);

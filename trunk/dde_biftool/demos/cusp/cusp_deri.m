@@ -1,5 +1,9 @@
-function J = sys_deri(xx,par,nx,np,v)
-
+function J = cusp_deri(xx,par,nx,np,v)
+%% first and 2nd order derivatives in xx and par for cusp demo (see cusp_demo.m for equations)
+%
+% $Id$
+%
+%%
 J = [];
 
 if length(nx) == 1 && isempty(np) && isempty(v)
