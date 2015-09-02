@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
   </style></head><body><div class="content"><h1>Holling-Tanner model - Demo for Takens-Bogdanov point normal form</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Differential equations for predator-prey model</a></li><li><a href="#3">Right-hand side</a></li><li><a href="#4">Sequence of parameters</a></li><li><a href="#5">Continuation of steady state branch</a></li><li><a href="#6">Plot bifurcation diagram</a></li><li><a href="#7">Continuation of Hopf bifurcation in two parameters</a></li><li><a href="#8">Detect special points along Hopf curve</a></li><li><a href="#9">Singularity of defining system for Hopf bifurcation</a></li><li><a href="#10">Plot Hopf bifurcation in two-parameter plane, including Takens-Bogdanov point</a></li><li><a href="#11">Test functions for codimension-2 bifurcations along Hopf curve</a></li><li><a href="#12">Fold bifurcation</a></li><li><a href="#13">Detect special points along fold curve</a></li><li><a href="#14">Insert fold in figure 3</a></li><li><a href="#15">Test functions for codimension-2 bifurcations along fold curve</a></li><li><a href="#16">Branch off to periodic orbit at some Hopf point, continue to large period</a></li><li><a href="#17">Convert point close to end of the psol_branch to homoclinic orbit</a></li><li><a href="#18">Continue branch of homoclinic orbits in two parameters</a></li><li><a href="#19">Add homoclinic orbit to two-parameter bifurcation diagram</a></li></ul></div><h2>Differential equations for predator-prey model<a name="1"></a></h2><p>From: Liu, X., Liu, Y., and Wang, J. (2013). Bogdanov-Takens bifurcation of a delayed ratio-dependent Holling-Tanner predator prey system. In Abstract and Applied Analysis, volume 2013</p><p><img src="HollingTanner_demo_eq05779721882896134641.png" alt="$$x'=(x+m)(1-x-m)-\frac{xy}{ay+x}$$"></p><p><img src="HollingTanner_demo_eq10521076500307990289.png" alt="$$y'=\delta y\left(\beta-\frac{y(t-\tau)}{x(t-\tau)}\right)$$"></p><p>
-$Id: HollingTanner_demo.m 112 2015-09-02 00:31:41Z jansieber $
+$Id: HollingTanner_demo.m 115 2015-09-02 03:42:31Z jansieber $
 </p><pre class="codeinput">clear;                           <span class="comment">% clear variables</span>
 close <span class="string">all</span>;                       <span class="comment">% close figures</span>
 addpath(<span class="string">'../../ddebiftool'</span>,<span class="keyword">...</span>
@@ -358,7 +358,7 @@ legend(ax3l,[b2_lgtext_h,b2_lgtext_f,{<span class="string">'homolclinic'</span>}
 % 
 %
 % <html>
-% $Id: HollingTanner_demo.m 112 2015-09-02 00:31:41Z jansieber $
+% $Id: HollingTanner_demo.m 115 2015-09-02 03:42:31Z jansieber $
 % </html>
 %%
 clear;                           % clear variables
