@@ -37,8 +37,8 @@ indh=5;
 inddelta=6;
 getpar=@(x,i)arrayfun(@(p)p.parameter(i),x.point);
 getx=@(x,i)arrayfun(@(p)p.x(i),x.point);
-getamp=@(x,i)[arrayfun(@(p)max(p.profile(i,:)),x.point);...
-    arrayfun(@(p)min(p.profile(i,:)),x.point)];
+bgetpar=@(x,i,bif)arrayfun(@(p)p.parameter(i),x.point(br_getflags(x,bif)));
+bgetx=@(x,i,bif)arrayfun(@(p)p.x(i),x.point(br_getflags(x,bif)));
 %% Continuation of steady state branch
 fprintf('----- Steady-state branch -----\n');
 beta=0.5;
@@ -56,49 +56,45 @@ xster=-(1/2)*((beta/(a*beta+1)+2*m-1)+sqrt((1-2*m-beta/(a*beta+1))^2+4*(m*(1-m)-
 yster=beta*xster;
 
 contpar=indbeta;
-stst_branch = SetupStst(funcs,'x',[xster; yster],'parameter',stst.parameter,...
+stst_branch0 = SetupStst(funcs,'x',[xster; yster],'parameter',stst.parameter,...
     'contpar',contpar,'max_step',[0,0.005],'min_bound',...
     [contpar 0.4],'max_bound',[contpar 0.6],...
     'newheuristics_tests',0);
 figure(1);clf
 ax1=gca;
 title(ax1,sprintf('steady states for delta=%g',stst.parameter(inddelta)));
-[stst_branch] = br_contn(funcs,stst_branch,100);
-[nunst_stst,dum,dum,stst_branch.point]=GetStability(stst_branch,'funcs',funcs); %#ok<ASGLU>
+[stst_branch0] = br_contn(funcs,stst_branch0,100);
+[stst_branch_wbifs,stst_testfuncs]=LocateSpecialPoints(funcs,stst_branch0);
+nunst_stst=GetStability(stst_branch_wbifs);
 %% Plot bifurcation diagram
-beta_stst=getpar(stst_branch,indbeta);
-x1_stst=getx(stst_branch,1);
+beta_stst=getpar(stst_branch_wbifs,indbeta);
+x1_stst=getx(stst_branch_wbifs,1);
 cla(ax1);
 plot(ax1,beta_stst(nunst_stst==0),x1_stst(nunst_stst==0),'g.',...
     beta_stst(nunst_stst==1),x1_stst(nunst_stst==1),'r.',...
-    beta_stst(nunst_stst==2),x1_stst(nunst_stst==2),'b.','linewidth',2);
-stst_lgtext={'unstable=0','unstable=1','unstable=2'};
+    beta_stst(nunst_stst==2),x1_stst(nunst_stst==2),'b.',...
+    bgetpar(stst_branch_wbifs,indbeta,'hopf'),bgetx(stst_branch_wbifs,1,'hopf'),'ks',...
+    bgetpar(stst_branch_wbifs,indbeta,'fold'),bgetx(stst_branch_wbifs,1,'fold'),'mo');
+stst_lgtext={'unstable=0','unstable=1','unstable=2','hopf','fold'};
 legend(ax1,stst_lgtext,'location','west');
 xlabel(ax1,'\beta');
 ylabel(ax1,'x_1');
 title(ax1,sprintf('steady states for delta=%g',stst.parameter(inddelta)));
-%% Computation of first Hopf point(s)
-% and initialization of pbranch
-fprintf('----- Hopf branch -----\n');
-indhopf=find(abs(diff(nunst_stst))==2,1,'first');
-hopf_branch = SetupHopf(funcs, stst_branch, indhopf, 'contpar', [inddelta,indbeta],...
-    'dir', indbeta, 'step', 0.002,parameter_bd{:});
-%% Include first Hopf point into single-parameter bifurcation diagram
-hold(ax1,'on');
-plot(ax1,hopf_branch.point(1).parameter(indbeta),hopf_branch.point(1).x(1),...
-    'bo','markerfacecolor','b');
-stst_lgtext_h=[stst_lgtext,{'Hopf'}];
-legend(ax1,stst_lgtext_h,'location','west');
 %% Continuation of Hopf bifurcation in two parameters
+% after initialization of hopfbranch
+fprintf('----- Hopf branch -----\n');
+[hopf_branch0,suc] = SetupHopf(funcs, stst_branch_wbifs, br_getflags(stst_branch_wbifs,'hopf'),...
+    'contpar', [inddelta,indbeta],...
+    'dir', indbeta, 'step', 0.002,parameter_bd{:});
+disp(['suc=',num2str(suc)]);
 figure(2);clf
 ax2=gca;
 title(ax2,'Hopf in beta-delta plane');
-hopf_branch=br_contn(funcs,hopf_branch,300);
-[nunst_hopf,dom,triv,hopf_branch.point]=GetStability(hopf_branch,'funcs',funcs,...
-    'exclude_trivial',true); %#ok<ASGLU>
+hopf_branch0=br_contn(funcs,hopf_branch0,300);
 %% Detect special points along Hopf curve
 fprintf('----- Codimension-two detection along Hopf branch -----\n');
-[hbif,hopf_ind2,hopf_branch_refined,hopftestfuncs]=HopfCodimension2(funcs,hopf_branch);
+[hopf_branch_wbifs,hopftestfuncs]=LocateSpecialPoints(funcs,hopf_branch0);
+nunst_hopf=GetStability(hopf_branch_wbifs,'exclude_trivial',true);
 %% Singularity of defining system for Hopf bifurcation 
 % Let us demonstrate that the defining system for the Hopf bifurcation is
 % singular in the Takens-Bogdanov bifurcation. The 8x9 matrix |J0| below is its
@@ -107,7 +103,7 @@ fprintf('----- Codimension-two detection along Hopf branch -----\n');
 % the Hopf branch closest to the BT point.
 %
 % The characteristic matrix has a double root at lambda=0 in BT.
-hbt=hopf_branch_refined.point(hopf_ind2(1));
+hbt=hopf_branch_wbifs.point(br_getflags(hopf_branch_wbifs,'BT'));
 J0=hopf_jac(funcs,hbt.x,hbt.omega,hbt.v,hbt.parameter,[inddelta,indbeta],hbt.v.');
 disp('J0=');
 disp(J0);
@@ -121,12 +117,12 @@ xlabel('\lambda');
 ylabel('\Delta(\lambda)');
 %% Plot Hopf bifurcation in two-parameter plane, including Takens-Bogdanov point
 % and in $\beta-\delta-\omega$ space.
-beta_hopf=getpar(hopf_branch_refined,indbeta);
-delta_hopf=getpar(hopf_branch_refined,inddelta);
-omega_hopf=[hopf_branch_refined.point.omega];
-beta_bt=hbif{1}.parameter(indbeta);
-delta_bt=hbif{1}.parameter(inddelta);
-omega_bt=hopf_branch_refined.point(hopf_ind2).omega;
+beta_hopf=getpar(hopf_branch_wbifs,indbeta);
+delta_hopf=getpar(hopf_branch_wbifs,inddelta);
+omega_hopf=[hopf_branch_wbifs.point.omega];
+beta_bt=hbt.parameter(indbeta);
+delta_bt=hbt.parameter(inddelta);
+omega_bt=hbt.omega;
 figure(3);clf;
 subplot(1,2,1);
 ax3l=gca;
@@ -170,31 +166,24 @@ title('test functions along Hopf curve (Hopf-Hopf invisible)')
 % We do a standard continuation, using the starting index obtained from the
 % flagged point indices.
 fprintf('----- fold branch -----\n');
-foldind = find(diff(nunst_stst)==1,1,'first');
-[fold_branch, suc] = SetupFold(funcs, stst_branch, foldind, ...
+[fold_branch0,suc]=SetupFold(funcs,stst_branch_wbifs,br_getflags(stst_branch_wbifs,'fold'),...
     'contpar', [inddelta,indbeta], 'dir', inddelta, 'step', 0.005, parameter_bd{:});
-disp(suc);
-%% Include first fold point into single-parameter bifurcation diagram
-plot(ax1,fold_branch.point(1).parameter(indbeta),fold_branch.point(1).x(1),...
-    'ks','markerfacecolor','k');
-stst_lgtext_f=[stst_lgtext_h,{'fold'}];
-legend(ax1,stst_lgtext_f,'location','west');
-%% Continue fold branch
+disp(['suc=',num2str(suc)]);
 figure(2);
 title(ax2,'Fold in beta-delta plane');
-fold_branch=br_contn(funcs,fold_branch,300);
-fold_branch = br_rvers(fold_branch);
-fold_branch=br_contn(funcs,fold_branch,300);
-[nunst_fold,dom,triv,fold_branch.point]=GetStability(fold_branch,'funcs',funcs,'exclude_trivial',true);
+fold_branch0=br_contn(funcs,fold_branch0,300);
+fold_branch0 = br_rvers(fold_branch0);
+fold_branch0=br_contn(funcs,fold_branch0,300);
 %% Detect special points along fold curve
 fprintf('----- Codimension-two detection along fold branch -----\n');
-[fbif,fold_ind2,fold_branch_refined,foldtestfuncs]=FoldCodimension2(funcs,fold_branch);
+[fold_branch_wbifs,foldtestfuncs]=LocateSpecialPoints(funcs,fold_branch0);
+nunst_fold=GetStability(fold_branch_wbifs,'exclude_trivial',true);
 %% Insert fold in figure 3
-beta_fold=getpar(fold_branch_refined,indbeta);
-delta_fold=getpar(fold_branch_refined,inddelta);
+beta_fold=getpar(fold_branch_wbifs,indbeta);
+delta_fold=getpar(fold_branch_wbifs,inddelta);
 omega_fold=0*beta_fold;
-beta_bt2=fbif{1}.parameter(indbeta);
-delta_bt2=fbif{1}.parameter(inddelta);
+beta_bt2=bgetpar(fold_branch_wbifs,indbeta,'BT');
+delta_bt2=bgetpar(fold_branch_wbifs,inddelta,'BT');
 hold(ax3l,'on');
 pf=plot3(ax3l,beta_fold,delta_fold,omega_fold,'k-',...
     beta_bt2,delta_bt2,0,'ks','linewidth',2);
@@ -224,7 +213,7 @@ title('test functions along fold curve (zero-Hopf invisible)')
 % We know that the orbit must be unstable close to the Hopf bifurcation
 % from the Takens-Bogdanov normal form and the Lyapunov coefficients of the
 % Hopf bifurcation.
-psol_branch=SetupPsol(funcs,hopf_branch_refined,2,...
+psol_branch=SetupPsol(funcs,hopf_branch_wbifs,2,...
     'contpar',inddelta,'degree',3,'intervals',50,parameter_bd{1:4},'max_step',[0,inf]);
 [xm,ym]=df_measr(0,psol_branch);
 ym.field='period';
@@ -258,8 +247,8 @@ hcli4=hcli3;
 hcli4.parameter(indbeta)=hcli4.parameter(indbeta)-1e-4;
 [hcli5,suc]=p_correc(funcs,hcli4,inddelta,[],mhcli.point);
 hcli_br.point(2)=hcli5;
-hcli_br.parameter.max_bound=fold_branch.parameter.max_bound;
-hcli_br.parameter.min_bound=fold_branch.parameter.min_bound;
+hcli_br.parameter.max_bound=fold_branch_wbifs.parameter.max_bound;
+hcli_br.parameter.min_bound=fold_branch_wbifs.parameter.min_bound;
 hcli_br.parameter.max_step=[indbeta,5e-3;inddelta,5e-3];
 hcli_br.method.point.print_residual_info=1;
 figure(2);

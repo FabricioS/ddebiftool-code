@@ -4,8 +4,8 @@ function [nf,nflow,br_ref,indbif]=TakensBogdanovNormalform(funcs,branch,inds,var
 %% Input
 %
 % * funcs: problem functions
-% * branch: fold or Hopf branch along which zero-Hopf point was encountered
-% * inds: array of two successive indices bracing zero-Hopf point
+% * branch: fold or Hopf branch along which BT point was encountered
+% * inds: array of two successive indices bracing BT point
 %
 %% Output
 %
