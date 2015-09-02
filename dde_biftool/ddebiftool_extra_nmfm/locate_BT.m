@@ -37,6 +37,7 @@ if ~success
     bt_point=[];
     return
 end
+corrected_point=nmfm_trim_point(corrected_point,branch.point(ind(1)));
 bt_point=p_tobt(funcs,extract_from_BT(corrected_point,'solution'));
 bt_point.q0=getfield(extract_from_BT(corrected_point,'q0'),'x');
 bt_point.q1=getfield(extract_from_BT(corrected_point,'q1'),'x');

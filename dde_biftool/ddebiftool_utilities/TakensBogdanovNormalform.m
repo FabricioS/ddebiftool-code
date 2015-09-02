@@ -52,6 +52,7 @@ br_ref=branch;
 if isfield(br_ref.point(1),'stability')
     btcodim1.stability=p_stabil(funcs,btcodim1,branch.method.stability);
 end
+btcodim1=nmfm_trim_point(btcodim1,br_ref.point(1));
 br_ref.point=[br_ref.point(1:inds(1)),btcodim1,br_ref.point(inds(2):end)];
 indbif=inds(2);
 nmfm_compute=@(f,pt)nmfm_bt(f,pt);

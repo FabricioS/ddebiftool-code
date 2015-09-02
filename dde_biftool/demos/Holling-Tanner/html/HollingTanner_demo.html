@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Holling-Tanner model - Demo for Takens-Bogdanov point normal form</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-08-31"><meta name="DC.source" content="HollingTanner_demo.m"><style type="text/css">
+      --><title>Holling-Tanner model - Demo for Takens-Bogdanov point normal form</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-09-02"><meta name="DC.source" content="HollingTanner_demo.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,8 +66,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Holling-Tanner model - Demo for Takens-Bogdanov point normal form</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Differential equations for predator-prey model</a></li><li><a href="#3">Right-hand side</a></li><li><a href="#4">Sequence of parameters</a></li><li><a href="#5">Continuation of steady state branch</a></li><li><a href="#6">Plot bifurcation diagram</a></li><li><a href="#7">Computation of first Hopf point(s)</a></li><li><a href="#8">Include first Hopf point into single-parameter bifurcation diagram</a></li><li><a href="#9">Continuation of Hopf bifurcation in two parameters</a></li><li><a href="#10">Detect special points along Hopf curve</a></li><li><a href="#11">Singularity of defining system for Hopf bifurcation</a></li><li><a href="#12">Plot Hopf bifurcation in two-parameter plane, including Takens-Bogdanov point</a></li><li><a href="#13">Test functions for codimension-2 bifurcations along Hopf curve</a></li><li><a href="#14">Fold bifurcation</a></li><li><a href="#15">Include first fold point into single-parameter bifurcation diagram</a></li><li><a href="#16">Continue fold branch</a></li><li><a href="#17">Detect special points along fold curve</a></li><li><a href="#18">Insert fold in figure 3</a></li><li><a href="#19">Test functions for codimension-2 bifurcations along fold curve</a></li><li><a href="#20">Branch off to periodic orbit at soem Hopf point, continue to large period</a></li><li><a href="#21">Convert point close to end of the psol_branch to homoclinic orbit</a></li><li><a href="#22">Continue branch of homoclinic orbits in two parameters</a></li><li><a href="#23">Add homoclinic orbit to two-parameter bifurcation diagram</a></li></ul></div><h2>Differential equations for predator-prey model<a name="1"></a></h2><p>From: Liu, X., Liu, Y., and Wang, J. (2013). Bogdanov-Takens bifurcation of a delayed ratio-dependent Holling-Tanner predator prey system. In Abstract and Applied Analysis, volume 2013</p><p><img src="HollingTanner_demo_eq05779721882896134641.png" alt="$$x'=(x+m)(1-x-m)-\frac{xy}{ay+x}$$"></p><p><img src="HollingTanner_demo_eq10521076500307990289.png" alt="$$y'=\delta y\left(\beta-\frac{y(t-\tau)}{x(t-\tau)}\right)$$"></p><p>
-$Id$
+  </style></head><body><div class="content"><h1>Holling-Tanner model - Demo for Takens-Bogdanov point normal form</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Differential equations for predator-prey model</a></li><li><a href="#3">Right-hand side</a></li><li><a href="#4">Sequence of parameters</a></li><li><a href="#5">Continuation of steady state branch</a></li><li><a href="#6">Plot bifurcation diagram</a></li><li><a href="#7">Continuation of Hopf bifurcation in two parameters</a></li><li><a href="#8">Detect special points along Hopf curve</a></li><li><a href="#9">Singularity of defining system for Hopf bifurcation</a></li><li><a href="#10">Plot Hopf bifurcation in two-parameter plane, including Takens-Bogdanov point</a></li><li><a href="#11">Test functions for codimension-2 bifurcations along Hopf curve</a></li><li><a href="#12">Fold bifurcation</a></li><li><a href="#13">Detect special points along fold curve</a></li><li><a href="#14">Insert fold in figure 3</a></li><li><a href="#15">Test functions for codimension-2 bifurcations along fold curve</a></li><li><a href="#16">Branch off to periodic orbit at some Hopf point, continue to large period</a></li><li><a href="#17">Convert point close to end of the psol_branch to homoclinic orbit</a></li><li><a href="#18">Continue branch of homoclinic orbits in two parameters</a></li><li><a href="#19">Add homoclinic orbit to two-parameter bifurcation diagram</a></li></ul></div><h2>Differential equations for predator-prey model<a name="1"></a></h2><p>From: Liu, X., Liu, Y., and Wang, J. (2013). Bogdanov-Takens bifurcation of a delayed ratio-dependent Holling-Tanner predator prey system. In Abstract and Applied Analysis, volume 2013</p><p><img src="HollingTanner_demo_eq05779721882896134641.png" alt="$$x'=(x+m)(1-x-m)-\frac{xy}{ay+x}$$"></p><p><img src="HollingTanner_demo_eq10521076500307990289.png" alt="$$y'=\delta y\left(\beta-\frac{y(t-\tau)}{x(t-\tau)}\right)$$"></p><p>
+$Id: HollingTanner_demo.m 112 2015-09-02 00:31:41Z jansieber $
 </p><pre class="codeinput">clear;                           <span class="comment">% clear variables</span>
 close <span class="string">all</span>;                       <span class="comment">% close figures</span>
 addpath(<span class="string">'../../ddebiftool'</span>,<span class="keyword">...</span>
@@ -87,8 +87,8 @@ indh=5;
 inddelta=6;
 getpar=@(x,i)arrayfun(@(p)p.parameter(i),x.point);
 getx=@(x,i)arrayfun(@(p)p.x(i),x.point);
-getamp=@(x,i)[arrayfun(@(p)max(p.profile(i,:)),x.point);<span class="keyword">...</span>
-    arrayfun(@(p)min(p.profile(i,:)),x.point)];
+bgetpar=@(x,i,bif)arrayfun(@(p)p.parameter(i),x.point(br_getflags(x,bif)));
+bgetx=@(x,i,bif)arrayfun(@(p)p.x(i),x.point(br_getflags(x,bif)));
 </pre><h2>Continuation of steady state branch<a name="5"></a></h2><pre class="codeinput">fprintf(<span class="string">'----- Steady-state branch -----\n'</span>);
 beta=0.5;
 a=0.5;
@@ -105,53 +105,60 @@ xster=-(1/2)*((beta/(a*beta+1)+2*m-1)+sqrt((1-2*m-beta/(a*beta+1))^2+4*(m*(1-m)-
 yster=beta*xster;
 
 contpar=indbeta;
-stst_branch = SetupStst(funcs,<span class="string">'x'</span>,[xster; yster],<span class="string">'parameter'</span>,stst.parameter,<span class="keyword">...</span>
+stst_branch0 = SetupStst(funcs,<span class="string">'x'</span>,[xster; yster],<span class="string">'parameter'</span>,stst.parameter,<span class="keyword">...</span>
     <span class="string">'contpar'</span>,contpar,<span class="string">'max_step'</span>,[0,0.005],<span class="string">'min_bound'</span>,<span class="keyword">...</span>
     [contpar 0.4],<span class="string">'max_bound'</span>,[contpar 0.6],<span class="keyword">...</span>
     <span class="string">'newheuristics_tests'</span>,0);
 figure(1);clf
 ax1=gca;
 title(ax1,sprintf(<span class="string">'steady states for delta=%g'</span>,stst.parameter(inddelta)));
-[stst_branch] = br_contn(funcs,stst_branch,100);
-[nunst_stst,dum,dum,stst_branch.point]=GetStability(stst_branch,<span class="string">'funcs'</span>,funcs); <span class="comment">%#ok&lt;ASGLU&gt;</span>
+[stst_branch0] = br_contn(funcs,stst_branch0,100);
+[stst_branch_wbifs,stst_testfuncs]=LocateSpecialPoints(funcs,stst_branch0);
+nunst_stst=GetStability(stst_branch_wbifs);
 </pre><pre class="codeoutput">----- Steady-state branch -----
 BR_CONTN warning: boundary hit.
-</pre><img vspace="5" hspace="5" src="HollingTanner_demo_01.png" alt=""> <h2>Plot bifurcation diagram<a name="6"></a></h2><pre class="codeinput">beta_stst=getpar(stst_branch,indbeta);
-x1_stst=getx(stst_branch,1);
+StstCodimension1: calculate stability if not yet present
+StstCodimension1: (provisional) 1 fold 1 Hopf  detected.
+br_insert: detected 1 of 2: fold. Normalform:
+    b: -4.8868
+br_insert: detected 2 of 2: hopf. Normalform:
+    L1: 192.73
+</pre><img vspace="5" hspace="5" src="HollingTanner_demo_01.png" alt=""> <h2>Plot bifurcation diagram<a name="6"></a></h2><pre class="codeinput">beta_stst=getpar(stst_branch_wbifs,indbeta);
+x1_stst=getx(stst_branch_wbifs,1);
 cla(ax1);
 plot(ax1,beta_stst(nunst_stst==0),x1_stst(nunst_stst==0),<span class="string">'g.'</span>,<span class="keyword">...</span>
     beta_stst(nunst_stst==1),x1_stst(nunst_stst==1),<span class="string">'r.'</span>,<span class="keyword">...</span>
-    beta_stst(nunst_stst==2),x1_stst(nunst_stst==2),<span class="string">'b.'</span>,<span class="string">'linewidth'</span>,2);
-stst_lgtext={<span class="string">'unstable=0'</span>,<span class="string">'unstable=1'</span>,<span class="string">'unstable=2'</span>};
+    beta_stst(nunst_stst==2),x1_stst(nunst_stst==2),<span class="string">'b.'</span>,<span class="keyword">...</span>
+    bgetpar(stst_branch_wbifs,indbeta,<span class="string">'hopf'</span>),bgetx(stst_branch_wbifs,1,<span class="string">'hopf'</span>),<span class="string">'ks'</span>,<span class="keyword">...</span>
+    bgetpar(stst_branch_wbifs,indbeta,<span class="string">'fold'</span>),bgetx(stst_branch_wbifs,1,<span class="string">'fold'</span>),<span class="string">'mo'</span>);
+stst_lgtext={<span class="string">'unstable=0'</span>,<span class="string">'unstable=1'</span>,<span class="string">'unstable=2'</span>,<span class="string">'hopf'</span>,<span class="string">'fold'</span>};
 legend(ax1,stst_lgtext,<span class="string">'location'</span>,<span class="string">'west'</span>);
 xlabel(ax1,<span class="string">'\beta'</span>);
 ylabel(ax1,<span class="string">'x_1'</span>);
 title(ax1,sprintf(<span class="string">'steady states for delta=%g'</span>,stst.parameter(inddelta)));
-</pre><img vspace="5" hspace="5" src="HollingTanner_demo_02.png" alt=""> <h2>Computation of first Hopf point(s)<a name="7"></a></h2><p>and initialization of pbranch</p><pre class="codeinput">fprintf(<span class="string">'----- Hopf branch -----\n'</span>);
-indhopf=find(abs(diff(nunst_stst))==2,1,<span class="string">'first'</span>);
-hopf_branch = SetupHopf(funcs, stst_branch, indhopf, <span class="string">'contpar'</span>, [inddelta,indbeta],<span class="keyword">...</span>
+</pre><img vspace="5" hspace="5" src="HollingTanner_demo_02.png" alt=""> <h2>Continuation of Hopf bifurcation in two parameters<a name="7"></a></h2><p>after initialization of hopfbranch</p><pre class="codeinput">fprintf(<span class="string">'----- Hopf branch -----\n'</span>);
+[hopf_branch0,suc] = SetupHopf(funcs, stst_branch_wbifs, br_getflags(stst_branch_wbifs,<span class="string">'hopf'</span>),<span class="keyword">...</span>
+    <span class="string">'contpar'</span>, [inddelta,indbeta],<span class="keyword">...</span>
     <span class="string">'dir'</span>, indbeta, <span class="string">'step'</span>, 0.002,parameter_bd{:});
-</pre><pre class="codeoutput">----- Hopf branch -----
-</pre><h2>Include first Hopf point into single-parameter bifurcation diagram<a name="8"></a></h2><pre class="codeinput">hold(ax1,<span class="string">'on'</span>);
-plot(ax1,hopf_branch.point(1).parameter(indbeta),hopf_branch.point(1).x(1),<span class="keyword">...</span>
-    <span class="string">'bo'</span>,<span class="string">'markerfacecolor'</span>,<span class="string">'b'</span>);
-stst_lgtext_h=[stst_lgtext,{<span class="string">'Hopf'</span>}];
-legend(ax1,stst_lgtext_h,<span class="string">'location'</span>,<span class="string">'west'</span>);
-</pre><img vspace="5" hspace="5" src="HollingTanner_demo_03.png" alt=""> <h2>Continuation of Hopf bifurcation in two parameters<a name="9"></a></h2><pre class="codeinput">figure(2);clf
+disp([<span class="string">'suc='</span>,num2str(suc)]);
+figure(2);clf
 ax2=gca;
 title(ax2,<span class="string">'Hopf in beta-delta plane'</span>);
-hopf_branch=br_contn(funcs,hopf_branch,300);
-[nunst_hopf,dom,triv,hopf_branch.point]=GetStability(hopf_branch,<span class="string">'funcs'</span>,funcs,<span class="keyword">...</span>
-    <span class="string">'exclude_trivial'</span>,true); <span class="comment">%#ok&lt;ASGLU&gt;</span>
-</pre><pre class="codeoutput">BR_CONTN warning: boundary hit.
-</pre><img vspace="5" hspace="5" src="HollingTanner_demo_04.png" alt=""> <h2>Detect special points along Hopf curve<a name="10"></a></h2><pre class="codeinput">fprintf(<span class="string">'----- Codimension-two detection along Hopf branch -----\n'</span>);
-[hbif,hopf_ind2,hopf_branch_refined,hopftestfuncs]=HopfCodimension2(funcs,hopf_branch);
+hopf_branch0=br_contn(funcs,hopf_branch0,300);
+</pre><pre class="codeoutput">----- Hopf branch -----
+suc=1
+BR_CONTN warning: boundary hit.
+</pre><img vspace="5" hspace="5" src="HollingTanner_demo_03.png" alt=""> <h2>Detect special points along Hopf curve<a name="8"></a></h2><pre class="codeinput">fprintf(<span class="string">'----- Codimension-two detection along Hopf branch -----\n'</span>);
+[hopf_branch_wbifs,hopftestfuncs]=LocateSpecialPoints(funcs,hopf_branch0);
+nunst_hopf=GetStability(hopf_branch_wbifs,<span class="string">'exclude_trivial'</span>,true);
 </pre><pre class="codeoutput">----- Codimension-two detection along Hopf branch -----
+HopfCodimension2: calculate stability if not yet present
+HopfCodimension2: calculate L1 coefficients
 HopfCodimension2: (provisional) 1 Takens-Bogdanov  detected.
 br_insert: detected 1 of 1: BT. Normalform:
     a2: -0.38162
     b2: -1.6895
-</pre><h2>Singularity of defining system for Hopf bifurcation<a name="11"></a></h2><p>Let us demonstrate that the defining system for the Hopf bifurcation is singular in the Takens-Bogdanov bifurcation. The 8x9 matrix <tt>J0</tt> below is its Jacobian (without the pseudo-arclength condition). Its singular-value decomposition shows one zero (up to round-off). <tt>hbt</tt> is the point along the Hopf branch closest to the BT point.</p><p>The characteristic matrix has a double root at lambda=0 in BT.</p><pre class="codeinput">hbt=hopf_branch_refined.point(hopf_ind2(1));
+</pre><h2>Singularity of defining system for Hopf bifurcation<a name="9"></a></h2><p>Let us demonstrate that the defining system for the Hopf bifurcation is singular in the Takens-Bogdanov bifurcation. The 8x9 matrix <tt>J0</tt> below is its Jacobian (without the pseudo-arclength condition). Its singular-value decomposition shows one zero (up to round-off). <tt>hbt</tt> is the point along the Hopf branch closest to the BT point.</p><p>The characteristic matrix has a double root at lambda=0 in BT.</p><pre class="codeinput">hbt=hopf_branch_wbifs.point(br_getflags(hopf_branch_wbifs,<span class="string">'BT'</span>));
 J0=hopf_jac(funcs,hbt.x,hbt.omega,hbt.v,hbt.parameter,[inddelta,indbeta],hbt.v.');
 disp(<span class="string">'J0='</span>);
 disp(J0);
@@ -167,28 +174,28 @@ ylabel(<span class="string">'\Delta(\lambda)'</span>);
   Columns 1 through 6
          0.32        -0.64            0            0            0            0
          0.16        -0.32            0            0            0            0
-       1.7889  -1.1102e-16        -0.32         0.64            0            0
-            0            0        -0.16         0.32            0            0
+       1.7889  -2.2204e-16        -0.32         0.64            0            0
+  -2.2204e-16   4.4409e-16        -0.16         0.32            0            0
             0            0            0            0        -0.32         0.64
             0            0            0            0        -0.16         0.32
             0            0      0.89443      0.44721            0            0
             0            0            0            0      0.89443      0.44721
   Columns 7 through 9
             0            0            0
-            0  -7.7716e-18       0.0896
+            0   7.7716e-18       0.0896
             0            0            0
-            0   2.4825e-17     -0.28622
+            0   3.0686e-17     -0.28622
       0.89443            0            0
       0.44721            0            0
             0            0            0
             0            0            0
-Size of J0: (8 x 9), min(svd(J0))=1.82431e-16
-</pre><img vspace="5" hspace="5" src="HollingTanner_demo_05.png" alt=""> <h2>Plot Hopf bifurcation in two-parameter plane, including Takens-Bogdanov point<a name="12"></a></h2><p>and in <img src="HollingTanner_demo_eq13904141598593468124.png" alt="$\beta-\delta-\omega$"> space.</p><pre class="codeinput">beta_hopf=getpar(hopf_branch_refined,indbeta);
-delta_hopf=getpar(hopf_branch_refined,inddelta);
-omega_hopf=[hopf_branch_refined.point.omega];
-beta_bt=hbif{1}.parameter(indbeta);
-delta_bt=hbif{1}.parameter(inddelta);
-omega_bt=hopf_branch_refined.point(hopf_ind2).omega;
+Size of J0: (8 x 9), min(svd(J0))=1.34042e-16
+</pre><img vspace="5" hspace="5" src="HollingTanner_demo_04.png" alt=""> <h2>Plot Hopf bifurcation in two-parameter plane, including Takens-Bogdanov point<a name="10"></a></h2><p>and in <img src="HollingTanner_demo_eq13904141598593468124.png" alt="$\beta-\delta-\omega$"> space.</p><pre class="codeinput">beta_hopf=getpar(hopf_branch_wbifs,indbeta);
+delta_hopf=getpar(hopf_branch_wbifs,inddelta);
+omega_hopf=[hopf_branch_wbifs.point.omega];
+beta_bt=hbt.parameter(indbeta);
+delta_bt=hbt.parameter(inddelta);
+omega_bt=hbt.omega;
 figure(3);clf;
 subplot(1,2,1);
 ax3l=gca;
@@ -207,7 +214,7 @@ ph=plot(ax3r,beta_hopf,delta_hopf,<span class="string">'b-'</span>,<span class="
 grid <span class="string">on</span>
 xlabel(ax3r,<span class="string">'\beta'</span>);
 ylabel(ax3r,<span class="string">'\delta'</span>);
-</pre><img vspace="5" hspace="5" src="HollingTanner_demo_06.png" alt=""> <h2>Test functions for codimension-2 bifurcations along Hopf curve<a name="13"></a></h2><p>The test functions for 4 codimension-2 bifurcations are in output <tt>hopftestfuncs</tt> of the utility function HopfCodimension2:</p><div><ul><li>L1 for generalized hopf (genh),</li><li>sign(omega) for Takens-Bogdanov (bt)</li><li><img src="HollingTanner_demo_eq05463846653623296377.png" alt="$\det(\Delta(0))$"> for zero-Hopf interaction (zeho, touches zero for BT)</li><li><img src="HollingTanner_demo_eq07890953304054666594.png" alt="$\Re\lambda$"> for complex eigenvalue closest to imaginary axis for Hopf-Hopf interaction (hoho).</li></ul></div><pre class="codeinput">figure(5);clf
+</pre><img vspace="5" hspace="5" src="HollingTanner_demo_05.png" alt=""> <h2>Test functions for codimension-2 bifurcations along Hopf curve<a name="11"></a></h2><p>The test functions for 4 codimension-2 bifurcations are in output <tt>hopftestfuncs</tt> of the utility function HopfCodimension2:</p><div><ul><li>L1 for generalized hopf (genh),</li><li>sign(omega) for Takens-Bogdanov (bt)</li><li><img src="HollingTanner_demo_eq05463846653623296377.png" alt="$\det(\Delta(0))$"> for zero-Hopf interaction (zeho, touches zero for BT)</li><li><img src="HollingTanner_demo_eq07890953304054666594.png" alt="$\Re\lambda$"> for complex eigenvalue closest to imaginary axis for Hopf-Hopf interaction (hoho).</li></ul></div><pre class="codeinput">figure(5);clf
 plot(delta_hopf,[tanh(hopftestfuncs.genh(1,:));<span class="keyword">...</span>
     hopftestfuncs.bt;<span class="keyword">...</span>
     hopftestfuncs.zeho;<span class="keyword">...</span>
@@ -218,37 +225,34 @@ set(gca,<span class="string">'ylim'</span>,[-0.5,1.5]);
 xlabel(<span class="string">'\delta'</span>);
 ylabel(<span class="string">'\phi^h'</span>);
 title(<span class="string">'test functions along Hopf curve (Hopf-Hopf invisible)'</span>)
-</pre><img vspace="5" hspace="5" src="HollingTanner_demo_07.png" alt=""> <h2>Fold bifurcation<a name="14"></a></h2><p>We do a standard continuation, using the starting index obtained from the flagged point indices.</p><pre class="codeinput">fprintf(<span class="string">'----- fold branch -----\n'</span>);
-foldind = find(diff(nunst_stst)==1,1,<span class="string">'first'</span>);
-[fold_branch, suc] = SetupFold(funcs, stst_branch, foldind, <span class="keyword">...</span>
+</pre><img vspace="5" hspace="5" src="HollingTanner_demo_06.png" alt=""> <h2>Fold bifurcation<a name="12"></a></h2><p>We do a standard continuation, using the starting index obtained from the flagged point indices.</p><pre class="codeinput">fprintf(<span class="string">'----- fold branch -----\n'</span>);
+[fold_branch0,suc]=SetupFold(funcs,stst_branch_wbifs,br_getflags(stst_branch_wbifs,<span class="string">'fold'</span>),<span class="keyword">...</span>
     <span class="string">'contpar'</span>, [inddelta,indbeta], <span class="string">'dir'</span>, inddelta, <span class="string">'step'</span>, 0.005, parameter_bd{:});
-disp(suc);
-</pre><pre class="codeoutput">----- fold branch -----
-     1
-</pre><h2>Include first fold point into single-parameter bifurcation diagram<a name="15"></a></h2><pre class="codeinput">plot(ax1,fold_branch.point(1).parameter(indbeta),fold_branch.point(1).x(1),<span class="keyword">...</span>
-    <span class="string">'ks'</span>,<span class="string">'markerfacecolor'</span>,<span class="string">'k'</span>);
-stst_lgtext_f=[stst_lgtext_h,{<span class="string">'fold'</span>}];
-legend(ax1,stst_lgtext_f,<span class="string">'location'</span>,<span class="string">'west'</span>);
-</pre><img vspace="5" hspace="5" src="HollingTanner_demo_08.png" alt=""> <h2>Continue fold branch<a name="16"></a></h2><pre class="codeinput">figure(2);
+disp([<span class="string">'suc='</span>,num2str(suc)]);
+figure(2);
 title(ax2,<span class="string">'Fold in beta-delta plane'</span>);
-fold_branch=br_contn(funcs,fold_branch,300);
-fold_branch = br_rvers(fold_branch);
-fold_branch=br_contn(funcs,fold_branch,300);
-[nunst_fold,dom,triv,fold_branch.point]=GetStability(fold_branch,<span class="string">'funcs'</span>,funcs,<span class="string">'exclude_trivial'</span>,true);
-</pre><pre class="codeoutput">BR_CONTN warning: boundary hit.
+fold_branch0=br_contn(funcs,fold_branch0,300);
+fold_branch0 = br_rvers(fold_branch0);
+fold_branch0=br_contn(funcs,fold_branch0,300);
+</pre><pre class="codeoutput">----- fold branch -----
+suc=1
 BR_CONTN warning: boundary hit.
-</pre><img vspace="5" hspace="5" src="HollingTanner_demo_09.png" alt=""> <h2>Detect special points along fold curve<a name="17"></a></h2><pre class="codeinput">fprintf(<span class="string">'----- Codimension-two detection along fold branch -----\n'</span>);
-[fbif,fold_ind2,fold_branch_refined,foldtestfuncs]=FoldCodimension2(funcs,fold_branch);
+BR_CONTN warning: boundary hit.
+</pre><img vspace="5" hspace="5" src="HollingTanner_demo_07.png" alt=""> <h2>Detect special points along fold curve<a name="13"></a></h2><pre class="codeinput">fprintf(<span class="string">'----- Codimension-two detection along fold branch -----\n'</span>);
+[fold_branch_wbifs,foldtestfuncs]=LocateSpecialPoints(funcs,fold_branch0);
+nunst_fold=GetStability(fold_branch_wbifs,<span class="string">'exclude_trivial'</span>,true);
 </pre><pre class="codeoutput">----- Codimension-two detection along fold branch -----
+FoldCodimension2: calculate stability if not yet present
+FoldCodimension2: calculate fold normal form coefficients
 FoldCodimension2: (provisional) 1 Takens-Bogdanov  detected.
 br_insert: detected 1 of 1: BT. Normalform:
     a2: 0.38162
     b2: 1.6895
-</pre><h2>Insert fold in figure 3<a name="18"></a></h2><pre class="codeinput">beta_fold=getpar(fold_branch_refined,indbeta);
-delta_fold=getpar(fold_branch_refined,inddelta);
+</pre><h2>Insert fold in figure 3<a name="14"></a></h2><pre class="codeinput">beta_fold=getpar(fold_branch_wbifs,indbeta);
+delta_fold=getpar(fold_branch_wbifs,inddelta);
 omega_fold=0*beta_fold;
-beta_bt2=fbif{1}.parameter(indbeta);
-delta_bt2=fbif{1}.parameter(inddelta);
+beta_bt2=bgetpar(fold_branch_wbifs,indbeta,<span class="string">'BT'</span>);
+delta_bt2=bgetpar(fold_branch_wbifs,inddelta,<span class="string">'BT'</span>);
 hold(ax3l,<span class="string">'on'</span>);
 pf=plot3(ax3l,beta_fold,delta_fold,omega_fold,<span class="string">'k-'</span>,<span class="keyword">...</span>
     beta_bt2,delta_bt2,0,<span class="string">'ks'</span>,<span class="string">'linewidth'</span>,2);
@@ -257,7 +261,7 @@ legend(ax3l,[b2_lgtext_h,b2_lgtext_f],<span class="string">'location'</span>,<sp
 hold(ax3r,<span class="string">'on'</span>);
 plot(ax3r,beta_fold,delta_fold,<span class="string">'k-'</span>,<span class="keyword">...</span>
     beta_bt2,delta_bt2,<span class="string">'ks'</span>,<span class="string">'linewidth'</span>,2);
-</pre><img vspace="5" hspace="5" src="HollingTanner_demo_10.png" alt=""> <h2>Test functions for codimension-2 bifurcations along fold curve<a name="19"></a></h2><p>The test functions for 4 codimension-2 bifurcations are in output <tt>foldtestfuncs</tt> of the utility function FoldCodimension2:</p><div><ul><li>a for cusp (genh),</li><li><img src="HollingTanner_demo_eq12848174940352215749.png" alt="$[\det(\Delta(\lambda))]'$"> in <img src="HollingTanner_demo_eq08424578540047414880.png" alt="$\lambda=0$"> for Takens-Bogdanov (bt)</li><li><img src="HollingTanner_demo_eq07890953304054666594.png" alt="$\Re\lambda$"> for complex eigenvalue closest to imaginary axis for zero-Hopf interaction (zeho).</li></ul></div><pre class="codeinput">figure(5);clf
+</pre><img vspace="5" hspace="5" src="HollingTanner_demo_08.png" alt=""> <h2>Test functions for codimension-2 bifurcations along fold curve<a name="15"></a></h2><p>The test functions for 4 codimension-2 bifurcations are in output <tt>foldtestfuncs</tt> of the utility function FoldCodimension2:</p><div><ul><li>a for cusp (genh),</li><li><img src="HollingTanner_demo_eq12848174940352215749.png" alt="$[\det(\Delta(\lambda))]'$"> in <img src="HollingTanner_demo_eq08424578540047414880.png" alt="$\lambda=0$"> for Takens-Bogdanov (bt)</li><li><img src="HollingTanner_demo_eq07890953304054666594.png" alt="$\Re\lambda$"> for complex eigenvalue closest to imaginary axis for zero-Hopf interaction (zeho).</li></ul></div><pre class="codeinput">figure(5);clf
 plot(delta_fold,[real(foldtestfuncs.cusp(1,:))/100;foldtestfuncs.bt;foldtestfuncs.zeho],<span class="string">'.'</span>);
 grid <span class="string">on</span>
 legend({<span class="string">'cusp/100'</span>,<span class="string">'BT'</span>,<span class="string">'zero-Hopf'</span>},<span class="string">'location'</span>,<span class="string">'northwest'</span>);
@@ -265,7 +269,7 @@ set(gca,<span class="string">'ylim'</span>,[-1,1]);
 xlabel(<span class="string">'\delta'</span>);
 ylabel(<span class="string">'\phi^f'</span>);
 title(<span class="string">'test functions along fold curve (zero-Hopf invisible)'</span>)
-</pre><img vspace="5" hspace="5" src="HollingTanner_demo_11.png" alt=""> <h2>Branch off to periodic orbit at soem Hopf point, continue to large period<a name="20"></a></h2><p>We know that the orbit must be unstable close to the Hopf bifurcation from the Takens-Bogdanov normal form and the Lyapunov coefficients of the Hopf bifurcation.</p><pre class="codeinput">psol_branch=SetupPsol(funcs,hopf_branch_refined,2,<span class="keyword">...</span>
+</pre><img vspace="5" hspace="5" src="HollingTanner_demo_09.png" alt=""> <h2>Branch off to periodic orbit at some Hopf point, continue to large period<a name="16"></a></h2><p>We know that the orbit must be unstable close to the Hopf bifurcation from the Takens-Bogdanov normal form and the Lyapunov coefficients of the Hopf bifurcation.</p><pre class="codeinput">psol_branch=SetupPsol(funcs,hopf_branch_wbifs,2,<span class="keyword">...</span>
     <span class="string">'contpar'</span>,inddelta,<span class="string">'degree'</span>,3,<span class="string">'intervals'</span>,50,parameter_bd{1:4},<span class="string">'max_step'</span>,[0,inf]);
 [xm,ym]=df_measr(0,psol_branch);
 ym.field=<span class="string">'period'</span>;
@@ -278,7 +282,7 @@ ax4=gca;
 psol_branch=br_contn(funcs,psol_branch,25);
 xlabel(ax4,<span class="string">'$\delta$'</span>,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>);
 ylabel(ax4,<span class="string">'period'</span>);
-</pre><img vspace="5" hspace="5" src="HollingTanner_demo_12.png" alt=""> <h2>Convert point close to end of the psol_branch to homoclinic orbit<a name="21"></a></h2><p>and correct homoclinic orbit.Then refine and repeat correction.</p><pre class="codeinput">hcli=p_tohcli(funcs,psol_branch.point(end-5));
+</pre><img vspace="5" hspace="5" src="HollingTanner_demo_10.png" alt=""> <h2>Convert point close to end of the psol_branch to homoclinic orbit<a name="17"></a></h2><p>and correct homoclinic orbit.Then refine and repeat correction.</p><pre class="codeinput">hcli=p_tohcli(funcs,psol_branch.point(end-5));
 figure(5);clf;
 p_pplot(hcli);
 xlabel(<span class="string">'time/period'</span>);ylabel(<span class="string">'x1,x2'</span>);
@@ -289,55 +293,55 @@ disp(suc);
 hcli2=p_remesh(hcli,3,50); <span class="comment">% remesh it and</span>
 [hcli3,suc]=p_correc(funcs,hcli2,indbeta,[],mhcli.point); <span class="comment">% correct it again</span>
 disp(suc);
-</pre><pre class="codeoutput">it=1, res=0.000218232
-it=2, res=0.00436162
-it=3, res=0.000644127
-it=4, res=1.38396e-06
-it=5, res=4.35429e-13
+</pre><pre class="codeoutput">it=1, res=0.000227863
+it=2, res=0.00460835
+it=3, res=0.000758578
+it=4, res=2.03587e-06
+it=5, res=9.95759e-13
      1
-it=1, res=5.46536e-05
-it=2, res=4.63673e-09
+it=1, res=6.26046e-05
+it=2, res=3.05316e-09
      1
-</pre><img vspace="5" hspace="5" src="HollingTanner_demo_13.png" alt=""> <h2>Continue branch of homoclinic orbits in two parameters<a name="22"></a></h2><p>Branches have to be created manually as described in hom_demo.</p><pre class="codeinput">hcli_br=df_brnch(funcs,[inddelta, indbeta],<span class="string">'hcli'</span>);
+</pre><img vspace="5" hspace="5" src="HollingTanner_demo_11.png" alt=""> <h2>Continue branch of homoclinic orbits in two parameters<a name="18"></a></h2><p>Branches have to be created manually as described in hom_demo.</p><pre class="codeinput">hcli_br=df_brnch(funcs,[inddelta, indbeta],<span class="string">'hcli'</span>);
 hcli_br.point=hcli3;
 hcli4=hcli3;
 hcli4.parameter(indbeta)=hcli4.parameter(indbeta)-1e-4;
 [hcli5,suc]=p_correc(funcs,hcli4,inddelta,[],mhcli.point);
 hcli_br.point(2)=hcli5;
-hcli_br.parameter.max_bound=fold_branch.parameter.max_bound;
-hcli_br.parameter.min_bound=fold_branch.parameter.min_bound;
+hcli_br.parameter.max_bound=fold_branch_wbifs.parameter.max_bound;
+hcli_br.parameter.min_bound=fold_branch_wbifs.parameter.min_bound;
 hcli_br.parameter.max_step=[indbeta,5e-3;inddelta,5e-3];
 hcli_br.method.point.print_residual_info=1;
 figure(2);
 hcli_br=br_contn(funcs,hcli_br,28);
 hcli_br=br_rvers(hcli_br);
 hcli_br=br_contn(funcs,hcli_br,40);
-</pre><pre class="codeoutput">it=1, res=0.0014028
-it=2, res=0.00011913
-it=3, res=3.65102e-06
-it=4, res=2.48553e-10
-it=1, res=0.000365965
-it=2, res=8.65102e-07
-it=3, res=1.8587e-10
-it=1, res=0.000544192
-it=2, res=1.2902e-06
-it=3, res=4.04638e-10
-it=1, res=7.43174e-05
-it=2, res=9.05998e-09
-it=1, res=0.000899291
-it=2, res=1.94942e-06
-it=3, res=9.03138e-10
-it=1, res=0.00123024
-it=2, res=2.93872e-06
-it=3, res=1.98206e-09
-it=1, res=0.00187659
-it=2, res=4.50497e-06
-...</pre><img vspace="5" hspace="5" src="HollingTanner_demo_14.png" alt=""> <h2>Add homoclinic orbit to two-parameter bifurcation diagram<a name="23"></a></h2><pre class="codeinput">beta_hcl=getpar(hcli_br,indbeta);
+</pre><pre class="codeoutput">it=1, res=0.00140708
+it=2, res=0.000118721
+it=3, res=4.12108e-06
+it=4, res=3.26331e-10
+it=1, res=0.000367719
+it=2, res=8.65938e-07
+it=3, res=1.86163e-10
+it=1, res=0.000546802
+it=2, res=1.29148e-06
+it=3, res=4.0529e-10
+it=1, res=6.67961e-05
+it=2, res=3.0071e-09
+it=1, res=0.000886882
+it=2, res=1.94404e-06
+it=3, res=8.95831e-10
+it=1, res=0.00123595
+it=2, res=2.94183e-06
+it=3, res=1.98595e-09
+it=1, res=0.00188532
+it=2, res=4.50991e-06
+...</pre><img vspace="5" hspace="5" src="HollingTanner_demo_12.png" alt=""> <h2>Add homoclinic orbit to two-parameter bifurcation diagram<a name="19"></a></h2><pre class="codeinput">beta_hcl=getpar(hcli_br,indbeta);
 delta_hcl=getpar(hcli_br,inddelta);
 phoml=plot3(ax3l,beta_hcl,delta_hcl,0*delta_hcl,<span class="string">'r-'</span>,<span class="string">'linewidth'</span>,2);
 phomr=plot(ax3r,beta_hcl,delta_hcl,<span class="string">'r-'</span>,<span class="string">'linewidth'</span>,2);
 legend(ax3l,[b2_lgtext_h,b2_lgtext_f,{<span class="string">'homolclinic'</span>}],<span class="string">'location'</span>,<span class="string">'northoutside'</span>);
-</pre><img vspace="5" hspace="5" src="HollingTanner_demo_15.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="HollingTanner_demo_13.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Holling-Tanner model - Demo for Takens-Bogdanov point normal form
 %
@@ -354,7 +358,7 @@ legend(ax3l,[b2_lgtext_h,b2_lgtext_f,{<span class="string">'homolclinic'</span>}
 % 
 %
 % <html>
-% $Id$
+% $Id: HollingTanner_demo.m 112 2015-09-02 00:31:41Z jansieber $
 % </html>
 %%
 clear;                           % clear variables
@@ -378,8 +382,8 @@ indh=5;
 inddelta=6;
 getpar=@(x,i)arrayfun(@(p)p.parameter(i),x.point);
 getx=@(x,i)arrayfun(@(p)p.x(i),x.point);
-getamp=@(x,i)[arrayfun(@(p)max(p.profile(i,:)),x.point);...
-    arrayfun(@(p)min(p.profile(i,:)),x.point)];
+bgetpar=@(x,i,bif)arrayfun(@(p)p.parameter(i),x.point(br_getflags(x,bif)));
+bgetx=@(x,i,bif)arrayfun(@(p)p.x(i),x.point(br_getflags(x,bif)));
 %% Continuation of steady state branch
 fprintf('REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- Steady-state branch REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-\n');
 beta=0.5;
@@ -397,49 +401,45 @@ xster=-(1/2)*((beta/(a*beta+1)+2*m-1)+sqrt((1-2*m-beta/(a*beta+1))^2+4*(m*(1-m)-
 yster=beta*xster;
 
 contpar=indbeta;
-stst_branch = SetupStst(funcs,'x',[xster; yster],'parameter',stst.parameter,...
+stst_branch0 = SetupStst(funcs,'x',[xster; yster],'parameter',stst.parameter,...
     'contpar',contpar,'max_step',[0,0.005],'min_bound',...
     [contpar 0.4],'max_bound',[contpar 0.6],...
     'newheuristics_tests',0);
 figure(1);clf
 ax1=gca;
 title(ax1,sprintf('steady states for delta=%g',stst.parameter(inddelta)));
-[stst_branch] = br_contn(funcs,stst_branch,100);
-[nunst_stst,dum,dum,stst_branch.point]=GetStability(stst_branch,'funcs',funcs); %#ok<ASGLU>
+[stst_branch0] = br_contn(funcs,stst_branch0,100);
+[stst_branch_wbifs,stst_testfuncs]=LocateSpecialPoints(funcs,stst_branch0);
+nunst_stst=GetStability(stst_branch_wbifs);
 %% Plot bifurcation diagram
-beta_stst=getpar(stst_branch,indbeta);
-x1_stst=getx(stst_branch,1);
+beta_stst=getpar(stst_branch_wbifs,indbeta);
+x1_stst=getx(stst_branch_wbifs,1);
 cla(ax1);
 plot(ax1,beta_stst(nunst_stst==0),x1_stst(nunst_stst==0),'g.',...
     beta_stst(nunst_stst==1),x1_stst(nunst_stst==1),'r.',...
-    beta_stst(nunst_stst==2),x1_stst(nunst_stst==2),'b.','linewidth',2);
-stst_lgtext={'unstable=0','unstable=1','unstable=2'};
+    beta_stst(nunst_stst==2),x1_stst(nunst_stst==2),'b.',...
+    bgetpar(stst_branch_wbifs,indbeta,'hopf'),bgetx(stst_branch_wbifs,1,'hopf'),'ks',...
+    bgetpar(stst_branch_wbifs,indbeta,'fold'),bgetx(stst_branch_wbifs,1,'fold'),'mo');
+stst_lgtext={'unstable=0','unstable=1','unstable=2','hopf','fold'};
 legend(ax1,stst_lgtext,'location','west');
 xlabel(ax1,'\beta');
 ylabel(ax1,'x_1');
 title(ax1,sprintf('steady states for delta=%g',stst.parameter(inddelta)));
-%% Computation of first Hopf point(s)
-% and initialization of pbranch
-fprintf('REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- Hopf branch REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-\n');
-indhopf=find(abs(diff(nunst_stst))==2,1,'first');
-hopf_branch = SetupHopf(funcs, stst_branch, indhopf, 'contpar', [inddelta,indbeta],...
-    'dir', indbeta, 'step', 0.002,parameter_bd{:});
-%% Include first Hopf point into single-parameter bifurcation diagram
-hold(ax1,'on');
-plot(ax1,hopf_branch.point(1).parameter(indbeta),hopf_branch.point(1).x(1),...
-    'bo','markerfacecolor','b');
-stst_lgtext_h=[stst_lgtext,{'Hopf'}];
-legend(ax1,stst_lgtext_h,'location','west');
 %% Continuation of Hopf bifurcation in two parameters
+% after initialization of hopfbranch
+fprintf('REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- Hopf branch REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-\n');
+[hopf_branch0,suc] = SetupHopf(funcs, stst_branch_wbifs, br_getflags(stst_branch_wbifs,'hopf'),...
+    'contpar', [inddelta,indbeta],...
+    'dir', indbeta, 'step', 0.002,parameter_bd{:});
+disp(['suc=',num2str(suc)]);
 figure(2);clf
 ax2=gca;
 title(ax2,'Hopf in beta-delta plane');
-hopf_branch=br_contn(funcs,hopf_branch,300);
-[nunst_hopf,dom,triv,hopf_branch.point]=GetStability(hopf_branch,'funcs',funcs,...
-    'exclude_trivial',true); %#ok<ASGLU>
+hopf_branch0=br_contn(funcs,hopf_branch0,300);
 %% Detect special points along Hopf curve
 fprintf('REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- Codimension-two detection along Hopf branch REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-\n');
-[hbif,hopf_ind2,hopf_branch_refined,hopftestfuncs]=HopfCodimension2(funcs,hopf_branch);
+[hopf_branch_wbifs,hopftestfuncs]=LocateSpecialPoints(funcs,hopf_branch0);
+nunst_hopf=GetStability(hopf_branch_wbifs,'exclude_trivial',true);
 %% Singularity of defining system for Hopf bifurcation 
 % Let us demonstrate that the defining system for the Hopf bifurcation is
 % singular in the Takens-Bogdanov bifurcation. The 8x9 matrix |J0| below is its
@@ -448,7 +448,7 @@ fprintf('REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- Codimension-two detection
 % the Hopf branch closest to the BT point.
 %
 % The characteristic matrix has a double root at lambda=0 in BT.
-hbt=hopf_branch_refined.point(hopf_ind2(1));
+hbt=hopf_branch_wbifs.point(br_getflags(hopf_branch_wbifs,'BT'));
 J0=hopf_jac(funcs,hbt.x,hbt.omega,hbt.v,hbt.parameter,[inddelta,indbeta],hbt.v.');
 disp('J0=');
 disp(J0);
@@ -462,12 +462,12 @@ xlabel('\lambda');
 ylabel('\Delta(\lambda)');
 %% Plot Hopf bifurcation in two-parameter plane, including Takens-Bogdanov point
 % and in $\beta-\delta-\omega$ space.
-beta_hopf=getpar(hopf_branch_refined,indbeta);
-delta_hopf=getpar(hopf_branch_refined,inddelta);
-omega_hopf=[hopf_branch_refined.point.omega];
-beta_bt=hbif{1}.parameter(indbeta);
-delta_bt=hbif{1}.parameter(inddelta);
-omega_bt=hopf_branch_refined.point(hopf_ind2).omega;
+beta_hopf=getpar(hopf_branch_wbifs,indbeta);
+delta_hopf=getpar(hopf_branch_wbifs,inddelta);
+omega_hopf=[hopf_branch_wbifs.point.omega];
+beta_bt=hbt.parameter(indbeta);
+delta_bt=hbt.parameter(inddelta);
+omega_bt=hbt.omega;
 figure(3);clf;
 subplot(1,2,1);
 ax3l=gca;
@@ -511,31 +511,24 @@ title('test functions along Hopf curve (Hopf-Hopf invisible)')
 % We do a standard continuation, using the starting index obtained from the
 % flagged point indices.
 fprintf('REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- fold branch REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-\n');
-foldind = find(diff(nunst_stst)==1,1,'first');
-[fold_branch, suc] = SetupFold(funcs, stst_branch, foldind, ...
+[fold_branch0,suc]=SetupFold(funcs,stst_branch_wbifs,br_getflags(stst_branch_wbifs,'fold'),...
     'contpar', [inddelta,indbeta], 'dir', inddelta, 'step', 0.005, parameter_bd{:});
-disp(suc);
-%% Include first fold point into single-parameter bifurcation diagram
-plot(ax1,fold_branch.point(1).parameter(indbeta),fold_branch.point(1).x(1),...
-    'ks','markerfacecolor','k');
-stst_lgtext_f=[stst_lgtext_h,{'fold'}];
-legend(ax1,stst_lgtext_f,'location','west');
-%% Continue fold branch
+disp(['suc=',num2str(suc)]);
 figure(2);
 title(ax2,'Fold in beta-delta plane');
-fold_branch=br_contn(funcs,fold_branch,300);
-fold_branch = br_rvers(fold_branch);
-fold_branch=br_contn(funcs,fold_branch,300);
-[nunst_fold,dom,triv,fold_branch.point]=GetStability(fold_branch,'funcs',funcs,'exclude_trivial',true);
+fold_branch0=br_contn(funcs,fold_branch0,300);
+fold_branch0 = br_rvers(fold_branch0);
+fold_branch0=br_contn(funcs,fold_branch0,300);
 %% Detect special points along fold curve
 fprintf('REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- Codimension-two detection along fold branch REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-\n');
-[fbif,fold_ind2,fold_branch_refined,foldtestfuncs]=FoldCodimension2(funcs,fold_branch);
+[fold_branch_wbifs,foldtestfuncs]=LocateSpecialPoints(funcs,fold_branch0);
+nunst_fold=GetStability(fold_branch_wbifs,'exclude_trivial',true);
 %% Insert fold in figure 3
-beta_fold=getpar(fold_branch_refined,indbeta);
-delta_fold=getpar(fold_branch_refined,inddelta);
+beta_fold=getpar(fold_branch_wbifs,indbeta);
+delta_fold=getpar(fold_branch_wbifs,inddelta);
 omega_fold=0*beta_fold;
-beta_bt2=fbif{1}.parameter(indbeta);
-delta_bt2=fbif{1}.parameter(inddelta);
+beta_bt2=bgetpar(fold_branch_wbifs,indbeta,'BT');
+delta_bt2=bgetpar(fold_branch_wbifs,inddelta,'BT');
 hold(ax3l,'on');
 pf=plot3(ax3l,beta_fold,delta_fold,omega_fold,'k-',...
     beta_bt2,delta_bt2,0,'ks','linewidth',2);
@@ -561,11 +554,11 @@ set(gca,'ylim',[-1,1]);
 xlabel('\delta');
 ylabel('\phi^f');
 title('test functions along fold curve (zero-Hopf invisible)')
-%% Branch off to periodic orbit at soem Hopf point, continue to large period
+%% Branch off to periodic orbit at some Hopf point, continue to large period
 % We know that the orbit must be unstable close to the Hopf bifurcation
 % from the Takens-Bogdanov normal form and the Lyapunov coefficients of the
 % Hopf bifurcation.
-psol_branch=SetupPsol(funcs,hopf_branch_refined,2,...
+psol_branch=SetupPsol(funcs,hopf_branch_wbifs,2,...
     'contpar',inddelta,'degree',3,'intervals',50,parameter_bd{1:4},'max_step',[0,inf]);
 [xm,ym]=df_measr(0,psol_branch);
 ym.field='period';
@@ -599,8 +592,8 @@ hcli4=hcli3;
 hcli4.parameter(indbeta)=hcli4.parameter(indbeta)-1e-4;
 [hcli5,suc]=p_correc(funcs,hcli4,inddelta,[],mhcli.point);
 hcli_br.point(2)=hcli5;
-hcli_br.parameter.max_bound=fold_branch.parameter.max_bound;
-hcli_br.parameter.min_bound=fold_branch.parameter.min_bound;
+hcli_br.parameter.max_bound=fold_branch_wbifs.parameter.max_bound;
+hcli_br.parameter.min_bound=fold_branch_wbifs.parameter.min_bound;
 hcli_br.parameter.max_step=[indbeta,5e-3;inddelta,5e-3];
 hcli_br.method.point.print_residual_info=1;
 figure(2);

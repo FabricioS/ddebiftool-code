@@ -42,6 +42,7 @@ br_ref=branch;
 if isfield(br_ref.point(1),'stability')
     bifstst.stability=p_stabil(funcs,bifstst,branch.method.stability);
 end
+bifstst=nmfm_trim_point(bifstst,br_ref.point(1));
 br_ref.point=[br_ref.point(1:inds(1)),bifstst,br_ref.point(inds(2):end)];
 indbif=inds(2);
 nmfm_compute=str2func(['nmfm_',type]);

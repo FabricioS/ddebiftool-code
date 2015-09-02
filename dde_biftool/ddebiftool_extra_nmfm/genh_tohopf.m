@@ -4,7 +4,8 @@ function hopf=genh_tohopf(funcs,point,freqs) %#ok<INUSL,INUSD>
 % INPUT:
 %   funcs problem functions
 %	point with stability information 
-%   optional freqs: frequency to be excluded from consideration
+%   optional freqs: frequency to be excluded from consideration (ignored
+%   here)
 % OUTPUT:
 %	hopf_point: hopf point
 %
