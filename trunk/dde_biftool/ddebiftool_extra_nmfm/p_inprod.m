@@ -23,7 +23,7 @@ switch kind
     case 'stst'
         ip = [p1.parameter, p1.x']*[p2.parameter'; p2.x];
     case 'fold'
-        ip = [p1.parameter, p1.x', p1.v]*[p2.parameter'; p2.x; p2.v'];
+        ip = [p1.parameter, p1.x', p1.v']*[p2.parameter'; p2.x; p2.v];
     case {'hopf','genh','zeho','hoho'} % BW: Addition of genh and p1.v -> p1.v', p2.v' -> p2.v
         ip = [p1.parameter, p1.x', p1.v', p1.omega]*[p2.parameter'; p2.x; p2.v; p2.omega'];
     case 'psol'

@@ -209,7 +209,7 @@ set(gca,'ylim',[-1,1]);
 xlabel('\delta');
 ylabel('\phi^f');
 title('test functions along fold curve (zero-Hopf invisible)')
-%% Branch off to periodic orbit at soem Hopf point, continue to large period
+%% Branch off to periodic orbit at some Hopf point, continue to large period
 % We know that the orbit must be unstable close to the Hopf bifurcation
 % from the Takens-Bogdanov normal form and the Lyapunov coefficients of the
 % Hopf bifurcation.
