@@ -1,5 +1,9 @@
-function y = sys_mfderi(xx,par,varargin)
-
+function y = cusp_mfderi(xx,par,varargin)
+%% higher-order derivatives in xx for cusp demo (see cusp_demo.m for equations)
+%
+% $Id$
+%
+%%
 if nargin == 2
 	error('SYS_MFDERI: no arguments.');
 elseif nargin > 7
