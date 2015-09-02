@@ -12,7 +12,7 @@
 % $$\mu\dot{u}_{2}(t)=-u_{2}(t)+q_{21}\alpha(u_{1}(t-T))-q_{22}u_{2}(t-T)+e_{2}$$
 %
 % <html>
-% $Id: HollingTanner_demo.m 115 2015-09-02 03:42:31Z jansieber $
+% $Id$
 % </html>
 %%
 clear % clear variables
