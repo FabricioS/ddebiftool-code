@@ -1,5 +1,5 @@
-#LyX 2.0 created this file. For more info see http://www.lyx.org/
-\lyxformat 413
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
 \begin_document
 \begin_header
 \textclass scrartcl
@@ -65,13 +65,13 @@ End
 \font_roman default
 \font_sans default
 \font_typewriter default
+\font_math auto
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
-
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -91,15 +91,24 @@ End
 \pdf_pdfusetitle true
 \papersize default
 \use_geometry false
-\use_amsmath 1
-\use_esint 1
-\use_mhchem 1
-\use_mathdots 1
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
 \cite_engine basic
+\cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
 \suppress_date false
+\justification true
 \use_refstyle 1
 \index Index
 \shortcut idx
@@ -128,11 +137,7 @@ Description of the extension ddebiftool_nmfm
 \end_layout
 
 \begin_layout Author
-Maikel Bosschaert, Bram Wage, 
-\begin_inset Newline newline
-\end_inset
-
-Sebastiaan Janssens, Yuri Kuznetsov
+Maikel Bosschaert, Bram Wage and Yuri Kuznetsov
 \end_layout
 
 \begin_layout Date
@@ -1219,7 +1224,7 @@ for
 
 .
  The multilinear forms 
-\begin_inset Formula $D^{3}f^{0}(p,q,z),\, D^{4}f^{0}(p,q,z,v)$
+\begin_inset Formula $D^{3}f^{0}(p,q,z),\,D^{4}f^{0}(p,q,z,v)$
 \end_inset
 
  and 
@@ -1231,7 +1236,7 @@ for
 
 \begin_layout Subsubsection
 Fold 
-\begin_inset Formula $(\lambda_{1}=0,\, b\neq0)$
+\begin_inset Formula $(\lambda_{1}=0,\,b\neq0)$
 \end_inset
 
 
@@ -1639,7 +1644,7 @@ reference "eq:fold_nf"
  vanishes
 \begin_inset Formula 
 \[
-\lambda_{1}=0,\, a=0.
+\lambda_{1}=0,\,a=0.
 \]
 
 \end_inset
@@ -1854,9 +1859,9 @@ status open
 \align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="10" columns="3">
-<features tabularvalignment="middle">
-<column alignment="left" valignment="top" width="0">
-<column alignment="left" valignment="top" width="0">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
 <column alignment="left" valignment="top" width="7cm">
 <row>
 <cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
@@ -2186,7 +2191,7 @@ first Lyapunov coefficient
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 An overview of bifurcations and monitored test functions.
@@ -2920,9 +2925,9 @@ status open
 \align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="11" columns="4">
-<features tabularvalignment="middle">
-<column alignment="left" valignment="top" width="0">
-<column alignment="left" valignment="top" width="0">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
 <column alignment="left" valignment="top" width="7cm">
 <column alignment="left" valignment="top" width="7cm">
 <row>
@@ -3359,7 +3364,7 @@ Cusp
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Bifurcation type numbering 
@@ -3421,10 +3426,10 @@ status open
 \align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="11" columns="3">
-<features tabularvalignment="middle">
-<column alignment="left" valignment="top" width="0">
-<column alignment="left" valignment="top" width="0">
-<column alignment="left" valignment="top" width="0">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
 <row>
 <cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
@@ -3755,7 +3760,7 @@ g0021, theta, delta
 \end_inset
 
 
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 A list of normal form coefficients as stored in the 
@@ -3911,7 +3916,7 @@ for
 
 \begin_layout Subsection
 Cusp 
-\begin_inset Formula $(\lambda=0,\, a=0,\, c\neq0)$
+\begin_inset Formula $(\lambda=0,\,a=0,\,c\neq0)$
 \end_inset
 
 
@@ -4254,7 +4259,7 @@ where
 \end_inset
 
  with 
-\begin_inset Formula $\mbox{Re}\, c_{1}=0$
+\begin_inset Formula $\mbox{Re}\,c_{1}=0$
 \end_inset
 
 .
@@ -5338,7 +5343,7 @@ status open
 \end_inset
 
 
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Plot of 
@@ -5686,7 +5691,7 @@ status open
 \end_inset
 
 
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Plot of test functions for 
@@ -6205,7 +6210,7 @@ status open
 \end_inset
 
 
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Plot of the test functions for 
@@ -7061,7 +7066,7 @@ status open
 \end_inset
 
 
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Plot of detected bifurcations on the fold and Hopf branches.
@@ -8053,7 +8058,7 @@ status open
 \end_inset
 
 
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Left is a plot of the continuation of the steady-state point.
@@ -8247,7 +8252,7 @@ status open
 
 \begin_layout Plain Layout
 \align center
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Left is a plot of the continuation of the steady-state point.
@@ -8310,7 +8315,7 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Plot of the test function along
@@ -8972,7 +8977,7 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Plot of the cycle emanating from the Hopf curve.
@@ -9158,7 +9163,7 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Continuation of the homoclinic orbit in 
@@ -9270,7 +9275,7 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Multipliers for point number 10 from 
@@ -9342,7 +9347,7 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Plot of Hopf, homoclinic and fold branch emanating from the Bogdanov-Takens
@@ -9500,7 +9505,7 @@ reference "eq:neural_network"
 \end_inset
 
 and 
-\begin_inset Formula $Q:=q_{12},\, E:=e_{1}$
+\begin_inset Formula $Q:=q_{12},\,E:=e_{1}$
 \end_inset
 
  as bifurcation parameters.
@@ -9823,7 +9828,7 @@ status open
 \end_inset
 
 
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Plot of test function for stst_br
@@ -9916,7 +9921,7 @@ status open
 \end_inset
 
 
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Plot of test functions for stst_br
@@ -10067,7 +10072,7 @@ status open
 \end_inset
 
 
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Plot the fold branch.
@@ -10373,7 +10378,7 @@ status open
 \end_inset
 
 
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Plot of test functions for fold_br
