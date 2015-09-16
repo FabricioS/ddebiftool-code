@@ -1,4 +1,4 @@
-%% LyX 2.1.3 created this file.  For more info, see http://www.lyx.org/.
+%% LyX 2.1.4 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
 \documentclass[english,11pt]{scrartcl}
 \usepackage[T1]{fontenc}
@@ -9,8 +9,8 @@
 \usepackage{babel}
 \usepackage{array}
 \usepackage{float}
-\usepackage{amsthm}
 \usepackage{amsmath}
+\usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage[unicode=true,pdfusetitle,
@@ -25,7 +25,7 @@
 \providecommand{\tabularnewline}{\\}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
- \newcommand*{\Rinput}[1]{\mbox{\lstinline!#1!}}
+\newcommand*{\Rinput}[1]{\mbox{\lstinline!#1!}}
 \newcommand{\code}[1]{\texttt{#1}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
@@ -62,12 +62,12 @@
 \makeatother
 
 \usepackage{listings}
-\lstset{language=Matlab,
-basicstyle={\ttfamily\small},
+\lstset{basicstyle={\ttfamily\small},
 commentstyle={\color{comment}},
-stringstyle={\color{str}},
-keywordstyle={\color{kw}},
 identifierstyle={\color{var}},
+keywordstyle={\color{kw}},
+language=Matlab,
+stringstyle={\color{str}},
 upquote=true}
 \renewcommand{\lstlistingname}{Listing}
 
@@ -76,8 +76,7 @@ upquote=true}
 \title{Description of the extension ddebiftool\_nmfm}
 
 
-\author{Maikel Bosschaert, Bram Wage, \\
-Sebastiaan Janssens, Yuri Kuznetsov}
+\author{Maikel Bosschaert, Bram Wage and Yuri Kuznetsov}
 
 
 \date{\today}
@@ -276,7 +275,7 @@ with $\omega>0$, and no other eigenvalues on the imaginary axis.
 For a test function we look at the sign of the smallest real part
 of the complex eigenvalue pairs. For this the following function has
 been constructed
-\begin{lstlisting}[language=Matlab,basicstyle={\footnotesize}]
+\begin{lstlisting}[basicstyle={\footnotesize},language=Matlab]
 function [smallest_real_part, stability,selectedroot] = nmfm_smrp(...     
 funcs,point, stmethod,varargin) 
 %% Compute smallest real part of imaginary pairs or of real eigenvalues 
@@ -605,13 +604,13 @@ Hopf & Bogdanov-Takens & $\omega_{0}$\tabularnewline
 \end{tabular}
 \par\end{centering}
 
-\protect\caption{An overview of bifurcations and monitored test functions.\label{tab:List-of-bifurcations}}
+\caption{An overview of bifurcations and monitored test functions.\label{tab:List-of-bifurcations}}
 \end{table}
 
 
 The call to the bifurcation routine is as follows:
 
-\begin{lstlisting}[language=Matlab,basicstyle={\footnotesize}]
+\begin{lstlisting}[basicstyle={\footnotesize},language=Matlab]
 [newbranch, success] = br_bifdet(branch)
 \end{lstlisting}
 
@@ -780,7 +779,7 @@ See Table \ref{tab:Bifurcation-type-numbering} for the full specification.
 \end{tabular}
 \par\end{centering}
 
-\protect\caption{Bifurcation type numbering \label{tab:Bifurcation-type-numbering}scheme.}
+\caption{Bifurcation type numbering \label{tab:Bifurcation-type-numbering}scheme.}
 \end{table}
 
 
@@ -816,7 +815,7 @@ Fold-Hopf & g200, g110, g011 ,  & s, theta\tabularnewline
 Double-Hopf & g2100, g1011, g1110,  & theta, delta and eigenvalues\tabularnewline
  & g0021, theta, delta & \tabularnewline
 \hline 
-\end{tabular}\protect\caption{A list of normal form coefficients as stored in the \protect\blist{point.nmfm}
+\end{tabular}\caption{A list of normal form coefficients as stored in the \protect\blist{point.nmfm}
 structure and what is being reported in the Matlab console.}
 \label{tab:Normal-form-coefficients}
 \par\end{centering}
@@ -1247,7 +1246,7 @@ The files of this demonstration are located in the folder \texttt{demos/nmfm\_de
 First, we load the DDE-BifTool core, the DDE-BifTool utilities and
 the normal form extension. Then we initialize the \blist{funcs} structure.
 
-\begin{lstlisting}[language=Matlab,basicstyle={\footnotesize},tabsize=4]
+\begin{lstlisting}[basicstyle={\footnotesize},language=Matlab,tabsize=4]
 clear variables;
 close all;
 addpath('../../ddebiftool',...
@@ -1277,7 +1276,7 @@ to the script itself.
 We set up a steady state branch using the function \texttt{\blist{SetupStst}}
 from the utilities and do a standard continuation.
 
-\begin{lstlisting}[language=Matlab,basicstyle={\footnotesize}]
+\begin{lstlisting}[basicstyle={\footnotesize},language=Matlab]
 % Define the boundaries and step sizes 
 % of the active parameters. 
 astepsize = 0.005; 
@@ -1310,7 +1309,7 @@ xlabel('a'); ylabel('x_1');
 
 \begin{figure}[h]
 \begin{centering}
-\includegraphics[scale=0.6]{images/nmfm_demo_01}\protect\caption{Plot of \protect\blist{branch1}\label{fig:Plot-of-branch1}}
+\includegraphics[scale=0.6]{images/nmfm_demo_01}\caption{Plot of \protect\blist{branch1}\label{fig:Plot-of-branch1}}
 
 \par\end{centering}
 
@@ -1323,7 +1322,7 @@ xlabel('a'); ylabel('x_1');
 \noindent Before calling the bifurcation detection script \blist{br\_bifdet}
 we first have to calculate the stability information
 
-\begin{lstlisting}[language=Matlab,basicstyle={\footnotesize},tabsize=4]
+\begin{lstlisting}[basicstyle={\footnotesize},language=Matlab,tabsize=4]
 branch1.method.bifurcation.plot_testfunctions = 1;
 branch1.method.bifurcation.monitor_eigenvalues = 0;
 branch1.method.bifurcation.pause_on_bifurcation= 0;
@@ -1377,7 +1376,7 @@ eigenvalues being followed, changes. This yields in a sign change
 when there is no Hopf point.
 
 \begin{figure}[h]
-\centering{}\includegraphics[width=1\textwidth]{images/example1_stst_br_testfunctions}\protect\caption{Plot of test functions for \protect\blist{branch1} \label{fig:example_stst_br_testfunction}}
+\centering{}\includegraphics[width=1\textwidth]{images/example1_stst_br_testfunctions}\caption{Plot of test functions for \protect\blist{branch1} \label{fig:example_stst_br_testfunction}}
 \end{figure}
 
 
@@ -1403,7 +1402,7 @@ state branch
 We do a standard continuation, using the first starting index obtained
 from the flagged point indices
 
-\begin{lstlisting}[language=Matlab,basicstyle={\footnotesize},breaklines=true,tabsize=4]
+\begin{lstlisting}[basicstyle={\footnotesize},breaklines=true,language=Matlab,tabsize=4]
 astepsize = 0.05; % decrease stepsize a
 FPI = br_getflags(branch1);
 start_ind = FPI(bif2num('hopf'),1);
@@ -1476,7 +1475,7 @@ for the generalized Hopf point goes to $\pm\infty$ at the zero-Hopf
 point.
 
 \begin{figure}[h]
-\centering{}\includegraphics[width=1\textwidth]{images/example1_hopf_branch1_testfunctions}\protect\caption{Plot of the test functions for \protect\blist{hopf\_branch1} \label{fig:test_functions_hopf_branch1}}
+\centering{}\includegraphics[width=1\textwidth]{images/example1_hopf_branch1_testfunctions}\caption{Plot of the test functions for \protect\blist{hopf\_branch1} \label{fig:test_functions_hopf_branch1}}
 \end{figure}
 
 
@@ -1485,7 +1484,7 @@ point.
 
 We repeat the same procedure for second Hopf branch
 
-\begin{lstlisting}[language=Matlab,basicstyle={\footnotesize},breaklines=true,tabsize=4]
+\begin{lstlisting}[basicstyle={\footnotesize},breaklines=true,language=Matlab,tabsize=4]
 start_ind = FPI(bif2num('hopf'),2);
 [hopf_branch2, suc] = SetupHopf(funcs, branch1, start_ind,...
 	'contpar', [1 3], 'dir', 3, 'step', cstepsize);
@@ -1555,7 +1554,7 @@ To demonstrate the detection of zero-Hopf points on fold curves we
 continue the fold curve emanating from the zero-Hopf point detected
 on \blist{hopf\_branch1}.
 
-\begin{lstlisting}[language=Matlab,basicstyle={\footnotesize},breaklines=true,tabsize=4]
+\begin{lstlisting}[basicstyle={\footnotesize},breaklines=true,language=Matlab,tabsize=4]
 %% Continue Fold emanating from Zero Hopf 
 FPI2 = br_getflags(hopf_branch1); 
 start_ind = FPI2(bif2num('ZH'));
@@ -1626,7 +1625,7 @@ would be giant. Therefore we will stop our analysis here.
 
 We are now ready to make a bifurcation diagram. To visualize the different
 bifurcation points we use the function\textbf{ }\blist{br\_bifplot}.
-\begin{lstlisting}[language=Matlab,basicstyle={\footnotesize},breaklines=true,tabsize=4]
+\begin{lstlisting}[basicstyle={\footnotesize},breaklines=true,language=Matlab,tabsize=4]
 figure;
 
 bifplot = df_bifplot(); bifplot.zeho = '*';
@@ -1653,7 +1652,7 @@ See Figure \ref{fig:Plot-of-Hopf-branches} for the resulting bifurcation
 diagram.
 
 \begin{figure}[H]
-\centering{}\includegraphics[scale=0.4]{images/nmfm_demo_02}\protect\caption{Plot of detected bifurcations on the fold and Hopf branches. The asterisks
+\centering{}\includegraphics[scale=0.4]{images/nmfm_demo_02}\caption{Plot of detected bifurcations on the fold and Hopf branches. The asterisks
 '\textcolor{blue}{{*}}' indicates fold-Hopf bifurcations, the open
 circle '\textcolor{blue}{o}' indicates a double-Hopf, the plus '\textcolor{blue}{+}'
 indicates generalized Hopf. \label{fig:Plot-of-Hopf-branches}}
@@ -1793,7 +1792,7 @@ The files of this demonstration are located in the folder \texttt{demos/Holling-
 script \texttt{Maple\_gen\_sys.mw}\textbf{.} We only display the file
 \blist{sys\_rhs.m}\textbf{ }here, since the files \blist{sys\_deri}
 and \blist{sys\_mfderi} are too long
-\begin{lstlisting}[language=Matlab,basicstyle={\footnotesize},breaklines=true,tabsize=4]
+\begin{lstlisting}[basicstyle={\footnotesize},breaklines=true,language=Matlab,tabsize=4]
 function f = sys_rhs(xx,par)
 
 f(1,1) = (xx(1,1)+par(4))*(1-xx(1,1)-par(4))-...
@@ -1813,7 +1812,7 @@ the script files of \texttt{ddebiftool}, \texttt{ddebiftool\_utilities},
 \texttt{ddebiftool\_extra\_psol} for the continuation of the homoclinic
 orbit emanating from the Bogdanov-Takens point .
 
-\begin{lstlisting}[language=Matlab,basicstyle={\footnotesize},breaklines=true,tabsize=4]
+\begin{lstlisting}[basicstyle={\footnotesize},breaklines=true,language=Matlab,tabsize=4]
 clear;
 close all;
 addpath('../../../ddebiftool',...
@@ -1845,7 +1844,7 @@ h=0.098,\qquad\beta=0.4,\qquad\delta=0.54089.
 Then we continue the positive steady-state (\ref{eq:steady-state})
 in $\beta$.
 
-\begin{lstlisting}[language=Matlab,basicstyle={\footnotesize},breaklines=true,tabsize=4]
+\begin{lstlisting}[basicstyle={\footnotesize},breaklines=true,language=Matlab,tabsize=4]
 beta=0.5;a=0.5; 
 m=(1/30)*(1-beta/(a*beta+1)); 
 h=(1/4)*(beta/(a*beta+1)-1)^2+m*beta/(a*beta+1); 
@@ -1896,7 +1895,7 @@ of the steady-state branch and the test functions $\psi_{f}$ and
 $\psi_{H}$.
 
 \begin{figure}[h]
-\centering{}\includegraphics[scale=0.4]{images/continuation_stst_branch_plot}\includegraphics[scale=0.4]{images/exm2_stst_br_testfunctions}\protect\caption{Left is a plot of the continuation of the steady-state point. In the
+\centering{}\includegraphics[scale=0.4]{images/continuation_stst_branch_plot}\includegraphics[scale=0.4]{images/exm2_stst_br_testfunctions}\caption{Left is a plot of the continuation of the steady-state point. In the
 right figure the test functions are plotted. Here we see that the
 Hopf bifurcation is near the fold bifurcation, as predicted by a Bogdanov-Takens
 bifurcation. \label{fig:stst_branch}}
@@ -1908,7 +1907,7 @@ bifurcation. \label{fig:stst_branch}}
 
 We continue the detected Hopf point at $\beta=0.4886954168$ in $(\beta,\delta)$
 
-\begin{lstlisting}[language=Matlab,basicstyle={\footnotesize},breaklines=true,tabsize=4]
+\begin{lstlisting}[basicstyle={\footnotesize},breaklines=true,language=Matlab,tabsize=4]
 FPI = br_getflags(stst_branch); 
 start_ind = FPI(1);
 
@@ -1938,7 +1937,7 @@ we conclude that the Hopf curve makes a turn at $(\beta,\delta)\approx(0.5,0.64)
 \includegraphics[scale=0.4]{images/hopf_branch}\includegraphics[scale=0.4]{images/hopf_branch_pointnumber_vs_delta}
 \par\end{centering}
 
-\centering{}\protect\caption{Left is a plot of the continuation of the steady-state point. At the
+\centering{}\caption{Left is a plot of the continuation of the steady-state point. At the
 right side we see a plot of the point number along the branch versus
 $\delta$. \label{fig:hopf_branch}}
 \end{figure}
@@ -1953,7 +1952,7 @@ point on a Hopf curve passes 0 even when the parameters make a turn.
 \includegraphics[scale=0.6]{images/exm2_hopfbr1_testfunctions}
 \par\end{centering}
 
-\protect\caption{Plot of the test function along\protect\blist{hopf\_branch}. \label{fig:example2_test_functions_hopf_branch}}
+\caption{Plot of the test function along\protect\blist{hopf\_branch}. \label{fig:example2_test_functions_hopf_branch}}
 
 
 \end{figure}
@@ -1987,7 +1986,7 @@ Since in this example we know the position of the Bogdanov-Takens
 through analytic calculations, we could calculate the normal form
 coefficients directly as shown below. 
 
-\begin{lstlisting}[language=Matlab,basicstyle={\footnotesize},breaklines=true,tabsize=4]
+\begin{lstlisting}[basicstyle={\footnotesize},breaklines=true,language=Matlab,tabsize=4]
 beta=0.5;a=0.5; 
 m=(1/30)*(1-beta/(a*beta+1)); 
 h=(1/4)*(beta/(a*beta+1)-1)^2+m*beta/(a*beta+1); 
@@ -2019,7 +2018,7 @@ Here $a=a_{2}$ and $b=b_{2}$.
 \subsection{Continue fold point}
 
 We will continue the fold point detected on the steady-state.
-\begin{lstlisting}[language=Matlab,basicstyle={\footnotesize},breaklines=true,tabsize=4]
+\begin{lstlisting}[basicstyle={\footnotesize},breaklines=true,language=Matlab,tabsize=4]
 FPI = br_getflags(stst_branch); 
 start_ind = FPI(bif2num('fold'),1);
 
@@ -2062,7 +2061,7 @@ in detail.
 
 We continue the periodic orbit emanating from the Hopf curve in $\delta$
 
-\begin{lstlisting}[language=Matlab,basicstyle={\footnotesize},breaklines=true,tabsize=4]
+\begin{lstlisting}[basicstyle={\footnotesize},breaklines=true,language=Matlab,tabsize=4]
 hopf=hopf_branch.point(20); 
 [psol,stp]=p_topsol(funcs,hopf,1e-2,3,27);
 
@@ -2096,14 +2095,14 @@ goes to infinity, indicating a homoclinic orbit.
 \includegraphics[scale=0.6]{images/limitcycle_period}
 \par\end{centering}
 
-\protect\caption{Plot of the cycle emanating from the Hopf curve. At $\delta\approx0.577$
+\caption{Plot of the cycle emanating from the Hopf curve. At $\delta\approx0.577$
 the period of the cycles goes to infinity, indicating a homoclinic
 obit.\label{fig:limit-cycle}}
 \end{figure}
 We select the last cycle on the \blist{psol\_branch} and convert
 it to a homoclinic orbit. Then we continue the homoclinic orbit in
 $(\beta,\delta)$
-\begin{lstlisting}[language=Matlab,basicstyle={\footnotesize},breaklines=true,tabsize=4]
+\begin{lstlisting}[basicstyle={\footnotesize},breaklines=true,language=Matlab,tabsize=4]
 psol=psol_branch.point(end);
 hcli=p_tohcli(funcs,psol);
 
@@ -2135,7 +2134,7 @@ continued.
 \includegraphics[scale=0.6]{images/homoclinic_branch}
 \par\end{centering}
 
-\protect\caption{Continuation of the homoclinic orbit in $(\beta,\delta)$.\label{fig:homoclinic-orbit}}
+\caption{Continuation of the homoclinic orbit in $(\beta,\delta)$.\label{fig:homoclinic-orbit}}
 \end{figure}
 
 
@@ -2144,7 +2143,7 @@ continued.
 
 The following code calculates the stability of the cycles from \blist{psol\_branch}.
 
-\begin{lstlisting}[language=Matlab,basicstyle={\footnotesize},breaklines=true,tabsize=4]
+\begin{lstlisting}[basicstyle={\footnotesize},breaklines=true,language=Matlab,tabsize=4]
 psol_branch = br_stabl(funcs,psol_branch,0,0);
 \end{lstlisting}
 
@@ -2160,7 +2159,7 @@ coefficients $ab>0$.
 \includegraphics[width=0.8\textwidth]{images/exm2_psol_br_multipliers}
 \par\end{centering}
 
-\protect\caption{Multipliers for point number 10 from \protect\blist{psol\_branch}.\label{fig:exam2_multipliers}}
+\caption{Multipliers for point number 10 from \protect\blist{psol\_branch}.\label{fig:exam2_multipliers}}
 
 
 \end{figure}
@@ -2178,7 +2177,7 @@ bifurcation diagram of the Bogdanov-Takens point.
 \includegraphics[width=0.8\textwidth]{images/bifurcation_diagram}
 \par\end{centering}
 
-\protect\caption{Plot of Hopf, homoclinic and fold branch emanating from the Bogdanov-Takens
+\caption{Plot of Hopf, homoclinic and fold branch emanating from the Bogdanov-Takens
 point. \label{fig:bifurcation_diagram}}
 \end{figure}
 
@@ -2240,7 +2239,7 @@ The files of this demonstration are located in the folder \texttt{demos/cusp
 As before we start by loading the necessary script files and setting
 the \blist{funcs} structure.
 
-\begin{lstlisting}[language=Matlab,basicstyle={\footnotesize},tabsize=4]
+\begin{lstlisting}[basicstyle={\footnotesize},language=Matlab,tabsize=4]
 %% setup system clear all;
 clear variables close all;
 close figures addpath('../../ddebiftool',...
@@ -2262,7 +2261,7 @@ funcs=set_funcs(...
 We continue the steady state $(u_{1},u_{2})\equiv(0,0)$ at $(Q,E)=(0,0)$
 in $Q$:
 
-\begin{lstlisting}[language=Matlab,basicstyle={\footnotesize}]
+\begin{lstlisting}[basicstyle={\footnotesize},language=Matlab]
 Q=0; E=0;
 q11=2.6; q12=Q; q21=1; e1=E; e2=0; T=1;
 par = [q11,q12,q21,e1,e2,T];
@@ -2289,14 +2288,14 @@ BR_BIFDET: Normal form coefficient: b = 0.7321765321
 the test functions $\psi_{f}$ and $\psi_{H}$.
 
 \begin{figure}[h]
-\centering{}\includegraphics[width=1\textwidth]{images/exm3_stst_testfunctions}\protect\caption{Plot of test function for stst\_br\label{fig:stst_br_testfunctions}}
+\centering{}\includegraphics[width=1\textwidth]{images/exm3_stst_testfunctions}\caption{Plot of test function for stst\_br\label{fig:stst_br_testfunctions}}
 \end{figure}
 The discontinuity in the test function for a Hopf point $\phi_{H}$
 is produced, since the only complex eigenvalues pass the default lower
 bound of -1 when calculating the eigenvalues of the points on the
 steady-state points. This can be seen by monitoring the eigenvalues
 on the steady-state branch by calling 
-\begin{lstlisting}[language=Matlab,basicstyle={\footnotesize}]
+\begin{lstlisting}[basicstyle={\footnotesize},language=Matlab]
 stst_br.method.bifurcation.plot_testfunctions = 1;
 stst_br.method.bifurcation.monitor_eigenvalues = 0;
 stst_br=br_bifdet(funcs, stst_br);
@@ -2306,7 +2305,7 @@ before calculating the stability along the steady-state branch we
 get a smooth curve for $\psi_{H}$, see Figure (\ref{fig:stst_br_testfunctions_smooth}).
 
 \begin{figure}[h]
-\centering{}\includegraphics[width=1\textwidth]{images/exm3_stst_testfunctions_smooth}\protect\caption{Plot of test functions for stst\_br\label{fig:stst_br_testfunctions_smooth}}
+\centering{}\includegraphics[width=1\textwidth]{images/exm3_stst_testfunctions_smooth}\caption{Plot of test functions for stst\_br\label{fig:stst_br_testfunctions_smooth}}
 \end{figure}
 
 
@@ -2315,7 +2314,7 @@ get a smooth curve for $\psi_{H}$, see Figure (\ref{fig:stst_br_testfunctions_sm
 
 We continue the fold point detected on the steady-state branch.
 
-\begin{lstlisting}[language=Matlab,basicstyle={\footnotesize}]
+\begin{lstlisting}[basicstyle={\footnotesize},language=Matlab]
 FPI=br_getflags(stst_br);
 start_ind = FPI(bif2num('fold'),1);
 
@@ -2339,7 +2338,7 @@ fold_branch=br_bifdet2(funcs,fold_branch);
 In figure (\ref{fig:fold_branch}) we have plotted the fold branch.
 
 \begin{figure}[h]
-\centering{}\includegraphics[scale=0.6]{images/exm3_fold_branch}\protect\caption{Plot the fold branch. Here we see a cusp bifurcation at $(Q,E)=(1.6,0)$.\label{fig:fold_branch}}
+\centering{}\includegraphics[scale=0.6]{images/exm3_fold_branch}\caption{Plot the fold branch. Here we see a cusp bifurcation at $(Q,E)=(1.6,0)$.\label{fig:fold_branch}}
 \end{figure}
 In the matlab console we have the following output:
 
@@ -2397,7 +2396,7 @@ large.
 
 \par\end{centering}
 
-\centering{}\includegraphics[width=1\textwidth]{images/exm3_fold_testfunctions_small}\protect\caption{Plot of test functions for fold\_br\label{fig:fold_br_testfunctions}}
+\centering{}\includegraphics[width=1\textwidth]{images/exm3_fold_testfunctions_small}\caption{Plot of test functions for fold\_br\label{fig:fold_br_testfunctions}}
 \end{figure}
 
 
