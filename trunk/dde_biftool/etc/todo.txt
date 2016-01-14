@@ -16,3 +16,5 @@ annoying:
 
 * br_contn online plot always plots on current axis: fix axes and give
   user option to set it
+
+* add optional two-point brackets for initialisation routines
