@@ -21,13 +21,17 @@ function [branch,suc]=correct_ini(funcs,branch,pini,dir,step,correc)
 suc=true;
 if correc
     %% correct initial guess
-    rcond=funcs.sys_cond(pini);
-    ncond=length(rcond);
+    mth=branch.method.point;
+    if mth.extra_condition
+        rcond=funcs.sys_cond(pini);
+        ncond=length(rcond);
+    else
+        ncond=0;
+    end
     if strcmp(pini.kind,'hopf')||strcmp(pini.kind,'fold')
         %% fix for Hopf because add. conditions are not implemented as sys_cond
         ncond=ncond+1;
     end
-    mth=branch.method.point;
     [pfirst,suc]=p_correc(funcs,pini,branch.parameter.free(end-ncond+1:end),...
         [],mth,1,pini);
     if ~suc
