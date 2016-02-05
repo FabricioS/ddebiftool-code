@@ -39,7 +39,7 @@ hold(options.plotaxis,'on');
 if xlim(1)<0 && xlim(2)>0,
   plot(options.plotaxis,[0 0],ylim,'b-.'); 
 end
-plot(options.plotaxis,[a(1) a(2)],[0 0],'-.');
+plot(options.plotaxis,[xlim(1) xlim(2)],[0 0],'b-.');
 if ~dohold
     hold(options.plotaxis,'off');
 end    
