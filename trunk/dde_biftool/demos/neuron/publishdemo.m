@@ -13,8 +13,8 @@ publish('demo1_funcs',opts{:});
 publish('demo1_stst',opts{:});
 %% Hopf bifurcations
 publish('demo1_hopf',opts{:});
-%% Normal forms along Hopf bifurcations
-publish('demo1_normalforms','maxOutputLines',Inf);
+%% Normal forms along Hopf bifurcations (broken for r109 of br_bifdet)
+% publish('demo1_normalforms','maxOutputLines',Inf);
 %% Periodic orbits
 publish('demo1_psol',opts{:});
 %% Homoclinic connection
