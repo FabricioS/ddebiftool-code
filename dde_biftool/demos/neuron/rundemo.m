@@ -12,8 +12,8 @@ demo1_funcs;
 demo1_stst;
 %% Hopf bifurcations
 demo1_hopf;
-%% Normal forms along Hopf bifurcation
-demo1_normalforms;
+%% Normal forms along Hopf bifurcation (broken for r109)
+% demo1_normalforms;
 %% Periodic orbits
 demo1_psol;
 %% Homoclinic connection
