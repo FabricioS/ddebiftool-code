@@ -1,0 +1,52 @@
+NDDE-Cont extension to DDE-BIFTOOL
+
+David Barton (davidbarton@cityinthesky.co.uk)
+http://www.cityinthesky.co.uk/david-research.html
+
+
+NDDE-Cont is research software; it may only be used for non-profit purposes
+without the express permission of the author. The use of this software is at
+your own risk. Should the output from this software be presented in a journal or
+conference paper, the following article should be cited: 
+
+D.A.W. Barton, B. Krauskopf and R.E. Wilson. Collocation schemes for periodic
+solutions of neutral delay differential equations. BCANM preprint
+2005.31. Accepted by Journal of Difference Equations and Applications.
+
+
+
+Contents of this package
+------------------------
+
+* Continuation and stability routines for periodic solutions of NDDEs
+* Continuation routines for equilibria of NDDEs
+* Stability routines for NDDEs with a single fixed delay
+
+This package requires DDE-BIFTOOL. To use this package, simply add these files
+to your Matlab path AHEAD of the corresponding DDE-BIFTOOL files.
+
+Once installed, this files will allow you to work with NDDEs of the form
+            x'(t) = f(x(t),x(t-tau),x'(t-tau),lambda)
+in the same manner as DDE-BIFTOOL works for DDEs.
+
+When generating system definition files (i.e. sys_rhs.m and sys_deri.m), the
+state vector is provided as follows
+
+xx = [x(t) x(t-tau1) x(t-tau2) x(t-tau_n) x'(t-tau1) x'(t-tau2) x'(t-tau_n)]
+
+e.g. if there are two delays then xx(:,3) is x(t-tau2) and xx(:,4) is x'(t-tau1)
+
+In sys_deri.m you are required to provide derivatives with respect to the
+delayed derivatives as well as the delayed variables themselves.
+
+Alternatively, you can use the Maple(TM) worksheet (sysdef.mw) to automatically
+generate the necessary files.
+
+*** You must create a file sys_ndde.m that simply returns 1 ***
+
+For example
+
+function result = sys_ndde()
+result = 1;
+
+This tells NDDE-CONT that we are dealing with an NDDE rather than a DDE.
