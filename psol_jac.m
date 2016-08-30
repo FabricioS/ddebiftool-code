@@ -1,32 +1,47 @@
-function [J,res] = psol_jac(col,T,profile,mesh,degree,par,free_par,phase)
+function [J,res,tT,extmesh] = psol_jac(funcs, col, T, psol_prof,mesh,degree,par,free_par,phase,varargin)
 
-% function [J,res]=psol_jac(c,T,profile,t,deg,par,free_par,phase)
+% function [J,res]=psol_jac(c,T,psol_prof,t,deg,par,free_par,phase)
 % INPUT:
 %	c collocation parameters in [0,1]^deg
 %	T period 
-%	profile profile in R^(n x deg*l+1)
+%	psol_prof profile in R^(n x deg*l+1)
 %	t representation points in [0,1]^(deg*l+1)
 %	deg degree piecewise polynomial
 %	par current parameter values in R^p
 %	free_par free parameters numbers in N^d 
 %	phase use phase condition or not (s = 1 or 0)
+%   wrapJ (optional key-value pair, default true) 
+%        wrap time points periodically into [0,1]
 % OUTPUT: 
 %	J jacobian in R^(n*deg*l+n+s x n*deg*l+1+n+d)
 %	res residual in R^(n*deg*l+n+s)
+%   tT delays, scaled by period
+%   extmesh mesh of time points, extended back to -max(tT(:))
+%
+% if wrapJ the returned jacobian is augmented with derivative wrt period and
+% free_par and wrapped around periodically inside [0,1] 
+% if ~wrapJ the returned jacobian puts its entries into the interval
+%  [-min(delay,0),max(1-[0,delays])], no augmentation is done. This
+%  Jacobian can be used for computation of Floquet multipliers and modes
 %
 % Heavily modified by David A.W. Barton (August 2005 to January 2006)
 % (c) DDE-BIFTOOL v. 2.00, 30/11/2001
 
+default={'wrapJ',true};
+options=dde_set_options(default,varargin,'pass_on');
+sys_tau=funcs.sys_tau;
+sys_ntau=funcs.sys_ntau;
+
 
 % get the system dimension from the dimensions of profile
-sysn = size(profile,1);
+sysn = size(psol_prof,1);
 % degree of interpolating polynomials
 sysm = degree;
 % number of mesh points (mesh points + representation points==length(mesh))
 sysl = (length(mesh) - 1)/sysm;
 
 % check that the mesh size is correct
-if ((sysl ~= floor(sysl)) || (length(mesh) ~= size(profile,2)))
+if ((sysl ~= floor(sysl)) || (length(mesh) ~= size(psol_prof,2)))
     error('PSOL_JAC: Mesh size is wrong!');
 end;
 
@@ -36,9 +51,10 @@ if ((length(col) ~= 0) && (length(col) ~= sysm))
 end;
 
 % get number of delays to consider
-if (nargin('sys_tau') == 0)  
+tp_del=funcs.tp_del;
+if (tp_del == 0)  
     % constant delays
-    n_tau = sys_tau;    % location of delays in parameter list
+    n_tau = sys_tau();    % location of delays in parameter list
     tau = par(n_tau);   % values of the delays
     tT = tau/T;         % normalised delay values
     nd = length(n_tau); % number of delays
@@ -48,7 +64,7 @@ end;
 
 % do some extra initialisation if we are working on an NDDE
 % get the mass matrix M where M*x'(t) = f(x(t),x(t-tau),x'(t-tau))
-if exist('sys_ndde')
+if isfield(funcs, 'sys_ndde')
     massmatrix = sys_ndde();
     if ((size(massmatrix,1) ~= sysn) || (size(massmatrix,2) ~= sysn))
         if (size(massmatrix,1)*size(massmatrix,2)) == 1
@@ -94,6 +110,7 @@ end;
 P0 = zeros(sysm+1,sysm+1);
 dP0 = zeros(sysm+1,sysm+1);
 ddP0 = zeros(sysm+1,sysm+1);
+
 for i = 1:sysm
     P0(i,:) = poly_elg(sysm,col(i));     % Lagrange polynomial
     dP0(i,:) = poly_del(sysm,col(i));    % and its 1st derivative
@@ -105,7 +122,7 @@ sysnm = sysn*sysm;
 sysnml = sysnm*sysl;
 
 % create the jacobian matrix and residual
-J = zeros(sysnml + sysn + phase,sysnml + sysn + 1 + length(free_par));
+J = zeros(sysnml + sysn + phase, sysnml + sysn + 1 + length(free_par));
 % J = (collocation eqns + BCs + phase cond)x(interp pts + period + pars)
 res = zeros(sysnml + sysn + phase,1);
 
@@ -137,8 +154,8 @@ for l = 1:sysl
         % find the time of the current collocation point
         coltime = ts + col(m)*h; 
         % determine x(t) at the collocation point
-        x = profile(:,idx:(idx + sysm))*P';
-        dx = profile(:,idx:(idx + sysm))*dP';
+        x = psol_prof(:,idx:(idx + sysm))*P';
+        dx = psol_prof(:,idx:(idx + sysm))*dP';
         
         % phase_condition
         if phase && ~non_gauss
@@ -170,9 +187,9 @@ for l = 1:sysl
             dPtau(numtau,:) = poly_del(sysm,coltime_trans)/h_tau;
             ddPtau(numtau,:) = poly_ddel(sysm,coltime_trans)/(h_tau^2);
             % compute x(t-tau)
-            xtau(:,numtau) = profile(:,idxtau_i:(idxtau_i+sysm))*Ptau(numtau,:)';
-            dxtau(:,numtau) = profile(:,idxtau_i:(idxtau_i+sysm))*dPtau(numtau,:)';
-            ddxtau(:,numtau) = profile(:,idxtau_i:(idxtau_i+sysm))*ddPtau(numtau,:)';
+            xtau(:,numtau) = psol_prof(:,idxtau_i:(idxtau_i+sysm))*Ptau(numtau,:)';
+            dxtau(:,numtau) = psol_prof(:,idxtau_i:(idxtau_i+sysm))*dPtau(numtau,:)';
+            ddxtau(:,numtau) = psol_prof(:,idxtau_i:(idxtau_i+sysm))*ddPtau(numtau,:)';
             
         % END: for numtau = 1:nd
         end;
@@ -244,7 +261,7 @@ end;
 % periodicity conditions
 J((sysnml + 1):(sysnml + sysn),1:sysn) = eye(sysn);
 J((sysnml + 1):(sysnml + sysn),(sysnml + 1):(sysnml + sysn)) = -eye(sysn);
-res((sysnml + 1):(sysnml + sysn)) = profile(:,1) - profile(:,end);
+res((sysnml + 1):(sysnml + sysn)) = psol_prof(:,1) - psol_prof(:,end);
 
 % phase conditions
 if phase & non_gauss,
@@ -254,7 +271,7 @@ if phase & non_gauss,
       fac=gauss_abs(k)*(mesh((l_i-1)*sysm+1)-mesh(l_i*sysm+1));
       dPa=poly_dla(mesh(index_a:index_a+sysm),gauss_c(k));
       Pa=poly_lgr(mesh(index_a:index_a+sysm),gauss_c(k));
-      u_prime=profile(:,index_a:index_a+m)*dPa';
+      u_prime=psol_prof(:,index_a:index_a+m)*dPa';
       for q=1:sysm+1
         J(sysnml + sysn + 1,(l_i-1)*sysnm+1+(q-1)*sysn:(l_i-1)*sysnm+q*sysn)= ...
 	  J(sysnml + sysn + 1,(l_i-1)*sysnm+1+(q-1)*sysn:(l_i-1)*sysnm+q*sysn) + fac*Pa(q)*u_prime';
@@ -266,4 +283,7 @@ if phase
   res(sysnml + sysn + 1,1)=0;
 end;
 
+
+%FIXME
+extmesh = mesh;
 return;

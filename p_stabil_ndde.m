@@ -1,5 +1,5 @@
-function [stab,eigv] = p_stabil_ndde(st1,N)
-% function [stab,eigv] = p_stabil_ndde(st1,N)
+function [stab,eigv] = p_stabil_ndde(funcs, st1, N, duration)
+% function [stab,eigv] = p_stabil_ndde(funcs, st1, N)
 %
 % Use the method described in Breda, Maset, and Vermiglio 2006
 % (Pseudospectral approximation of eigenvalues of derivative operators with
@@ -11,25 +11,25 @@ function [stab,eigv] = p_stabil_ndde(st1,N)
 % Only works for single fixed delay (in current implementation)
 % - general method works for multiple fixed delays
 
-if exist('N') ~= 1
+sys_tau = funcs.sys_tau;
+sys_deri = funcs.sys_deri;
+
+if exist('N', 'var') ~= 1
     N = 100;
 end;
-
+if exist('duration', 'var') ~= 1
+    duration = st1.parameter(sys_tau());
+end
 % dimension of system
 n = size(st1.x,1);
 
 % cheb returns the Chebyshev differentiation matrix [1..-1] so rescale to
 % [-1..0]
-M = -cheb(N)*2/st1.parameter(sys_tau());
-% Fudge it to the correct dimension
-N12 = (N+1)^2;
-nN1 = n*(N+1);
-M3 = [];
-for i = 1:n
-    M2 = [zeros(i-1,N12); reshape(M,1,N12); zeros(n-i,N12)];
-    M3 = [M3; reshape(M2,nN1,N+1)];
-end;
-A = reshape(M3,nN1,nN1);
+M = -cheb(N)*2/duration;
+A = zeros(n*(N+1));
+for i=1:n
+   A(i:n:end, i:n:end) = M; 
+end
 
 % Construct the solution vector
 xx = st1.x*[1 1 0];
@@ -39,23 +39,18 @@ L0 = sys_deri(xx,st1.parameter,0,[],[]);
 L1 = sys_deri(xx,st1.parameter,1,[],[]);
 N1 = sys_deri(xx,st1.parameter,2,[],[]);
 
-% Construct the A matrix
-A(end-n+1:end,1:n) = L1 + N1*A(1,1);
+% Fill the last row block with the linearized problem
+ilastrowblock = n*N+1:size(A, 1);
+A(ilastrowblock, 1:n) = L1 + N1*M(1,1);
 for j = 2:N
-    A(end-n+1:end,(j-1)*n+[1:n]) = N1*A(1,(j-1)*n+1);
+    A(ilastrowblock,(j-1)*n+(1:n)) = N1*M(1,j);
 end;
-A(end-n+1:end,end-n+1:end) = L0 + N1*A(1,end-n+1);
+A(ilastrowblock, n*N +(1:n)) = L0 + N1*M(1,end);
 
-if nargout == 2
-    [eigv,l] = eig(A);
-    l = diag(l);
-    [ll,idx] = sort(real(l),1,'descend');
-    eigv = eigv(:,idx);
-else
-    l = eig(A);
-    [ll,idx] = sort(real(l),1,'descend');
-end;
-
+[eigv, l] = eig(A);
+l = diag(l);
+[~, idx] = sort(real(l), 1, 'descend');
+eigv = eigv(:,idx);
 stab.l0 = [];
 stab.l1 = l(idx);
 stab.n1 = [];
