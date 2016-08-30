@@ -1,7 +1,8 @@
-function [J,res]=stst_jac(x,par,free_par)
-
+function [J,res]=stst_jac(funcs,x,par,free_par)
+%% residual and jacobian for equilibrium problem
 % function [J,res]=stst_jac(x,par,free_par)
 % INPUT:
+%   funcs problem functions
 %	x current solution guess in R^n
 %	par current parameter values
 %	free_par free parameter numbers
@@ -10,34 +11,33 @@ function [J,res]=stst_jac(x,par,free_par)
 %	res residual in R^(n+s x 1)
 
 % (c) DDE-BIFTOOL v. 2.00, 23/11/2001
-% Modified 07/03/2006 David Barton (david.barton.99@bristol.ac.uk)
+sys_tau=funcs.sys_tau;
+sys_rhs=funcs.sys_rhs;
+sys_ntau=funcs.sys_ntau;
+sys_deri=funcs.sys_deri;
 
 n=length(x); % system dimension 
 
-tp_del=nargin('sys_tau');
-if tp_del==0,
-  m=length(sys_tau); % number of delays
+if funcs.tp_del==0,
+  m=length(sys_tau()); % number of delays
 else
-  m=sys_ntau;
-end;
+  m=sys_ntau();
+end
 
-xx=x;
-for i=1:m
-  xx=[xx x];
-end;
-
-xx = [xx zeros(size(xx,1),m)]; %%
-
+% Repeat x for all delayed terms, and put 0 for neutral terms
+% to force an equilibrium state
+xx = [x(:,ones(m+1,1)) zeros(n, m)];
 res=sys_rhs(xx,par);
 
 J=zeros(n,n+length(free_par));
 
 for i=0:m
+  % Derivatives wrt the state variables (current and delayed)
+  % No exponential factor in the stst case.
   J(1:n,1:n)=J(1:n,1:n)+sys_deri(xx,par,i,[],[]);
 end;
 for j=1:length(free_par)
+  % Derivatives wrt the free parameters
   J(1:n,n+j)=J(1:n,n+j)+sys_deri(xx,par,[],free_par(j),[]);
-end;
-
-return;
-
+end
+return
